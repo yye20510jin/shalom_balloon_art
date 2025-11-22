@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/adminLogin}" method="post" th:object="${loginDTO}">
+    <input type="text" th:field="*{id}"/>
+    <input type="password" th:field="*{password}" />
+    <button type="submit"> 입력 </button>
+</form>
+<div th:if="${errorMessage}" style="color:red, font-weight:bold;">
+    <p th:text="${errorMessage}"></p>
+</div>
+</body>
+</html>
