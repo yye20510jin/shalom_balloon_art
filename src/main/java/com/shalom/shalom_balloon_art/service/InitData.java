@@ -18,7 +18,7 @@ public class InitData implements CommandLineRunner {
 
         //비밀번호 암호화
         String pw = userEncryptService.signup("admin");
-        AdminEntity a = AdminEntity.builder().id("admin").name("양예진").password(pw).build();
+        AdminEntity a = AdminEntity.builder().id("admin").name("jin").password(pw).build();
         adminRepository.save(a);
 
 

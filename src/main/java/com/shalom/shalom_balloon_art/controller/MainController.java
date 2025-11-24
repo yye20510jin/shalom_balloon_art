@@ -4,26 +4,28 @@ import com.shalom.shalom_balloon_art.dto.*;
 import com.shalom.shalom_balloon_art.service.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-@Controller
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api")
+@CrossOrigin(origins="http://localhost:5173")
 @RequiredArgsConstructor
 public class MainController {
     final UserEncryptService userEncryptService;
 
     @GetMapping("/")
-    public String home(){
-        return "home";
+    public void home(){
+            System.out.println("/ 컨트롤러 안");
     }
 
     @GetMapping("/admin")
-    public String admin(Model model){
-        model.addAttribute("loginDTO",new LoginDTO());
-        return "admin";
+    public Map<String,Object> admin(){
+        System.out.println("/admin 컨트롤러 안");
+        return Map.of("success",true,"message","React에서/api/admin 호출 성공");
     }
 
     @PostMapping("/adminLogin")
