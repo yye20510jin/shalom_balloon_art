@@ -1,6 +1,6 @@
 package com.shalom.shalom_balloon_art.service;
 
-import com.shalom.shalom_balloon_art.entity.AdminEntity;
+import com.shalom.shalom_balloon_art.entity.Role;
 import com.shalom.shalom_balloon_art.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -18,8 +18,8 @@ public class InitData implements CommandLineRunner {
 
         //비밀번호 암호화
         String pw = userEncryptService.signup("admin");
-        AdminEntity a = AdminEntity.builder().id("admin").name("jin").password(pw).build();
-        adminRepository.save(a);
+        //Role a = Role.builder().id("admin").name("jin").password(pw).build();
+        //adminRepository.save(a);
 
 
     }

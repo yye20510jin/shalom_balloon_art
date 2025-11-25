@@ -1,14 +1,11 @@
 package com.shalom.shalom_balloon_art.service;
 
-import com.shalom.shalom_balloon_art.entity.AdminEntity;
-import com.shalom.shalom_balloon_art.entity.UserEntity;
+import com.shalom.shalom_balloon_art.entity.Role;
 import com.shalom.shalom_balloon_art.repository.AdminRepository;
-import com.shalom.shalom_balloon_art.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -25,14 +22,14 @@ public class UserEncryptService {
     }
 
     //bcrypt 복호화 -> 비밀번호 확인
-    public boolean loginAdmin(String id, String inputPassword){
-        Optional<AdminEntity> optionalAdminEntity= adminRepository.findById(id);
-        if(optionalAdminEntity.isEmpty()) return false;
-        AdminEntity adminEntity = optionalAdminEntity.get();
-        String encodedPassword = adminEntity.getPassword();
-        // 같으면 true, 아니면 false 반환
-        return passwordEncoder.matches(inputPassword, encodedPassword);
-    }
+//    public boolean loginAdmin(String id, String inputPassword){
+//        Optional<Role> optionalAdminEntity= adminRepository.findById(id);
+//        if(optionalAdminEntity.isEmpty()) return false;
+//        Role adminEntity = optionalAdminEntity.get();
+//        String encodedPassword = adminEntity.getPassword();
+//        // 같으면 true, 아니면 false 반환
+//        return passwordEncoder.matches(inputPassword, encodedPassword);
+//    }
 
 
 }
