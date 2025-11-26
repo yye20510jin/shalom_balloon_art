@@ -15,13 +15,11 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CoustomUserDetailsService implements UserDetailsService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException{
-
         User user = userRepository.findByUserId(userId).orElseThrow(()->new UsernameNotFoundException("사용자 없음"));
-
         //GrantedAuthority : 이 사용자가 가진 권한을 나타내는 객체
         //SimpleGrantedAuthority : Spring Security에서 권한(ROLE_USER, ROLE_ADMIN 등)을 표현하는 객체
         List<GrantedAuthority> authorities = user.getUserRoles().stream().map(role -> (GrantedAuthority) new SimpleGrantedAuthority(role.getRoleName())).toList();

@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/admin")
 @CrossOrigin("http://localhost:5173")
 public class AdminController {
-    @GetMapping("/memberInformation")
+
+
+    @GetMapping("/test")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> hello(){
-
         return ResponseEntity.ok("관리자 전용 대시보드");
     }
 }

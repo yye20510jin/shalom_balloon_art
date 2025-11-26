@@ -1,14 +1,17 @@
 package com.shalom.shalom_balloon_art.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Entity
 @Table(name = "users")
 @Getter
+@Builder
 public class User{
 
     @Id
@@ -32,5 +35,6 @@ public class User{
             joinColumns = @JoinColumn(name = "user_index"),
             inverseJoinColumns = @JoinColumn(name = "role_index")
     )
+    @Builder.Default
     private Set<Role> userRoles = new HashSet<>();
 }

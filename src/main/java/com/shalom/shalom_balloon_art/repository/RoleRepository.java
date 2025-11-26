@@ -3,5 +3,8 @@ package com.shalom.shalom_balloon_art.repository;
 import com.shalom.shalom_balloon_art.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface AdminRepository extends JpaRepository<Role,String> {
+import java.util.Optional;
+
+public interface RoleRepository extends JpaRepository<Role,Long> {
+    Optional<Role> findByRoleName(String roleName);
 }

@@ -5,7 +5,7 @@ import lombok.ToString;
 
 @Data
 public class LoginRequestDTO {
-    private String id;
+    private String userId;
     @ToString.Exclude
     private String password;
 }

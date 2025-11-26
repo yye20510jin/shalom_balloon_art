@@ -1,11 +1,14 @@
 package com.shalom.shalom_balloon_art.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
 @Entity
 @Table(name="roles")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
+@Builder
 public class Role{
 
     @Id

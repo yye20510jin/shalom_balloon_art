@@ -28,14 +28,6 @@ public class MainController {
         return Map.of("success",true,"message","React에서/api/admin 호출 성공");
     }
 
-    //삭제예정
-    @PostMapping("/adminLogin")
-    public String adminLogin(@RequestBody LoginRequestDTO loginDTO, HttpSession session){
 
-        // 비밀번호 확인하는 로직 불러오기
-        if(!userEncryptService.loginAdmin(loginDTO.getId(), loginDTO.getPassword())) return"false";
-        session.setAttribute("adminId",loginDTO.getId());
-        return"redirect:/";
-    }
 
 }
