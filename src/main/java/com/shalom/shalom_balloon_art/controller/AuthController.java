@@ -2,6 +2,7 @@ package com.shalom.shalom_balloon_art.controller;
 
 import com.shalom.shalom_balloon_art.dto.LoginRequestDTO;
 import com.shalom.shalom_balloon_art.dto.LoginResponseDTO;
+import com.shalom.shalom_balloon_art.dto.MembershipDTO;
 import com.shalom.shalom_balloon_art.service.AuthService;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class AuthController {
     public ResponseEntity<?> adminLogin(@RequestBody LoginRequestDTO loginRequestDTO){
         Map<String,Object> result;
         try{
-            result = authService.AdminLogin(loginRequestDTO);
+            result = authService.adminLogin(loginRequestDTO);
         }catch(RuntimeException e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호 오류");
         }
@@ -37,11 +38,11 @@ public class AuthController {
         return ResponseEntity.ok(new LoginResponseDTO((String)result.get("token"),(String)result.get("userId"),roles));
     }
 
-    @GetMapping("/")
-    public ResponseEntity<?> home(){
+    @PostMapping("/membership")
+    public ResponseEntity<?> membership(@RequestBody MembershipDTO membershipDTO){
+        if(!authService.membership(membershipDTO)){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("회원가입 실패");
+        }
         return ResponseEntity.ok("success");
     }
-
-/*    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body("wrong password");*/
 }

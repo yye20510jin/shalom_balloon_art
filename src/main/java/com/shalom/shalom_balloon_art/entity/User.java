@@ -37,4 +37,8 @@ public class User{
     )
     @Builder.Default
     private Set<Role> userRoles = new HashSet<>();
+
+    public void addRole(Role role){
+        this.userRoles.add(role);
+    }
 }
