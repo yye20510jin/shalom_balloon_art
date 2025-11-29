@@ -22,10 +22,14 @@ public class UserEncryptService {
 
     //bcrypt 복호화 -> 비밀번호 확인
     public boolean pwDecrypt(String id, String inputPassword){
-        User u = userRepository.findByUserId(id).orElseThrow(()->new RuntimeException());
+        User u = userRepository.findByUserId(id).orElseThrow(()->new RuntimeException(""));
         String encodedPassword = u.getUserPassword();
         // 같으면 true, 아니면 false 반환
-        return passwordEncoder.matches(inputPassword, encodedPassword);
+        if(!passwordEncoder.matches(inputPassword, encodedPassword)){
+            throw new RuntimeException("");
+        }else{
+            return true;
+        }
     }
 
 

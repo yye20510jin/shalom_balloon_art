@@ -7,7 +7,6 @@ import com.shalom.shalom_balloon_art.entity.Role;
 import com.shalom.shalom_balloon_art.entity.User;
 import com.shalom.shalom_balloon_art.repository.RoleRepository;
 import com.shalom.shalom_balloon_art.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -37,7 +36,7 @@ public class AuthService {
     public boolean membership(MembershipDTO m){
 
         try{
-            Role r = roleRepository.findByRoleName("USER").orElseThrow(() -> new RuntimeException());
+            Role r = roleRepository.findByRoleName("USER").orElseThrow(() -> new RuntimeException("일치하는 권한이 없습니다."));
             String pw = userEncryptService.signup(m.getUserPassword());
             User u = User.builder().userId(m.getUserId()).userPassword(pw).username(m.getUserName()).userPhoneNumber(m.getUserPhoneNumber()).build();
             u.addRole(r);
@@ -50,25 +49,48 @@ public class AuthService {
         return true;
     }
 
-    public Map<String,Object> adminLogin(LoginRequestDTO loginRequestDTO){
+    public Map<String,Object> adminLogin(LoginRequestDTO l){
             //id 조회
             User u;
-            try{
-                u = userRepository.findByUserId(loginRequestDTO.getUserId()).orElseThrow(()->new RuntimeException("아이디 또는 비밀번호가 일치하지 않습니다."));}
-            catch(RuntimeException e){
-                System.out.println("찾는 id 없음");
-                throw new RuntimeException("아이디 또는 비밀번호가 일치하지 않습니다.");
-            }
-            if(!userEncryptService.pwDecrypt(u.getUserId(),loginRequestDTO.getPassword())) {
-                throw new RuntimeException("아이디 또는 비밀번호가 일치하지 않습니다.");
-            }
-            UserDetails userdetails=coustomUserDetailsService.loadUserByUsername(loginRequestDTO.getUserId());
+            u = userRepository.findByUserId(l.getUserId()).orElseThrow(()->new RuntimeException(""));
+
+            userEncryptService.pwDecrypt(u.getUserId(),l.getPassword());
+
+            UserDetails userdetails=coustomUserDetailsService.loadUserByUsername(l.getUserId());
             //User(user.getUserId(), user.getUserPassword(), authorities);
+
+            List<String> listRoles = userdetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+            for(String role : listRoles){
+                if(role.equals("USER")) throw new RuntimeException("");
+            }
+
             Map<String,Object> result = new HashMap<>();
             result.put("token",jwtTokenProvider.generateToken(userdetails));
             result.put("userId",userdetails.getUsername());
-            result.put("roles",userdetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList());
+            result.put("roles",listRoles);
             return result;
+    }
+
+    public Map<String,Object> userLogin(LoginRequestDTO l){
+
+        //id 조회
+        User u;
+        u = userRepository.findByUserId(l.getUserId()).orElseThrow(()->new RuntimeException(""));
+        userEncryptService.pwDecrypt(u.getUserId(),l.getPassword());
+        UserDetails userdetails = coustomUserDetailsService.loadUserByUsername(l.getUserId());
+
+        List<String> listRoles = userdetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+
+        for(String role : listRoles){
+            if(role.equals("ADMIN")) throw new RuntimeException("");
+        }
+
+        Map<String,Object> result = new HashMap<>();
+        result.put("token",jwtTokenProvider.generateToken(userdetails));
+        result.put("userId",userdetails.getUsername());
+        result.put("roles",listRoles);
+
+        return result;
     }
 
 }

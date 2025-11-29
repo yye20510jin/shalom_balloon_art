@@ -26,22 +26,35 @@ public class AuthController {
     }
 
     @PostMapping("/adminLogin")
-    public ResponseEntity<?> adminLogin(@RequestBody LoginRequestDTO loginRequestDTO){
+    public ResponseEntity<?> adminLogin(@RequestBody LoginRequestDTO l){
         Map<String,Object> result;
         try{
-            result = authService.adminLogin(loginRequestDTO);
+            result = authService.adminLogin(l);
         }catch(RuntimeException e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호 오류");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error","일치하는 아이디나 비밀번호가 없습니다."));
         }
         List<String> roles = ((List<?>)result.get("roles")).stream().map(String::valueOf).toList();
         //return Jwts.builder().setSubject(userdetails.getUsername()).claim("roles",roles).setIssuedAt(now).setExpiration(expiry).signWith(key).compact();
         return ResponseEntity.ok(new LoginResponseDTO((String)result.get("token"),(String)result.get("userId"),roles));
     }
 
+    @PostMapping("/userLogin")
+    public ResponseEntity<?> userLogin(@RequestBody LoginRequestDTO l){
+        Map<String,Object> result;
+        try{
+            result = authService.userLogin(l);
+        }catch(RuntimeException e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error","일치하는 아이디나 비밀번호가 없습니다."));
+        }
+
+        List<String> roles = ((List<?>)result.get("roles")).stream().map(String::valueOf).toList();
+        return ResponseEntity.ok(new LoginResponseDTO((String)result.get("token"),(String)result.get("userId"),roles));
+    }
+
     @PostMapping("/membership")
     public ResponseEntity<?> membership(@RequestBody MembershipDTO membershipDTO){
         if(!authService.membership(membershipDTO)){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("회원가입 실패");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error","회원가입 실패"));
         }
         return ResponseEntity.ok("success");
     }
