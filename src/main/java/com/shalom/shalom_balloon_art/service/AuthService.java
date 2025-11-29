@@ -33,10 +33,15 @@ public class AuthService {
 
     }
 
-    public boolean membership(MembershipDTO m){
-
+    public boolean membership(MembershipDTO m,String s){
+        Role r;
         try{
-            Role r = roleRepository.findByRoleName("USER").orElseThrow(() -> new RuntimeException("일치하는 권한이 없습니다."));
+            if(s.equals("admin")) {
+                r = roleRepository.findByRoleName("ADMIN").orElseThrow(() -> new RuntimeException("일치하는 권한이 없습니다."));
+            }else{
+                r = roleRepository.findByRoleName("USER").orElseThrow(() -> new RuntimeException("일치하는 권한이 없습니다."));
+            }
+
             String pw = userEncryptService.signup(m.getUserPassword());
             User u = User.builder().userId(m.getUserId()).userPassword(pw).username(m.getUserName()).userPhoneNumber(m.getUserPhoneNumber()).build();
             u.addRole(r);
@@ -61,7 +66,7 @@ public class AuthService {
 
             List<String> listRoles = userdetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
             for(String role : listRoles){
-                if(role.equals("USER")) throw new RuntimeException("");
+                if(role.contains("USER")) throw new RuntimeException("");
             }
 
             Map<String,Object> result = new HashMap<>();
@@ -82,7 +87,7 @@ public class AuthService {
         List<String> listRoles = userdetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
 
         for(String role : listRoles){
-            if(role.equals("ADMIN")) throw new RuntimeException("");
+            if(role.contains("ADMIN")) throw new RuntimeException("");
         }
 
         Map<String,Object> result = new HashMap<>();

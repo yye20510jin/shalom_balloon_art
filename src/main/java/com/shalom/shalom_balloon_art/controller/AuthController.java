@@ -53,7 +53,7 @@ public class AuthController {
 
     @PostMapping("/membership")
     public ResponseEntity<?> membership(@RequestBody MembershipDTO membershipDTO){
-        if(!authService.membership(membershipDTO)){
+        if(!authService.membership(membershipDTO,"user")){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error","회원가입 실패"));
         }
         return ResponseEntity.ok("success");
