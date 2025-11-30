@@ -31,3 +31,19 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# =============================================
+# 📌 Frontend: React (Vite / Node.js)
+# =============================================
+/frontend/node_modules/
+/frontend/dist/
+/frontend/.vite/
+/frontend/.eslintcache
+
+# =============================================
+# 📌 Environment / Security Files
+# =============================================
+*.env
+*.env.local
+*.env.production
+*.env.development
