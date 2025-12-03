@@ -40,7 +40,7 @@ public class PostController {
 
     // 글 하나 조회 (USER만)
     @GetMapping("/{index}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<PostResponseDTO> getPost(@PathVariable Long index) {
         return ResponseEntity.ok(postService.getPost(index));
     }

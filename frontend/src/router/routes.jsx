@@ -5,7 +5,8 @@ import AddAdmin from "../admin/AddAdmin";
 import Membership from "../Membership";
 import UserLogin from "../User/UserLogin";
 import PostForm from "../components/PostEditor/PostForm";
-import PostList from "../components/PostEditor/PostList"
+import PostList from "../components/PostEditor/PostList";
+import PostDetails from "../components/PostEditor/PostDetails";
 
 export const routes=[
     {path: "/", element: <Home />},
@@ -15,5 +16,6 @@ export const routes=[
     {path:"/userLogin",element:<UserLogin/>},
     {path:"/addAdmin",element:<AddAdmin/>},
     {path:"/posts",element:<PostForm/>},
-    {path:"/posts/postList",element:<PostList/>}
+    {path:"/posts/postList",element:<PostList/>},
+    {path:"/posts/postDetails/:id",element:<PostDetails/>}
 ];

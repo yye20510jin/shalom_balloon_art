@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
 import { authFetch } from "../../api/authFetch";
-import {useNavigate} from "react-router-dom";
+import {useParams} from "react-router-dom";
 
-function PostList() {
-  const [posts, setPosts] = useState([]);      // PostResponseDTO[]
+function PostDetails() {
+  const [post, setPost] = useState([]);      // PostResponseDTO[]
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const navigate = useNavigate();
+  const {id} = useParams();
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const res = await authFetch(
-          `${import.meta.env.VITE_BACKEND_BASE_URL}/api/posts`,
+          `${import.meta.env.VITE_BACKEND_BASE_URL}/api/posts/${id}`,
           {
             method: "GET",
           }
@@ -26,7 +27,7 @@ function PostList() {
         }
 
         const data = await res.json(); 
-        setPosts(data);
+        setPost(data);
       } catch (e) {
         console.error(e);
         setError("서버 오류가 발생했습니다.");
@@ -56,17 +57,14 @@ function PostList() {
     );
   }
 
-  if (!posts || posts.length === 0) {
+  if (!post || post.length === 0) {
     return <div style={{ padding: 20 }}>등록된 게시글이 없습니다.</div>;
   }
 
   return (
     <div style={{ padding: 20, maxWidth: 800, margin: "0 auto" }}>
-      <h2>게시글 목록</h2>
-
-      {posts.map((post) => (
+      <h2>{post.title}</h2>
         <div
-          key={post.index}
           style={{
             border: "1px solid #ccc",
             borderRadius: 8,
@@ -75,7 +73,6 @@ function PostList() {
             display: "flex",
             gap: 16,
           }}
-          onClick = {()=>navigate(`/posts/postDetails/${post.index}`)}
         >
         {/* 이미지 썸네일 */}
 
@@ -100,7 +97,6 @@ function PostList() {
 
           {/* 텍스트 영역 */}
           <div style={{ flex: 1 }}>
-            <h3 style={{ margin: "0 0 8px" }}>{post.title}</h3>
 
             <div
               style={{
@@ -121,10 +117,8 @@ function PostList() {
                 whiteSpace: "pre-line",
               }}
             >
-              {/* 내용 일부만 미리보기 */}
-              {post.content && post.content.length > 80
-                ? post.content.slice(0, 80) + "..."
-                : post.content}
+              {post.content}
+
             </p>
 
             {/* 유튜브 링크가 있으면 표시 */}
@@ -140,9 +134,8 @@ function PostList() {
             )}
           </div>
         </div>
-      ))}
     </div>
   );
 }
 
-export default PostList;
+export default PostDetails;
