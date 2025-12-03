@@ -25,15 +25,10 @@ export function usePostSubmit() {
       return;
     }
 
-    if (!imageUrl) {
-      setError("이미지 업로드를 완료해 주세요.");
-      return;
-    }
-
     const payload = {
       title: title.trim(),
       content: content.trim(),
-      imageUrl: imageUrl.length > 0 ? imageUrl : null,
+      imageUrls: imageUrl.length > 0 ? imageUrl : null,
       youtubeUrl: youtubeUrl.trim() || null,
     };
 
@@ -55,7 +50,7 @@ export function usePostSubmit() {
 
       setSuccessMessage("게시글이 작성되었습니다.");
       setTimeout(() => {
-        navigate("/posts"); // 라우트 이름은 너 프로젝트에 맞게
+        navigate("/posts/postList"); // 라우트 이름은 너 프로젝트에 맞게
       }, 800);
     } catch (err) {
       console.error(err);

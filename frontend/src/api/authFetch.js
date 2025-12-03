@@ -10,7 +10,7 @@ export async function authFetch(url, options = {}){
         headers["Authorization"]=`Bearer ${token}`;
     }
 
-    const response = await fetch(url,{...options,headers,});
+    const response = await fetch(url,{...options,headers});
 
     if(response.status === 401){
         localStorage.removeItem("accessToken");

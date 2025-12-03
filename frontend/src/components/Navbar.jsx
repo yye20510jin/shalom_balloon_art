@@ -5,10 +5,13 @@ function Navbar(){
     
     const navigate = useNavigate();
     const[isLoggedIn, setIsLoggedIn] = useState(false);
+    const[roles, setRoles] = useState([]);
 
     useEffect(()=>{
         const token = localStorage.getItem("accessToken");
+        const roles = JSON.parse(localStorage.getItem("roles")||"[]");
         setIsLoggedIn(!!token);
+        setRoles(roles);
     },[]);
 
     const goAdmin = async () =>{
@@ -23,6 +26,14 @@ function Navbar(){
         navigate("/membership");
     };
 
+    const GoPostList = ()=>{
+        navigate("/posts/postList");
+    };
+
+    const GoPostForm = ()=> {
+        navigate("/posts");
+    };
+
 
     const handelLogout=()=>{
         localStorage.removeItem("accessToken");
@@ -34,13 +45,23 @@ function Navbar(){
 
     return(
         <nav>
-            {isLoggedIn ? (<button onClick={handelLogout}>로그아웃</button>):(
+            {isLoggedIn ? 
+            (
+            <div>
+            <button onClick={handelLogout}>로그아웃</button>
+            <button onClick={GoPostList}>목록보기</button>
+            </div>
+            ):(
             <div>
                 <button onClick={goUser}>로그인</button>
                 <button onClick={goAdmin}>관리자 로그인</button>
                 <button onClick={goMembership}>회원가입</button>
             </div>
             )}
+            {roles.includes("ROLE_ADMIN") && (
+                <button onClick={GoPostForm}>글 추가</button> 
+            )
+            }    
         </nav>
     );
 }export default Navbar;

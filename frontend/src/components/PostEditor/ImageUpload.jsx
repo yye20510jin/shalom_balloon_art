@@ -19,15 +19,10 @@ function ImageUpload({ imageUrl, setImageUrl }) {
 
   const handleUpload = async () => {
 
-    console.log("✅ handleUpload 진입");
-
     if (!imageFile) {
-      console.log("⛔ imageFile 비어있음");
       setUploadError("업로드할 이미지를 선택해 주세요.");
       return;
     }
-
-    console.log("📁 업로드할 파일:", imageFile.name);
 
     try {
       setIsUploading(true);
@@ -48,8 +43,7 @@ function ImageUpload({ imageUrl, setImageUrl }) {
       setImageUrl(urls);
       setUploadMessage("이미지 업로드가 완료되었습니다.");
 
-    } catch (err) {
-      console.error("⛔ Firebase 업로드 실패:", e);   
+    } catch (err) { 
       console.error(err);
       setUploadError("이미지 업로드 중 오류가 발생했습니다.");
     } finally {
