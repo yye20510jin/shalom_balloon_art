@@ -44,7 +44,6 @@ public class Post {
 
     @PrePersist
     public void onCreate() {
-        System.out.println("-----현재시간 insert-----");
         this.createdAt = LocalDateTime.now();
     }
 
@@ -56,13 +55,15 @@ public class Post {
     public void addImage(String url){
         PostImage image = new PostImage(url,this);
         images.add(image);
-        image.setPost(this);
-        System.out.println("-------이미지 join ---------");
-        System.out.println(url);
     }
 
-    public void removeImage(PostImage image){
-        images.remove(image);
-        image.setPost(null);
+    public void clearImages(){
+        images.clear();
+    }
+
+    public void update(String title, String content, String youtubeUrl) {
+        this.title = title;
+        this.content = content;
+        this.youtubeUrl = youtubeUrl;
     }
 }

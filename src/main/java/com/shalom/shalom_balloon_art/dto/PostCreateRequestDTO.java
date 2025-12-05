@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostCreateRequestDTO {
-
+    private Long index;
     private String title;
     private String content;
     private List<String> imageUrls; // ← 여기

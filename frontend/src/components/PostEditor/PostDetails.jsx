@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { authFetch } from "../../api/authFetch";
-import {useParams} from "react-router-dom";
+import {useParams, useNavigate} from "react-router-dom";
 
 function PostDetails() {
   const [post, setPost] = useState([]);      // PostResponseDTO[]
@@ -8,6 +8,8 @@ function PostDetails() {
   const [error, setError] = useState("");
 
   const {id} = useParams();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -134,6 +136,8 @@ function PostDetails() {
             )}
           </div>
         </div>
+        <button onClick={()=>navigate(`/posts/editPostPage/${id}`)}>수정</button>
+        <button onClick={()=> navigate("")}>삭제</button>
     </div>
   );
 }

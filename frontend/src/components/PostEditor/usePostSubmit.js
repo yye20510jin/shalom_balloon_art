@@ -4,9 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { authFetch } from "../../api/authFetch";
 
 export function usePostSubmit() {
+  const [id, setId] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [imageUrl, setImageUrl] = useState([]);
+  const [imageUrls, setImageUrls] = useState([]);
   const [youtubeUrl, setYoutubeUrl] = useState("");
 
   const [error, setError] = useState("");
@@ -15,7 +16,7 @@ export function usePostSubmit() {
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e,mode) => {
     e.preventDefault();
     setError("");
     setSuccessMessage("");
@@ -26,32 +27,55 @@ export function usePostSubmit() {
     }
 
     const payload = {
+      index: id || null,
       title: title.trim(),
       content: content.trim(),
-      imageUrls: imageUrl.length > 0 ? imageUrl : null,
+      imageUrls: imageUrls.length > 0 ? imageUrls : null,
       youtubeUrl: youtubeUrl.trim() || null,
     };
 
     try {
       setIsSubmitting(true);
+      let res;
 
-      const res = await authFetch(
+      if(mode === "create"){
+      res = await authFetch(
         `${import.meta.env.VITE_BACKEND_BASE_URL}/api/posts`,
         {
           method: "POST",
           body: JSON.stringify(payload),
         }
       );
+      }else if(mode === "edit"){
+      res = await authFetch(
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/api/posts`,
+        {
+          method: "PUT",
+          body: JSON.stringify(payload),
+        }
+      );
+              
+      }else{
+        throw new Error("게시글 저장에 실패했습니다.");
+      }
 
       if (!res || !res.ok) {
         const text = res ? await res.text() : "요청 실패";
         throw new Error(text || "게시글 저장에 실패했습니다.");
       }
 
+      if(mode === "create"){
       setSuccessMessage("게시글이 작성되었습니다.");
       setTimeout(() => {
         navigate("/posts/postList"); // 라우트 이름은 너 프로젝트에 맞게
       }, 800);
+      }else{
+      setSuccessMessage("게시글이 수정되었습니다.");
+      setTimeout(() => {
+        navigate(`/posts/postDetails/${id}`); // 라우트 이름은 너 프로젝트에 맞게
+      }, 800);
+      }
+
     } catch (err) {
       console.error(err);
       setError(err.message || "서버 오류가 발생했습니다.");
@@ -61,12 +85,14 @@ export function usePostSubmit() {
   };
 
   return {
+    id,
+    setId,
     title,
     setTitle,
     content,
     setContent,
-    imageUrl,
-    setImageUrl,
+    imageUrls,
+    setImageUrls,
     youtubeUrl,
     setYoutubeUrl,
     error,

@@ -1,15 +1,21 @@
 import ImageUpload from "./ImageUpload";
 import YoutubePreview from "./YoutubePreview";
 import { usePostSubmit } from "./usePostSubmit";
+import {useEffect} from "react";
 
-function PostForm() {
+function PostForm({
+  mode = "create",       
+  initialValues                                   
+}) {
   const {
+    id,
+    setId,
     title,
     setTitle,
     content,
     setContent,
-    imageUrl,
-    setImageUrl,
+    imageUrls,
+    setImageUrls,
     youtubeUrl,
     setYoutubeUrl,
     error,
@@ -18,6 +24,16 @@ function PostForm() {
     handleSubmit,
   } = usePostSubmit();
 
+useEffect(()=>{
+    if (initialValues) {
+      setId(initialValues.id || "");
+      setTitle(initialValues.title || "");
+      setContent(initialValues.content || "");
+      setYoutubeUrl(initialValues.youtubeUrl || "");
+      setImageUrls(initialValues.imageUrls || []);
+    }  
+},[initialValues]);
+
   return (
     <div style={{ maxWidth: 800, margin: "0 auto", padding: 20 }}>
       <h1>새 게시글 작성</h1>
@@ -25,7 +41,7 @@ function PostForm() {
       {error && <p style={{ color: "red" }}>{error}</p>}
       {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(e)=>{handleSubmit(e,mode)}}>
         {/* 제목 */}
         <div style={{ marginBottom: 16 }}>
           <label>
@@ -59,7 +75,7 @@ function PostForm() {
         </div>
 
         {/* 이미지 업로드 */}
-        <ImageUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
+        <ImageUpload imageUrls={imageUrls} setImageUrls={setImageUrls} />
 
         {/* YouTube URL + 미리보기 */}
         <YoutubePreview

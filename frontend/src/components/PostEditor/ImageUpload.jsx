@@ -1,9 +1,9 @@
 // src/components/PostEditor/ImageUpload.jsx
 import { useState } from "react";
 import { storage } from "../../firebaseConfig";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL, deleteObject, getStorage } from "firebase/storage";
 
-function ImageUpload({ imageUrl, setImageUrl }) {
+function ImageUpload({ imageUrls, setImageUrls }) {
   const [imageFile, setImageFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
@@ -17,13 +17,27 @@ function ImageUpload({ imageUrl, setImageUrl }) {
     setUploadMessage("");
   };
 
+  const handleRemoveImage = async (index) => {
+    const targetUrl = imageUrls[index];
+    const storage = getStorage();
+    setImageUrls((prev) => prev.filter((_, i) => i !== index));
+
+    try {
+    const imageRef = ref(storage,targetUrl); 
+    await deleteObject(imageRef);
+    console.log("이미지 삭제 성공:", targetUrl);
+  } catch (err) {
+    console.error("이미지 삭제 실패:", err);
+  }
+  };
+
   const handleUpload = async () => {
 
     if (!imageFile) {
       setUploadError("업로드할 이미지를 선택해 주세요.");
       return;
     }
-
+    
     try {
       setIsUploading(true);
       setUploadError("");
@@ -40,7 +54,7 @@ function ImageUpload({ imageUrl, setImageUrl }) {
       })
     );
 
-      setImageUrl(urls);
+      setImageUrls(urls);
       setUploadMessage("이미지 업로드가 완료되었습니다.");
 
     } catch (err) { 
@@ -72,15 +86,45 @@ function ImageUpload({ imageUrl, setImageUrl }) {
       )}
 
       <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-      {imageUrl.map((url, index) => (
-        <img
-          key={index}
-          src={url}
-          alt={`upload-${index}`}
-          style={{ width: "120px", height: "120px", objectFit: "cover", borderRadius: "8px" }}
-        />
-      ))}
-    </div>
+      {imageUrls.map((url, index) => (
+        <div key={index} style={{ position: "relative" }}>
+          <img
+            src={url}
+            alt={`upload-${index}`}
+            style={{
+              width: "120px",
+              height: "120px",
+              objectFit: "cover",
+              borderRadius: "8px",
+            }}
+          />
+
+          <button
+            type="button"
+            onClick={() => handleRemoveImage(index)}
+            style={{
+              position: "absolute",
+              top: "-6px",
+              right: "-6px",
+              border: "none",
+              borderRadius: "50%",
+              width: 26,
+              height: 26,
+              cursor: "pointer",
+              fontSize: 14,
+              fontWeight: "bold",
+              background: "rgba(0,0,0,0.7)",
+              color: "#fff",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            ✕
+          </button>
+        </div>
+  ))}
+</div>
 
       
     </div>

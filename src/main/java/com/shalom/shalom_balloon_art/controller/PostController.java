@@ -22,17 +22,12 @@ public class PostController {
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> createPost(@RequestBody PostCreateRequestDTO dto) {
-        System.out.println("------ PostCreateRequestDTO dto -------");
-        for(String a : dto.getImageUrls()){
-            System.out.println(a);
-        }
-        System.out.println("------------------------------------");
-        long index = postService.createPost(dto);
+        postService.createPost(dto);
         return ResponseEntity.ok("success");
     }
 
     // 전체 글 목록 (누구나)
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<PostResponseDTO>> getAllPosts() {
         System.out.println("글 목록 접근 완료");
         return ResponseEntity.ok(postService.getAllPosts());
@@ -43,5 +38,13 @@ public class PostController {
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<PostResponseDTO> getPost(@PathVariable Long index) {
         return ResponseEntity.ok(postService.getPost(index));
+    }
+
+    //글 수정
+    @PutMapping
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<?> editPost(@RequestBody PostCreateRequestDTO dto){
+
+        return ResponseEntity.ok(postService.editPost(dto));
     }
 }
