@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { authFetch } from "../../api/authFetch";
 import {useParams, useNavigate} from "react-router-dom";
+import {PostDelete} from "./PostDelete"
 
 function PostDetails() {
   const [post, setPost] = useState([]);      // PostResponseDTO[]
@@ -10,6 +11,8 @@ function PostDetails() {
   const {id} = useParams();
 
   const navigate = useNavigate();
+
+  const{deleteSubmit}=PostDelete();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -124,20 +127,30 @@ function PostDetails() {
             </p>
 
             {/* 유튜브 링크가 있으면 표시 */}
-            {post.youtubeUrl && (
-              <a
-                href={post.youtubeUrl}
-                target="_blank"
-                rel="noreferrer"
-                style={{ fontSize: 13, color: "#0066cc" }}
-              >
-                유튜브 보기 ↗
-              </a>
-            )}
+      {post.youtubeUrl && (
+        <div style={{ marginTop: 12 }}>
+          <p>YouTube 미리보기</p>
+          <div style={{ position: "relative", paddingTop: "56.25%" }}>
+            <iframe
+              title="YouTube Preview"
+              src={`https://www.youtube.com/embed/${post.youtubeUrl}`}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                border: "none",
+              }}
+              allowFullScreen
+            />
+          </div>
+        </div>
+      )}
           </div>
         </div>
         <button onClick={()=>navigate(`/posts/editPostPage/${id}`)}>수정</button>
-        <button onClick={()=> navigate("")}>삭제</button>
+        <button onClick={()=>{deleteSubmit(post.index,setError)}}>삭제</button>
     </div>
   );
 }

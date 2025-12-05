@@ -39,6 +39,7 @@ export function usePostSubmit() {
       let res;
 
       if(mode === "create"){
+      console.log("payload",payload);
       res = await authFetch(
         `${import.meta.env.VITE_BACKEND_BASE_URL}/api/posts`,
         {

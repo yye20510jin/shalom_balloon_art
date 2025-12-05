@@ -42,9 +42,17 @@ public class PostController {
 
     //글 수정
     @PutMapping
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> editPost(@RequestBody PostCreateRequestDTO dto){
 
         return ResponseEntity.ok(postService.editPost(dto));
+    }
+
+    //글 삭제
+    @DeleteMapping("/{index}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> deletePost(@PathVariable Long index){
+        postService.deletePost(index);
+        return ResponseEntity.ok("success");
     }
 }

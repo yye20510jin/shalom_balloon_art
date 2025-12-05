@@ -17,13 +17,14 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final FirebaseStorageService fire;
 
     // 글 저장
     public void createPost(PostCreateRequestDTO req){
         Post post = new Post();
         post.setTitle(req.getTitle());
         post.setContent(req.getContent());
-
+        post.setYoutubeUrl(req.getYoutubeUrl());
         if(req.getImageUrls() != null){
             for(String url : req.getImageUrls()){
                 post.addImage(url);
@@ -80,6 +81,17 @@ public class PostService {
 
         // 4. 저장 (변경감지로 자동 flush)
         return toResponseDTO(post);
+    }
+
+    @Transactional
+    public void deletePost(Long index){
+        Post post = postRepository.findById(index).orElseThrow(() -> new RuntimeException("id 없음"));
+        // Firebase 이미지 삭제 로직.
+        for(PostImage dto : post.getImages()) {
+            fire.delete(dto.getUrl());
+        }
+
+        postRepository.delete(post);
     }
 
 
