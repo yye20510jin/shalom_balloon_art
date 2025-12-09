@@ -7,22 +7,24 @@ function Membership() {
   const [userName, setUserName] = useState("");
   const [userPhoneNumber, setUserPhoneNumber] = useState("");
   const [idCheck, setIdCheck] = useState(""); // "사용 가능.." / "이미 존재.." / ""
-
+  const [passwordConfirm, setPasswordConfirm] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const isUserIdFilled = !!userId.trim();
-  const isPasswordFilled = !!userPassword.trim();
   const isNameFilled = !!userName.trim();
   const isPhoneFilled = !!userPhoneNumber.trim();
   const isIdAvailable = idCheck === "사용 가능한 아이디입니다.";
-
+  const isPasswordMatch = userPassword === passwordConfirm;
+  const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-={}\[\]|;:'",.<>/?]).{8,}$/;
+  const isPasswordValid = passwordRegex.test(userPassword);
   const isFormValid =
     isUserIdFilled &&
-    isPasswordFilled &&
     isNameFilled &&
     isPhoneFilled &&
-    isIdAvailable;
+    isIdAvailable &&
+    isPasswordMatch&&
+    isPasswordValid;
 
   const memberShipSubmit = async (e) => {
     e.preventDefault();
@@ -57,6 +59,7 @@ function Membership() {
         return;
       }
 
+      alert("회원가입 완료")
       navigate("/");
     } catch (err) {
       console.log(err);
@@ -113,15 +116,38 @@ function Membership() {
             {idCheck}
           </p>
         )}
-        
+
         <br />
+
+        <input 
+            style={{ marginTop: "20px" }} 
+            type="password" 
+            value={userPassword} 
+            onChange={(e) => setUserPassword(e.target.value)} 
+            placeholder="password" 
+            /> 
+        <br />
+        <ul style={{ fontSize: "14px", marginTop: "10px" }}>
+            <li style={{ color: userPassword.length >= 8 ? "green" : "red" }}>8자 이상</li>
+            <li style={{ color: /[A-Z]/.test(userPassword) ? "green" : "red" }}>대문자 포함</li>
+            <li style={{ color: /[a-z]/.test(userPassword) ? "green" : "red" }}>소문자 포함</li>
+            <li style={{ color: /\d/.test(userPassword) ? "green" : "red" }}>숫자 포함</li>
+            <li style={{ color: /[!@#$%^&*]/.test(userPassword) ? "green" : "red" }}>특수문자 포함</li>
+        </ul>
+
         <input
-          style={{ marginTop: "20px" }}
-          type="password"
-          value={userPassword}
-          onChange={(e) => setUserPassword(e.target.value)}
-          placeholder="password"
-        />
+            style={{ marginTop: "20px" }}
+            type="password"
+            value={passwordConfirm}
+            onChange={(e) => setPasswordConfirm(e.target.value)}
+            placeholder="password confirm"
+            />
+        {passwordConfirm && !isPasswordMatch && (
+            <p style={{ color: "red" }}>비밀번호가 일치하지 않습니다.</p>
+        )}
+        {passwordConfirm && isPasswordMatch && (
+            <p style={{ color: "green" }}>비밀번호가 일치합니다.</p>
+        )}
         <br />
 
         <input
