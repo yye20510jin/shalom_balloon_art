@@ -58,4 +58,14 @@ public class AuthController {
         }
         return ResponseEntity.ok("success");
     }
+
+    @PostMapping("/idDuplicateCheck")
+    public ResponseEntity<?> idDuplicateCheck(@RequestBody MembershipDTO m){
+        try{
+            authService.idDuplicateCheck(m.getUserId());
+        }catch(RuntimeException e){
+          return ResponseEntity.ok("사용 가능한 아이디입니다.");
+        }
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 존재하는 아이디입니다.");
+    }
 }

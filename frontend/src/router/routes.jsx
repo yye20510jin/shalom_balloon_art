@@ -2,7 +2,7 @@ import Home from "../Home";
 import AdminLogin from "../admin/AdminLogin";
 import Admin from "../admin/Admin"
 import AddAdmin from "../admin/AddAdmin";
-import Membership from "../Membership";
+import Membership from "../User/Membership";
 import UserLogin from "../User/UserLogin";
 import PostForm from "../components/PostEditor/PostForm";
 import PostList from "../components/PostEditor/PostList";

@@ -22,6 +22,7 @@ function ImageUpload({ imageUrls, setImageUrls }) {
     const storage = getStorage();
     setImageUrls((prev) => prev.filter((_, i) => i !== index));
 
+    
     try {
     const imageRef = ref(storage,targetUrl); 
     await deleteObject(imageRef);

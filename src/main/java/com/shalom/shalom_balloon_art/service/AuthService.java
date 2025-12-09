@@ -98,4 +98,8 @@ public class AuthService {
         return result;
     }
 
+    public void idDuplicateCheck(String id){
+        userRepository.findByUserId(id).orElseThrow(() -> new RuntimeException("해당 아이디는 존재하지 않습니다."));
+    }
+
 }
