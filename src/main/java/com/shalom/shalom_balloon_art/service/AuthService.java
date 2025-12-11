@@ -2,14 +2,17 @@ package com.shalom.shalom_balloon_art.service;
 
 import com.shalom.shalom_balloon_art.auth.jwt.JwtTokenProvider;
 import com.shalom.shalom_balloon_art.dto.LoginRequestDTO;
-import com.shalom.shalom_balloon_art.dto.MembershipDTO;
+import com.shalom.shalom_balloon_art.dto.MembershipRequestDTO;
 import com.shalom.shalom_balloon_art.entity.Role;
+import com.shalom.shalom_balloon_art.entity.SignupRequest;
 import com.shalom.shalom_balloon_art.entity.User;
 import com.shalom.shalom_balloon_art.repository.RoleRepository;
+import com.shalom.shalom_balloon_art.repository.SignupRequestRepository;
 import com.shalom.shalom_balloon_art.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,18 +25,25 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final CoustomUserDetailsService coustomUserDetailsService;
     private final RoleRepository roleRepository;
+    private final SignupRequestRepository signupRequestRepository;
 
     public AuthService(JwtTokenProvider jwtTokenProvider,UserEncryptService userEncryptService,RoleRepository roleRepository,
-                       CoustomUserDetailsService coustomUserDetailsService,UserRepository userRepository){
+                       CoustomUserDetailsService coustomUserDetailsService,UserRepository userRepository, SignupRequestRepository signupRequestRepository){
         this.jwtTokenProvider = jwtTokenProvider;
         this.coustomUserDetailsService = coustomUserDetailsService;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.userEncryptService = userEncryptService;
-
+        this.signupRequestRepository = signupRequestRepository;
     }
 
-    public boolean membership(MembershipDTO m,String s){
+    public SignupRequest signupRequest(MembershipRequestDTO m){
+        String pw = userEncryptService.signup(m.getUserPassword());
+        SignupRequest s = SignupRequest.builder().userId(m.getUserId()).userPassword(pw).username(m.getUserName()).userPhoneNumber(m.getUserPhoneNumber()).build();
+        return signupRequestRepository.save(s);
+    }
+
+    public boolean membership(User u, String s){
         Role r;
         try{
             if(s.equals("admin")) {
@@ -42,8 +52,6 @@ public class AuthService {
                 r = roleRepository.findByRoleName("USER").orElseThrow(() -> new RuntimeException("일치하는 권한이 없습니다."));
             }
 
-            String pw = userEncryptService.signup(m.getUserPassword());
-            User u = User.builder().userId(m.getUserId()).userPassword(pw).username(m.getUserName()).userPhoneNumber(m.getUserPhoneNumber()).build();
             u.addRole(r);
 
             userRepository.save(u);
@@ -77,7 +85,6 @@ public class AuthService {
     }
 
     public Map<String,Object> userLogin(LoginRequestDTO l){
-
         //id 조회
         User u;
         u = userRepository.findByUserId(l.getUserId()).orElseThrow(()->new RuntimeException(""));
@@ -102,4 +109,31 @@ public class AuthService {
         userRepository.findByUserId(id).orElseThrow(() -> new RuntimeException("해당 아이디는 존재하지 않습니다."));
     }
 
-}
+    @Transactional
+    public void approveUser(Long userIndex) {
+
+        SignupRequest req = signupRequestRepository.findById(userIndex)
+                .orElseThrow(() -> new RuntimeException("요청을 찾을 수 없습니다."));
+
+        User user = User.builder()
+                .userId(req.getUserId())
+                .username(req.getUsername())
+                .userPhoneNumber(req.getUserPhoneNumber())
+                .userPassword(req.getUserPassword())
+                .build();
+
+        membership(user,"USER");
+
+        if(signupRequestRepository.deleteByUserIndex(userIndex) == 0){
+            throw new RuntimeException("삭제 실패");
+        }
+    }
+
+    @Transactional
+    public void rejectUser(Long userIndex){
+        SignupRequest req = signupRequestRepository.findById(userIndex).orElseThrow(() -> new RuntimeException("해당 아이디는 존재하지 않습니다."));
+
+            req.setAuthStatus(2);   // 변경
+
+        }
+    }

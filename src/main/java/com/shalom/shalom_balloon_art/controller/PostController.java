@@ -29,7 +29,6 @@ public class PostController {
     // 전체 글 목록 (누구나)
     @GetMapping
     public ResponseEntity<List<PostResponseDTO>> getAllPosts() {
-        System.out.println("글 목록 접근 완료");
         return ResponseEntity.ok(postService.getAllPosts());
     }
 

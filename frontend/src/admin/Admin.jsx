@@ -29,7 +29,7 @@ function Admin(){
     },[]);
 
     const addAdmin = () => {
-        navigate("/addAdmin");
+        navigate("/admin/addAdmin");
     };
 
 

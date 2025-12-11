@@ -15,7 +15,7 @@ function Navbar(){
     },[]);
 
     const goAdmin = async () =>{
-        navigate("/adminLogin");
+        navigate("/admin/adminLogin");
     };
 
     const goUser = () =>{
@@ -34,6 +34,9 @@ function Navbar(){
         navigate("/posts");
     };
 
+    const GoApprove = () =>{
+        navigate("/admin/userApprove");
+    };
 
     const handelLogout=()=>{
         localStorage.removeItem("accessToken");
@@ -59,7 +62,10 @@ function Navbar(){
             </div>
             )}
             {roles.includes("ROLE_ADMIN") && (
-                <button onClick={GoPostForm}>글 추가</button> 
+                <>
+                <button onClick={GoPostForm}>글 추가</button>
+                <button onClick={GoApprove}>사용자 인증</button>
+                </>  
             )
             }    
         </nav>

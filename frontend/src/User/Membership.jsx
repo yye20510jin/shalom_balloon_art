@@ -52,16 +52,18 @@ function Membership() {
       );
 
       if (!res || !res.ok) {
-        const errMsg = res ? await res.text() : "서버 응답 없음";
+        const errMsg = res ? await res.json() : "서버 응답 없음";
         setError(
-          errMsg || "회원가입에 실패했습니다. 새로고침 후 다시 이용해 주세요."
+          errMsg.error || "회원가입에 실패했습니다. 새로고침 후 다시 이용해 주세요."
         );
         return;
       }
 
       alert("회원가입 완료")
       navigate("/");
+
     } catch (err) {
+      
       console.log(err);
       setError("알 수 없는 오류 발생. 관리자에게 문의해 주세요");
     }
