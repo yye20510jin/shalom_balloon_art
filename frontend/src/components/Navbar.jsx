@@ -1,19 +1,11 @@
-import {useState,useEffect} from "react";
+import {useContext} from "react";
 import {useNavigate} from "react-router-dom";
+import AuthContext from "../context/AuthContext";
 
 function Navbar(){
     
     const navigate = useNavigate();
-    const[isLoggedIn, setIsLoggedIn] = useState(false);
-    const[roles, setRoles] = useState([]);
-
-    useEffect(()=>{
-        const token = localStorage.getItem("accessToken");
-        const roles = JSON.parse(localStorage.getItem("roles")||"[]");
-        setIsLoggedIn(!!token);
-        setRoles(roles);
-    },[]);
-
+    const{logout, isLoggedIn, roles} = useContext(AuthContext);
     const goAdmin = async () =>{
         navigate("/admin/adminLogin");
     };
@@ -38,20 +30,12 @@ function Navbar(){
         navigate("/admin/userApprove");
     };
 
-    const handelLogout=()=>{
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("userId");
-        localStorage.removeItem("roles");
-        setIsLoggedIn(false);
-        navigate("/");
-    };
-
     return(
         <nav>
             {isLoggedIn ? 
             (
             <div>
-            <button onClick={handelLogout}>로그아웃</button>
+            <button onClick={logout}>로그아웃</button>
             <button onClick={GoPostList}>목록보기</button>
             </div>
             ):(

@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";  
 
 function Admin(){
-    const[message,setMessage] = useState("");
+    
     const[error, setError] = useState("");
 
     const navigate = useNavigate();

@@ -1,3 +1,9 @@
+let onUnauthorized = null;
+
+export function setOnUnauthorized(handler) {
+  onUnauthorized = handler;
+}
+
 export async function authFetch(url, options = {}){
     const token = localStorage.getItem("accessToken");
 
@@ -13,9 +19,7 @@ export async function authFetch(url, options = {}){
     const response = await fetch(url,{...options,headers});
 
     if(response.status === 401){
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("userId");
-        localStorage.removeItem("roles");
+       if (typeof onUnauthorized === "function") onUnauthorized(); 
     }
 
     return response;

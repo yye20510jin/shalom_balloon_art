@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { authFetch } from "../../api/authFetch";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function PostList() {
   const [posts, setPosts] = useState([]);      // PostResponseDTO[]

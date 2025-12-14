@@ -32,7 +32,6 @@ public class AdminController {
     @GetMapping("/test")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> adminTest(){
-        System.out.println("test 메서드 안");
         return ResponseEntity.ok("관리자 전용 대시보드");
     }
 

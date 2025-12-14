@@ -1,5 +1,6 @@
 import {useNavigate} from "react-router-dom"
-import {useState} from "react"
+import { useState,useContext } from "react"
+import AuthContext from "../context/AuthContext";
 
 
 function AdminLogin(){
@@ -7,6 +8,7 @@ function AdminLogin(){
     const[userId,setUserId] = useState("");
     const[password, setPassword] = useState("");
     const[error, setError] = useState("");
+    const { login } = useContext(AuthContext); 
 
     const navigate = useNavigate();
 
@@ -35,11 +37,9 @@ function AdminLogin(){
             const data = await response.json();
 
             //서버가 보낸 토큰 저장
-            localStorage.setItem("accessToken",data.accessToken);
-            localStorage.setItem("userId",data.userId);
-            localStorage.setItem("roles",JSON.stringify(data.roles));
-
+            login(data.accessToken,data.userId,JSON.stringify(data.roles));
             navigate("/admin");
+
         }catch(err){
             console.error(err);
             setError("알 수 없는 에러 발생..");

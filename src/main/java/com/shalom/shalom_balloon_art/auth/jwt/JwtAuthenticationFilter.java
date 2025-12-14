@@ -6,15 +6,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -30,21 +27,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+
         String token = resolveToken(request);
-        if(token != null && jwtTokenProvider.validateToken(token)){
+
+        // 토큰이 있는데 유효하지 않으면 -> 401로 끊기
+        if (token != null && !jwtTokenProvider.validateToken(token)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json;charset=UTF-8");
+            //response.getWriter().write("{\"message\":\"TOKEN_INVALID_OR_EXPIRED\"}");
+            return;
+        }
+
+        // 유효하면 인증 세팅
+        if (token != null) {
             String userId = jwtTokenProvider.getUserId(token);
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(userId);
-            List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
-            for(String s : roles){
-                System.out.println("------------");
-                System.out.println(s);
-            }
-            UsernamePasswordAuthenticationToken auth =new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            UsernamePasswordAuthenticationToken auth =
+                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
+
         filterChain.doFilter(request, response);
     }
-
 
     private String resolveToken(HttpServletRequest request){
         String header = request.getHeader("Authorization");
