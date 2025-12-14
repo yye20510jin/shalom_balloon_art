@@ -1,7 +1,9 @@
 let onUnauthorized = null;
+let onForbidden = null;
 
-export function setOnUnauthorized(handler) {
+export function setOnUnauthorized(handler,navHome) {
   onUnauthorized = handler;
+  onForbidden = navHome;
 }
 
 export async function authFetch(url, options = {}){
@@ -20,6 +22,10 @@ export async function authFetch(url, options = {}){
 
     if(response.status === 401){
        if (typeof onUnauthorized === "function") onUnauthorized(); 
+    }
+    
+    if(response.status === 403) {
+        if(typeof onForbidden === "function") onForbidden();
     }
 
     return response;

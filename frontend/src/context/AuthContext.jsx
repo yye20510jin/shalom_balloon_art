@@ -30,9 +30,13 @@ export function AuthProvider({ children }) {
     navigate("/"); // Home
   },[navigate]);
 
+  const navHome = useCallback(() => {
+    navigate("/");
+  }, [navigate]);
+
   useEffect(() => {
-    setOnUnauthorized(logout);
-  }, []); // logout이 바뀌지 않게 아래 useMemo로 고정해도 됨
+    setOnUnauthorized(logout,navHome);
+  }, [logout,navHome]); // logout이 바뀌지 않게 아래 useMemo로 고정해도 됨
 
   const value = useMemo(() => ({ login ,logout, isLoggedIn, roles }), [login,logout,isLoggedIn, roles]);
   

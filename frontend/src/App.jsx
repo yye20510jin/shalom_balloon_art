@@ -19,7 +19,7 @@ function renderRoute(route){
     return(
       <Route path={route.path} element={route.element} key={route.path}>
         {route.children.map((child)=>(<Route
-          key={route.path+child.path}
+          key={`${route.path}::${child.path}`}
           path={child.path}
           element={child.element}
         />))}

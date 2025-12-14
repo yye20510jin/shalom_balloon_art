@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { authFetch } from "../../api/authFetch";
+import AuthContext from "../../context/AuthContext";
 import {useParams, useNavigate} from "react-router-dom";
 import {PostDelete} from "./PostDelete"
 
@@ -9,6 +10,7 @@ function PostDetails() {
   const [error, setError] = useState("");
 
   const {id} = useParams();
+  const {roles} = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -149,8 +151,16 @@ function PostDetails() {
       )}
           </div>
         </div>
-        <button onClick={()=>navigate(`/posts/editPostPage/${id}`)}>수정</button>
-        <button onClick={()=>{deleteSubmit(post.index,setError)}}>삭제</button>
+        {roles?.includes("ROLE_ADMIN") && (
+          <>
+          <button onClick={() => navigate(`/admin/posts/editPostPage/${id}`)}>
+            수정
+          </button>
+          <button onClick={()=>{deleteSubmit(post.index,setError)}}>
+            삭제
+          </button>
+          </>
+        )}
     </div>
   );
 }

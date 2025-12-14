@@ -75,7 +75,7 @@ function PostList() {
             display: "flex",
             gap: 16,
           }}
-          onClick = {()=>navigate(`/posts/postDetails/${post.index}`)}
+          onClick = {()=>navigate(`/user/posts/postDetails/${post.index}`)}
         >
         {/* 이미지 썸네일 */}
 

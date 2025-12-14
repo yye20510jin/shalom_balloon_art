@@ -19,17 +19,8 @@ function Navbar(){
     };
 
     const GoPostList = ()=>{
-        navigate("/posts/postList");
+        navigate("/user/posts/postList");
     };
-
-    const GoPostForm = ()=> {
-        navigate("/posts");
-    };
-
-    const GoApprove = () =>{
-        navigate("/admin/userApprove");
-    };
-
     return(
         <nav>
             {isLoggedIn ? 
@@ -45,13 +36,6 @@ function Navbar(){
                 <button onClick={goMembership}>회원가입</button>
             </div>
             )}
-            {roles.includes("ROLE_ADMIN") && (
-                <>
-                <button onClick={GoPostForm}>글 추가</button>
-                <button onClick={GoApprove}>사용자 인증</button>
-                </>  
-            )
-            }    
         </nav>
     );
 }export default Navbar;

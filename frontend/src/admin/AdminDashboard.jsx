@@ -28,16 +28,10 @@ function Admin(){
         fetchAdminData();
     },[]);
 
-    const addAdmin = () => {
-        navigate("/admin/addAdmin");
-    };
-
-
     return(
         <div style={{padding:20}}>
             <Navbar/>
             <h1>관리자 페이지</h1>
-            <button type="button" onClick={addAdmin}>관리자 추가</button>
             {error && <p style={{color:"red"}}>{error}</p>}
         </div>
     );
