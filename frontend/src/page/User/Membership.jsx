@@ -6,7 +6,7 @@ function Membership() {
   const [userPassword, setUserPassword] = useState("");
   const [userName, setUserName] = useState("");
   const [userPhoneNumber, setUserPhoneNumber] = useState("");
-  const [idCheck, setIdCheck] = useState(""); // "사용 가능.." / "이미 존재.." / ""
+  const [idCheck, setIdCheck] = useState(""); 
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -25,7 +25,6 @@ function Membership() {
     isIdAvailable &&
     isPasswordMatch&&
     isPasswordValid;
-
   const memberShipSubmit = async (e) => {
     e.preventDefault();
 
