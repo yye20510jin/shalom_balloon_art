@@ -1,6 +1,6 @@
 import{BrowserRouter, Routes, Route} from"react-router-dom"
-import{routes} from"./router/routes";
-import{AuthProvider} from "./context/AuthContext";
+import{routes} from"../app/routes";
+import{AuthProvider} from "../auth/AuthContext";
 
 function App(){
   return(

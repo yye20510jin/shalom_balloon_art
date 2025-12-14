@@ -1,6 +1,6 @@
 import{useEffect,useState} from"react";
-import{authFetch} from "../api/authFetch";
-import Navbar from "../components/Navbar";
+import{authFetch} from "../../api/authFetch";
+import Navbar from "../../components/common/Navbar";
 import { useNavigate } from "react-router-dom";  
 
 function Admin(){

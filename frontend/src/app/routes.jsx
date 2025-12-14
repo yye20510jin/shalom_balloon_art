@@ -1,18 +1,18 @@
-import Home from "../Home";
-import AdminLogin from "../admin/AdminLogin";
-import AdminDashboard from "../admin/AdminDashboard"
-import AddAdmin from "../admin/AddAdmin";
-import Membership from "../User/Membership";
-import UserLogin from "../User/UserLogin";
-import PostForm from "../components/PostEditor/PostForm";
-import PostList from "../components/PostEditor/PostList";
-import PostDetails from "../components/PostEditor/PostDetails";
-import EditPostPage from "../components/PostEditor/EditPostPage";
-import UserApprove from "../admin/UserApprove";
-import AdminLayout from "../admin/AdminLayout";
-import RequireAdmin from "../context/RequireAdmin";
-import RequireUser from "../context/RequireUser";
-import UserLayout from "../User/UserLayout";
+import Home from "../page/home/Home";
+import AdminLogin from "../page/admin/AdminLogin";
+import AdminDashboard from "../page/admin/AdminDashboard"
+import AddAdmin from "../page/admin/AddAdmin";
+import Membership from "../page/User/Membership";
+import UserLogin from "../page/User/UserLogin";
+import PostForm from "../components/post/PostForm";
+import PostList from "../page/post/PostList";
+import PostDetails from "../page/post/PostDetails";
+import EditPostPage from "../page/post/EditPostPage";
+import UserApprove from "../page/admin/UserApprove";
+import AdminLayout from "../page/admin/AdminLayout";
+import RequireAdmin from "../auth/RequireAdmin";
+import RequireUser from "../auth/RequireUser";
+import UserLayout from "../page/User/UserLayout";
 
 export const routes = [
   { path: "/", element: <Home /> },

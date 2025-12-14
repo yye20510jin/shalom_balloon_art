@@ -1,8 +1,8 @@
 import { useEffect, useState, useContext } from "react";
 import { authFetch } from "../../api/authFetch";
-import AuthContext from "../../context/AuthContext";
+import AuthContext from "../../auth/AuthContext";
 import {useParams, useNavigate} from "react-router-dom";
-import {PostDelete} from "./PostDelete"
+import {usePostDelete} from "../../hooks/post/usePostDelete"
 
 function PostDetails() {
   const [post, setPost] = useState([]);      // PostResponseDTO[]
@@ -14,7 +14,7 @@ function PostDetails() {
 
   const navigate = useNavigate();
 
-  const{deleteSubmit}=PostDelete();
+  const{deleteSubmit}=usePostDelete();
 
   useEffect(() => {
     const fetchPosts = async () => {

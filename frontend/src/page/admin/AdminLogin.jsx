@@ -1,32 +1,34 @@
-import {useState,useContext} from "react";
-import {useNavigate} from "react-router-dom";
-import AuthContext from "../context/AuthContext"
+import {useNavigate} from "react-router-dom"
+import { useState,useContext } from "react"
+import AuthContext from "../../auth/AuthContext";
 
-function UserLogin(){
 
-    const [userId,setUserId] = useState("");
-    const [password,setPassword] = useState("");
-    const [error, setError] = useState("");
-    const {login} = useContext(AuthContext);
+function AdminLogin(){
+
+    const[userId,setUserId] = useState("");
+    const[password, setPassword] = useState("");
+    const[error, setError] = useState("");
+    const { login } = useContext(AuthContext); 
+
     const navigate = useNavigate();
 
+    //form 기본 submit 막기
     const handleSubmit = async (e) =>{
         e.preventDefault();
-
+        
         try{
             const response = await fetch(
-                `${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/userLogin`,
+                `${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/adminLogin`,
                 {
-                    method:"POST",
+                    method: "POST",
                     headers:{
-                        "Content-Type" : "application/json"
+                        "Content-Type":"application/json",
                     },
-                    body:JSON.stringify({userId,password}),
+                    body : JSON.stringify({userId, password}),
                 }
             );
 
             if(!response.ok){
-                console.log("일치하지 않음.");
                 const err = await response.json();
                 setError(err.error);
                 return;
@@ -34,18 +36,19 @@ function UserLogin(){
 
             const data = await response.json();
 
+            //서버가 보낸 토큰 저장
             login(data.accessToken,data.userId,JSON.stringify(data.roles));
-            navigate("/");
+            navigate("/admin");
 
         }catch(err){
             console.error(err);
-            setError("알 수 없는 에러 발생...");
+            setError("알 수 없는 에러 발생..");
         }
-    };
+    }
 
     return(
-        <div style={{padding:"20px"}}>
-            <h1>회원 로그인</h1>
+        <div style={{padding:20}}>
+            <h1>로그인</h1>
             <form onSubmit={handleSubmit}>
                 <div>
                     <input type="text" value={userId} onChange={(e)=>setUserId(e.target.value)} placeholder="아이디"/>
@@ -56,4 +59,5 @@ function UserLogin(){
             </form>
         </div>
     );
-}export default UserLogin;
+
+}export default AdminLogin;

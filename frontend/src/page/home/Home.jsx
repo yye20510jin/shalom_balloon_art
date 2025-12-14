@@ -1,5 +1,4 @@
-import {useNavigate} from "react-router-dom";
-import Navbar from "./components/Navbar"
+import Navbar from "../../components/common/Navbar"
 function Home(){
     return(
         <div style={{padding:"20px"}}>

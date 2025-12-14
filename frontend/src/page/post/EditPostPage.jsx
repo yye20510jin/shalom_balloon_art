@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import PostForm from "../../components/PostEditor/PostForm";
+import PostForm from "../../components/post/PostForm";
 import { authFetch } from "../../api/authFetch";
 
 function EditPostPage() {

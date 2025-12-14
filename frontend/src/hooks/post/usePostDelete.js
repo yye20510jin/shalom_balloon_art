@@ -1,7 +1,7 @@
 import { authFetch } from "../../api/authFetch";
 import { useNavigate } from "react-router-dom";
 
-export function PostDelete(){
+export function usePostDelete(){
   const navigate = useNavigate();
 
   const deleteSubmit = async(index,setError) => {

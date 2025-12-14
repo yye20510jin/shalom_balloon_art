@@ -1,6 +1,6 @@
 // src/components/PostEditor/ImageUpload.jsx
 import { useState } from "react";
-import { storage } from "../../firebaseConfig";
+import { storage } from "../../config/firebaseConfig";
 import { ref, uploadBytes, getDownloadURL, deleteObject, getStorage } from "firebase/storage";
 
 function ImageUpload({ imageUrls, setImageUrls }) {

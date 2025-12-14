@@ -1,6 +1,5 @@
 import{useEffect,useState} from"react";
-import{authFetch} from "../api/authFetch";
-import { useNavigate } from "react-router-dom"; 
+import{authFetch} from "../../api/authFetch";
 
 function UserApprove() {
 

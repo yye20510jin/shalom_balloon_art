@@ -1,11 +1,11 @@
 import {useContext} from "react";
 import {useNavigate} from "react-router-dom";
-import AuthContext from "../context/AuthContext";
+import AuthContext from "../../auth/AuthContext";
 
 function Navbar(){
     
     const navigate = useNavigate();
-    const{logout, isLoggedIn, roles} = useContext(AuthContext);
+    const{logout, isLoggedIn} = useContext(AuthContext);
     const goAdmin = async () =>{
         navigate("/admin/adminLogin");
     };

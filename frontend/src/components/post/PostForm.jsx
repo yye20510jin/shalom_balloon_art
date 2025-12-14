@@ -1,6 +1,6 @@
 import ImageUpload from "./ImageUpload";
 import YoutubePreview from "./YoutubePreview";
-import { usePostSubmit } from "./usePostSubmit";
+import { usePostSubmit } from "../../hooks/post/usePostSubmit";
 import {useEffect} from "react";
 
 function PostForm({
