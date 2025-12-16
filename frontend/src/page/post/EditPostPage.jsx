@@ -5,8 +5,6 @@ import { authFetch } from "../../api/authFetch";
 
 function EditPostPage() {
   const { id } = useParams();
-  const navigate = useNavigate();
-
   const [initialValues, setInitialValues] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -25,13 +23,12 @@ function EditPostPage() {
         }
 
         const data = await res.json();
-
-        // 백엔드 응답 형태에 맞게 매핑
-        const imageUrlsFromServer = (data.imageUrl ? data.imageUrl.map((img) => img.url) : []);
-
+        
         setInitialValues({
           id: id ? Number(id) : null,
-          title: data.title
+          title: data.title,
+          thumbnailUrl : data.thumbnailUrl,
+          contentHtml : data.contentHtml
         });
       } catch (err) {
         console.error(err);

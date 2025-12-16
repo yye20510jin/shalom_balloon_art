@@ -46,9 +46,8 @@ public class Post {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void update(String title, String contentHtml , String thumbnailUrl) {
+    public void update(String title, String contentHtml ) {
         this.title = title;
         this.contentHtml = contentHtml;
-        this.thumbnailUrl = thumbnailUrl;
     }
 }

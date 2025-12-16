@@ -1,20 +1,20 @@
 import { useEffect, useState, useContext } from "react";
 import { authFetch } from "../../api/authFetch";
 import AuthContext from "../../auth/AuthContext";
-import {useParams, useNavigate} from "react-router-dom";
-import {usePostDelete} from "../../hooks/post/usePostDelete"
+import { useParams, useNavigate } from "react-router-dom";
+import { usePostDelete } from "../../hooks/post/usePostDelete"
 
 function PostDetails() {
   const [post, setPost] = useState([]);      // PostResponseDTO[]
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const {id} = useParams();
-  const {roles} = useContext(AuthContext);
+  const { id } = useParams();
+  const { roles } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
-  const{deleteSubmit}=usePostDelete();
+  const { deleteSubmit } = usePostDelete();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -33,7 +33,7 @@ function PostDetails() {
           return;
         }
 
-        const data = await res.json(); 
+        const data = await res.json();
         setPost(data);
       } catch (e) {
         console.error(e);
@@ -71,96 +71,67 @@ function PostDetails() {
   return (
     <div style={{ padding: 20, maxWidth: 800, margin: "0 auto" }}>
       <h2>{post.title}</h2>
-        <div
-          style={{
-            border: "1px solid #ccc",
-            borderRadius: 8,
-            padding: 16,
-            marginBottom: 12,
-            display: "flex",
-            gap: 16,
-          }}
-        >
+      <div
+        style={{
+          border: "1px solid #ccc",
+          borderRadius: 8,
+          padding: 16,
+          marginBottom: 12,
+          display: "flex",
+          gap: 16,
+        }}
+      >
         {/* 이미지 썸네일 */}
-
-        {post.imageUrl && post.imageUrl.length > 0 &&
-          post.imageUrl.map((url) => {
-            return (
-              <div key={url.index} style={{ flex: "0 0 120px" }}>
-                <img
-                  src={url.url}
-                  alt={post.title}
-                  style={{
-                    width: "120px",
-                    height: "80px",
-                    objectFit: "cover",
-                    borderRadius: 4,
-                  }}
-                />
-              </div>
-            );
-          })
-        }
-
-          {/* 텍스트 영역 */}
-          <div style={{ flex: 1 }}>
-
-            <div
+        {post.thumbnailUrl && 
+          <div key={post.index} style={{ flex: "0 0 120px" }}>
+            <img
+              src={post.thumbnailUrl}
+              alt={post.title}
               style={{
-                fontSize: 12,
-                color: "#666",
-                marginBottom: 8,
+                width: "120px",
+                height: "80px",
+                objectFit: "cover",
+                borderRadius: 4,
               }}
-            >
-              작성일: {formatDateTime(post.createdAt)}
-              {post.updatedAt && (
-                <> · 수정일: {formatDateTime(post.updatedAt)}</>
-              )}
-            </div>
-
-            <p
-              style={{
-                margin: "0 0 8px",
-                whiteSpace: "pre-line",
-              }}
-            >
-              {post.content}
-
-            </p>
-
-            {/* 유튜브 링크가 있으면 표시 */}
-      {post.youtubeUrl && (
-        <div style={{ marginTop: 12 }}>
-          <p>YouTube 미리보기</p>
-          <div style={{ position: "relative", paddingTop: "56.25%" }}>
-            <iframe
-              title="YouTube Preview"
-              src={`https://www.youtube.com/embed/${post.youtubeUrl}`}
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-                border: "none",
-              }}
-              allowFullScreen
             />
           </div>
-        </div>
-      )}
+        }
+
+        {/* 텍스트 영역 */}
+        <div style={{ flex: 1 }}>
+
+          <div
+            style={{
+              fontSize: 12,
+              color: "#666",
+              marginBottom: 8,
+            }}
+          >
+            작성일: {formatDateTime(post.createdAt)}
+            {post.updatedAt && (
+              <> · 수정일: {formatDateTime(post.updatedAt)}</>
+            )}
           </div>
+
+          <p
+            style={{
+              margin: "0 0 8px",
+              whiteSpace: "pre-line",
+            }}
+            dangerouslySetInnerHTML={{ __html: post.contentHtml }}
+          />
         </div>
-        {roles?.includes("ROLE_ADMIN") && (
-          <>
+      </div>
+      {roles?.includes("ROLE_ADMIN") && (
+        <>
           <button onClick={() => navigate(`/admin/posts/editPostPage/${id}`)}>
             수정
           </button>
-          <button onClick={()=>{deleteSubmit(post.index,setError)}}>
+          <button onClick={() => { deleteSubmit(post.index, setError) }}>
             삭제
           </button>
-          </>
-        )}
+        </>
+      )}
     </div>
   );
 }

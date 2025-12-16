@@ -20,7 +20,7 @@ export function usePostDelete(){
             }
 
             setTimeout(()=>{
-              navigate("/posts/postList");
+              navigate("/user/posts/postList");
             },800);
 
             } catch (e) {

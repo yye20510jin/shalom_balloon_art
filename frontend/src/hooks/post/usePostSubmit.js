@@ -15,8 +15,6 @@ export function usePostSubmit() {
   const handleSubmit = async (mode,contentHtml,thumbnailUrl) => {
     setError("");
     setSuccessMessage("");
-    console.log("thumbnailUrl : " + thumbnailUrl);
-    console.log("mode : " + mode);
 
     if (!title.trim()) {
       setError("제목을 입력해 주세요.");
@@ -31,7 +29,9 @@ export function usePostSubmit() {
 
     try {
       setIsSubmitting(true);
-      
+      console.log("mode,id,url =", mode, id,
+  `${import.meta.env.VITE_BACKEND_BASE_URL}/api/posts${mode === "edit" ? `/${id}` : ""}`
+);
       const res = await authFetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/posts${mode === "edit" ? `/${id}` : ""}`,{
         method : mode === "edit" ? "PUT":"POST",
         body : JSON.stringify(payload),
@@ -50,7 +50,7 @@ export function usePostSubmit() {
       }else{
       setSuccessMessage("게시글이 수정되었습니다.");
       setTimeout(() => {
-        navigate(`/admin/posts/postDetails/${id}`); 
+        navigate(`/user/posts/postDetails/${id}`); 
       }, 800);
       }
 

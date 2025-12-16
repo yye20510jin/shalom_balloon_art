@@ -107,6 +107,7 @@ function PostForm({
 
     setId(initialValues.id || "");
     setTitle(initialValues.title || "");
+    setThumbnailUrl(initialValues.thumbnailUrl || "")
 
     // 서버에 저장한 contentHtml을 다시 에디터에 주입하는 형태 추천
     if (editor && initialValues.contentHtml) {

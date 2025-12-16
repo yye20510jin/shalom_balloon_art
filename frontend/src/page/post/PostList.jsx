@@ -79,7 +79,7 @@ function PostList() {
         >
         {/* 이미지 썸네일 */}
 
-        {post.thumbnailUrl && post.thumbnailUrl.length > 0 &&
+        {post.thumbnailUrl && 
               <div key={post.index} style={{ flex: "0 0 120px" }}>
                 <img
                   src={post.thumbnailUrl}

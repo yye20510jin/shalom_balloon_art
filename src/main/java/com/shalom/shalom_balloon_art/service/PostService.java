@@ -75,16 +75,20 @@ public class PostService {
     }
 
 
-    public PostResponseDTO editPost(PostCreateRequestDTO dto) {
+    public PostResponseDTO editPost(Long index,PostCreateRequestDTO dto) {
 
-        Post post = postRepository.findById(dto.getIndex())
+        Post post = postRepository.findById(index)
                 .orElseThrow(() -> new RuntimeException("게시글 없음"));
 
-        // 1. 기존 썸네일 Firebase 삭제 로직
-        fire.delete(post.getThumbnailUrl());
-        // 2. 기본 필드 수정
-        post.update(dto.getTitle(), dto.getContentHtml(),dto.getThumbnailUrl());
-        // 3. 저장 (변경감지로 자동 flush)
+        boolean hasNewThumb = dto.getThumbnailUrl() != null && !dto.getThumbnailUrl().isBlank();
+        boolean changedThumb = hasNewThumb && !dto.getThumbnailUrl().equals(post.getThumbnailUrl());
+
+        if(changedThumb){
+            if(post.getThumbnailUrl() != null && !post.getThumbnailUrl().isBlank()){
+                fire.delete(post.getThumbnailUrl());}
+            post.setThumbnailUrl(dto.getThumbnailUrl());
+        }
+        post.update(dto.getTitle(), dto.getContentHtml());
         return toResponseDTO(post);
     }
 
@@ -95,6 +99,5 @@ public class PostService {
         fire.delete(post.getThumbnailUrl());
         postRepository.delete(post);
     }
-
 
 }
