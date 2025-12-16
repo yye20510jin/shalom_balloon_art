@@ -79,12 +79,10 @@ function PostList() {
         >
         {/* 이미지 썸네일 */}
 
-        {post.imageUrl && post.imageUrl.length > 0 &&
-          post.imageUrl.map((url) => {
-            return (
-              <div key={url.index} style={{ flex: "0 0 120px" }}>
+        {post.thumbnailUrl && post.thumbnailUrl.length > 0 &&
+              <div key={post.index} style={{ flex: "0 0 120px" }}>
                 <img
-                  src={url.url}
+                  src={post.thumbnailUrl}
                   alt={post.title}
                   style={{
                     width: "120px",
@@ -94,9 +92,7 @@ function PostList() {
                   }}
                 />
               </div>
-            );
-          })
-        }
+        } 
 
           {/* 텍스트 영역 */}
           <div style={{ flex: 1 }}>
@@ -122,22 +118,8 @@ function PostList() {
               }}
             >
               {/* 내용 일부만 미리보기 */}
-              {post.content && post.content.length > 80
-                ? post.content.slice(0, 80) + "..."
-                : post.content}
+              {post.preview}
             </p>
-
-            {/* 유튜브 링크가 있으면 표시 */}
-            {post.youtubeUrl && (
-              <a
-                href={post.youtubeUrl}
-                target="_blank"
-                rel="noreferrer"
-                style={{ fontSize: 13, color: "#0066cc" }}
-              >
-                유튜브 보기 ↗
-              </a>
-            )}
           </div>
         </div>
       ))}

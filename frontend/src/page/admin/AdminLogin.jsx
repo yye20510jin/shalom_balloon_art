@@ -37,7 +37,7 @@ function AdminLogin(){
             const data = await response.json();
 
             //서버가 보낸 토큰 저장
-            login(data.accessToken,data.userId,JSON.stringify(data.roles));
+            login(data.accessToken,data.userId,data.roles);
             navigate("/admin");
 
         }catch(err){

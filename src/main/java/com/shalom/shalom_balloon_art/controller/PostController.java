@@ -1,6 +1,7 @@
 package com.shalom.shalom_balloon_art.controller;
 
 import com.shalom.shalom_balloon_art.dto.PostCreateRequestDTO;
+import com.shalom.shalom_balloon_art.dto.PostListResponseDTO;
 import com.shalom.shalom_balloon_art.dto.PostResponseDTO;
 import com.shalom.shalom_balloon_art.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class PostController {
 
     // 전체 글 목록 (누구나)
     @GetMapping
-    public ResponseEntity<List<PostResponseDTO>> getAllPosts() {
+    public ResponseEntity<List<PostListResponseDTO>> getAllPosts() {
         return ResponseEntity.ok(postService.getAllPosts());
     }
 
@@ -40,9 +41,9 @@ public class PostController {
     }
 
     //글 수정
-    @PutMapping
+    @PutMapping("/{index}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> editPost(@RequestBody PostCreateRequestDTO dto){
+    public ResponseEntity<?> editPost(@PathVariable Long index,@RequestBody PostCreateRequestDTO dto){
 
         return ResponseEntity.ok(postService.editPost(dto));
     }

@@ -14,9 +14,7 @@ import java.util.List;
 public class PostCreateRequestDTO {
     private Long index;
     private String title;
-    private String content;
-    private List<String> imageUrls; // ← 여기
-    private String youtubeUrl;
-
+    private String contentHtml;
+    private String thumbnailUrl;
     // getter/setter
 }

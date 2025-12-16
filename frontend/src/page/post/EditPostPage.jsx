@@ -31,10 +31,7 @@ function EditPostPage() {
 
         setInitialValues({
           id: id ? Number(id) : null,
-          title: data.title,
-          content: data.content,
-          youtubeUrl: data.youtubeUrl || "",
-          imageUrls: imageUrlsFromServer,
+          title: data.title
         });
       } catch (err) {
         console.error(err);

@@ -23,18 +23,12 @@ public class Post {
     @Column(nullable = false, length = 200)
     private String title; // 글 제목
 
-    @Column(columnDefinition = "TEXT", nullable = false)
-    private String content; // 글 내용
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")
+    private String contentHtml; // 글 내용
 
-    @OneToMany(
-            mappedBy = "post",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<PostImage> images = new ArrayList<>(); // Firebase 다운로드 URL
-
-    @Column(length = 500)
-    private String youtubeUrl; // 유튜브 주소 (옵션)
+    @Column(nullable = false)
+    private String thumbnailUrl;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
@@ -52,18 +46,9 @@ public class Post {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void addImage(String url){
-        PostImage image = new PostImage(url,this);
-        images.add(image);
-    }
-
-    public void clearImages(){
-        images.clear();
-    }
-
-    public void update(String title, String content, String youtubeUrl) {
+    public void update(String title, String contentHtml , String thumbnailUrl) {
         this.title = title;
-        this.content = content;
-        this.youtubeUrl = youtubeUrl;
+        this.contentHtml = contentHtml;
+        this.thumbnailUrl = thumbnailUrl;
     }
 }

@@ -17,9 +17,8 @@ public class PostResponseDTO {
 
     private Long index;
     private String title;
-    private String content;
-    private List<PostImageDTO> imageUrl;
-    private String youtubeUrl;
+    private String contentHtml;
+    private String thumbnailUrl;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
