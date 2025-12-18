@@ -38,7 +38,7 @@ function AdminLogin(){
 
             //서버가 보낸 토큰 저장
             login(data.accessToken,data.userId,data.roles);
-            navigate("/admin");
+            navigate("/admin",{replace : true});
 
         }catch(err){
             console.error(err);

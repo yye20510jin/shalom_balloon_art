@@ -5,7 +5,7 @@ import AuthContext from "../../auth/AuthContext";
 function Navbar(){
     
     const navigate = useNavigate();
-    const{logout, isLoggedIn} = useContext(AuthContext);
+    const{logout, isLoggedIn, roles} = useContext(AuthContext);
     const goAdmin = async () =>{
         navigate("/admin/adminLogin");
     };
@@ -36,6 +36,7 @@ function Navbar(){
                 <button onClick={goMembership}>회원가입</button>
             </div>
             )}
+            { roles?.includes("ROLE_ADMIN") && <button onClick = {()=>{navigate("/admin");}}>관리자 페이지</button>}
         </nav>
     );
 }export default Navbar;

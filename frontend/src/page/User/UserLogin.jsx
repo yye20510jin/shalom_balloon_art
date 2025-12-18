@@ -35,7 +35,7 @@ function UserLogin(){
             const data = await response.json();
 
             login(data.accessToken,data.userId,JSON.stringify(data.roles));
-            navigate("/");
+            navigate("/",{replace : true});
 
         }catch(err){
             console.error(err);
