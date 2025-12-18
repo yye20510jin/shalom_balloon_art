@@ -15,5 +15,17 @@ export function useFirebaseSingleImageRemove() {
         }
     };
 
-    return { removeOne };
+    const removeTiptapImage = async (src) => {
+        if (!src) return;
+
+        try {
+            const targetUrl = src;
+            const storage = getStorage();
+            const imageRef = ref(storage, targetUrl);
+            await deleteObject(imageRef);
+        } catch (err) {
+        }
+    };
+
+    return { removeOne,removeTiptapImage };
 }

@@ -1,11 +1,11 @@
 import { usePostSubmit } from "../../hooks/post/usePostSubmit";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Image from "@tiptap/extension-image";
 import Youtube from "@tiptap/extension-youtube";
 import { useFirebaseSingleImageUpload } from "../../hooks/firebase/useFirebaseSingleImageUpload";
-import { useFirebaseSingleImageRemove } from "../../hooks/firebase/useFirebaseSingleImageRemove"
+import { useFirebaseSingleImageRemove } from "../../hooks/firebase/useFirebaseSingleImageRemove";
+import { CustomImage } from "../../hooks/post/CustomImage";
 
 function Toolbar({ editor, onPickImage, onInsertYoutube }) {
   if (!editor) return null;
@@ -88,12 +88,19 @@ function PostForm({
   const fileInputRef = useRef(null);
 
   const { uploadOne, isUploading, error: uploadError, setError: setUploadError } = useFirebaseSingleImageUpload({ folder: "posts" });
-  const { removeOne } = useFirebaseSingleImageRemove();
+  const { removeOne , removeTiptapImage } = useFirebaseSingleImageRemove();
+
   // ✅ 에디터 생성
   const editor = useEditor({
     extensions: [
       StarterKit,
-      Image,
+      CustomImage.configure({
+        inline : false,
+        allowBase64 : false,
+        onRemove : (src) =>{
+          removeTiptapImage(src);
+        }
+      }),
       Youtube.configure({
         controls: true,
         nocookie: true,
@@ -102,8 +109,11 @@ function PostForm({
   });
 
   // ✅ edit 모드 초기값 세팅
+  const didSetContentRef = useRef(false);
+
   useEffect(() => {
-    if (!initialValues) return;
+    if (!initialValues || !editor) return;
+    if (didSetContentRef.current) return;
 
     setId(initialValues.id || "");
     setTitle(initialValues.title || "");
@@ -111,10 +121,14 @@ function PostForm({
 
     // 서버에 저장한 contentHtml을 다시 에디터에 주입하는 형태 추천
     if (editor && initialValues.contentHtml) {
-      editor.commands.setContent(initialValues.contentHtml);
-    }
-  }, [initialValues, editor]);
 
+      queueMicrotask(() => {
+          editor.commands.setContent(initialValues.contentHtml,false);
+      });
+    }
+
+    didSetContentRef.current = true;
+  }, [initialValues, editor]);
 
   //썸네일 이미지 업로드
   const handleThumbnailChange = async (e) => {
@@ -137,12 +151,15 @@ function PostForm({
 
   // 이미지 업로드 및 삽입
   const handleImageFileChange = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file || !editor) return;
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
 
-    const url = await uploadOne(file);
-    editor.chain().focus().setImage({ src: url }).run();
+    for(const file of files){
+      const url = await uploadOne(file);
 
+      editor.chain().focus().insertContent([{ type: "image", attrs: { src: url } },{ type: "paragraph" },]).run();
+    }
+  
     e.target.value = "";
   };
 
@@ -151,7 +168,6 @@ function PostForm({
     if (!editor) return;
     const url = prompt("YouTube URL을 입력하세요");
     if (!url) return;
-
     editor.chain().focus().setYoutubeVideo({ src: url }).run();
   };
 
@@ -276,6 +292,7 @@ function PostForm({
           ref={fileInputRef}
           type="file"
           accept="image/*"
+          multiple
           hidden
           onChange={handleImageFileChange}
         />
