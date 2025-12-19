@@ -28,6 +28,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  font-family: "Noto Sans KR", system-ui, -apple-system, sans-serif;
 }
 
 h1 {
@@ -65,4 +66,5 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+  
 }

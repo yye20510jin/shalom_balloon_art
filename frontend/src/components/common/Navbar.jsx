@@ -22,7 +22,7 @@ function Navbar(){
         navigate("/user/posts/postList");
     };
     return(
-        <nav>
+        <nav className="navbar">
             {isLoggedIn ? 
             (
             <div>
