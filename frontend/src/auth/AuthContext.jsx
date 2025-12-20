@@ -36,7 +36,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     setOnUnauthorized(logout,navHome);
-  }, [logout,navHome]); // logout이 바뀌지 않게 아래 useMemo로 고정해도 됨
+  }, [logout,navHome]); 
 
   const value = useMemo(() => ({ login ,logout, isLoggedIn, roles }), [login,logout,isLoggedIn, roles]);
   

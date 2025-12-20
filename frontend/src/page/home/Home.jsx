@@ -3,6 +3,8 @@ import Navbar from "../../components/common/Navbar"
 import { authFetch } from "../../api/authFetch";
 import "../../styles/Home.css";
 import shalomLogo from "../../assets/shalomBalloonArt.png";
+import GalleryHero from "./GalleryHero";
+
 function Home() {
 
     const [posts, setPosts] = useState([]);
@@ -36,18 +38,17 @@ function Home() {
                     <img  className="logo" src={shalomLogo} alt="Shalom Balloom Art"/>
                     <Navbar />
                 </div>
-                <div className="thumbnail-grid">
-                    {posts.map((post) => (
-                        post.thumbnailUrl && (
-                            <div key={post.index} className="thumb-item">
-                                <img
-                                    src={post.thumbnailUrl}
-                                    alt={post.title}
-                                />
-                            </div>
-                        )
-                    ))}
-                </div>
+                <GalleryHero
+                images={(posts ?? [])
+                    .filter((post) => post?.thumbnailUrl)
+                    .map((post) => ({
+                    id: post.index,
+                    src: post.thumbnailUrl,
+                    alt: post.title,
+                    }))}
+                intervalMs={3500}
+                visibleThumbs={3}
+                />
             </div>
         </div>
 

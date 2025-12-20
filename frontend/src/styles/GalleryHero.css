@@ -1,0 +1,81 @@
+.gallery-hero {
+  display: grid;
+  grid-template-columns: 1fr 140px; /* 오른쪽 썸네일 폭 */
+  gap: 20px;
+  align-items: start;
+  width: 100%;
+  margin-top: 100px;
+}
+
+.main {
+  width:100%;
+  aspect-ratio: 4 / 3;
+  display: flex;                         
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  background: linear-gradient(180deg, #f7f7f7, #eee);
+  border-radius: 20px;
+  overflow: hidden; 
+}
+
+.main-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;  
+  display: block;
+}
+
+.thumb-box{
+  height:100%;
+  display:flex;
+  align-items: center;
+}
+
+.thumb-rail {
+  position: relative;
+  height: calc(86px * 3); 
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.thumb-track {
+  display: grid;
+  gap: 14px;
+  transition: transform 600ms ease; /* 부드럽게 */
+}
+
+.thumb {
+  height: 72px;
+  border-radius: 14px;
+  overflow: hidden;
+  padding: 0;
+  border: 2px solid transparent;
+  background: #fff;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 선택된 썸네일 표시 */
+.thumb.active {
+  border-color: rgba(153, 217, 140, 0.9); /* 네 포인트 연두 */
+}
+
+/* (선택) auto/paused 표시 */
+.thumb-hint {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(6px);
+}
