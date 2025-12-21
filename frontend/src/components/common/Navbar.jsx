@@ -25,18 +25,18 @@ function Navbar(){
         <nav className="navbar">
             {isLoggedIn ? 
             (
-            <div>
-            <button onClick={logout}>로그아웃</button>
-            <button onClick={GoPostList}>목록보기</button>
-            </div>
+            <>
+            <button className="nav-button" onClick={logout}>로그아웃</button>
+            <button className="nav-button" onClick={GoPostList}>목록보기</button>
+            </>
             ):(
-            <div>
-                <button onClick={goUser}>로그인</button>
-                <button onClick={goAdmin}>관리자 로그인</button>
-                <button onClick={goMembership}>회원가입</button>
-            </div>
+            <>
+                <button className="nav-button" onClick={goUser}>로그인</button>
+                <button className="nav-button" onClick={goAdmin}>관리자 로그인</button>
+                <button className="nav-button" onClick={goMembership}>회원가입</button>
+            </>
             )}
-            { roles?.includes("ROLE_ADMIN") && <button onClick = {()=>{navigate("/admin");}}>관리자 페이지</button>}
+            { roles?.includes("ROLE_ADMIN") && <button className="nav-button" onClick = {()=>{navigate("/admin");}}>관리자 페이지</button>}
         </nav>
     );
 }export default Navbar;

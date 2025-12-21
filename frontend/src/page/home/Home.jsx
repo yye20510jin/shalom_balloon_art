@@ -3,7 +3,7 @@ import Navbar from "../../components/common/Navbar"
 import { authFetch } from "../../api/authFetch";
 import "../../styles/Home.css";
 import shalomLogo from "../../assets/shalomBalloonArt.png";
-import GalleryHero from "./GalleryHero";
+import HomeGallery from "../../components/home/HomeGallery";
 
 function Home() {
 
@@ -34,11 +34,7 @@ function Home() {
     return (
         <div className="home-container">
             <div className="home-box1">
-                <div className="nav">
-                    <img  className="logo" src={shalomLogo} alt="Shalom Balloom Art"/>
-                    <Navbar />
-                </div>
-                <GalleryHero
+                <HomeGallery
                 images={(posts ?? [])
                     .filter((post) => post?.thumbnailUrl)
                     .map((post) => ({
@@ -46,9 +42,11 @@ function Home() {
                     src: post.thumbnailUrl,
                     alt: post.title,
                     }))}
-                intervalMs={3500}
-                visibleThumbs={3}
                 />
+                <header className="home-header">
+                    <img  className="logo" src={shalomLogo} alt="Shalom Balloom Art"/>
+                    <Navbar />
+                </header>
             </div>
         </div>
 
