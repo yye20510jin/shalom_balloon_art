@@ -6,7 +6,7 @@
 .home-grid{
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 12px; /* 여기 줄이면 더 '전시' 느낌 */
+  gap: 12px;
 }
 
 /* 카드 기본 */
@@ -20,25 +20,38 @@
   box-shadow: 0 8px 20px rgba(0,0,0,0.06);
   transform: translateY(0);
   transition: transform .18s ease, box-shadow .18s ease;
+  position: relative;
 }
 
 .home-card:hover{
-  transform: translateY(-2px);
-  box-shadow: 0 14px 28px rgba(0,0,0,0.10);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
 }
 
 .home-card img{
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: cover;      /* 프레임에 꽉 차게(Shutter 감성) */
+  object-fit: cover;     
   transform: scale(1);
   transition: transform .25s ease;
 }
 
 .home-card:hover img{
-  transform: scale(1.03);
+  opacity: 0.2;
 }
+
+.home-card .contant{
+  position: absolute;
+  inset: 0;
+  display:flex; align-items:center; justify-content:center;
+  opacity:0;
+  transition:.2s;
+  pointer-events:none;
+}
+
+.home-card:hover .contant{opacity:1;}
+
 
 /* 크기 패턴 */
 .big  { grid-column: span 8; grid-row: span 2; aspect-ratio: 16/9; }
