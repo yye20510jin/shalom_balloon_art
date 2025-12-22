@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../auth/AuthContext"
 import shalomLogo from "../../assets/shalomBalloonArt.png";
-import "../../styles/user/userLogin.css";
+import "../../styles/user/UserLogin.css";
 
 function UserLogin() {
 

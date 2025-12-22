@@ -5,6 +5,7 @@
 
 .home-container {
     background: #f7f9f3;
+    min-height: 100vh;
 }
 
 .home-box1 {

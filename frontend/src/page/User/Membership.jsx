@@ -1,20 +1,22 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import shalomLogo from "../../assets/shalomBalloonArt.png";
+import "../../styles/user/Membership.css";
 
 function Membership() {
   const [userId, setUserId] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [userName, setUserName] = useState("");
   const [userPhoneNumber, setUserPhoneNumber] = useState("");
-  const [idCheck, setIdCheck] = useState(""); 
+  const [idCheck, setIdCheck] = useState(false);
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [error, setError] = useState("");
+  const [check, setCheck] = useState(false);
   const navigate = useNavigate();
 
   const isUserIdFilled = !!userId.trim();
   const isNameFilled = !!userName.trim();
   const isPhoneFilled = !!userPhoneNumber.trim();
-  const isIdAvailable = idCheck === "사용 가능한 아이디입니다.";
   const isPasswordMatch = userPassword === passwordConfirm;
   const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-={}\[\]|;:'",.<>/?]).{8,}$/;
   const isPasswordValid = passwordRegex.test(userPassword);
@@ -22,9 +24,10 @@ function Membership() {
     isUserIdFilled &&
     isNameFilled &&
     isPhoneFilled &&
-    isIdAvailable &&
-    isPasswordMatch&&
+    idCheck &&
+    isPasswordMatch &&
     isPasswordValid;
+  
   const memberShipSubmit = async (e) => {
     e.preventDefault();
 
@@ -62,7 +65,7 @@ function Membership() {
       navigate("/");
 
     } catch (err) {
-      
+
       console.log(err);
       setError("알 수 없는 오류 발생. 관리자에게 문의해 주세요");
     }
@@ -82,7 +85,9 @@ function Membership() {
       );
 
       const message = await res.text();
-      setIdCheck(message);
+
+     message.includes("사용 가능") ? setIdCheck(true) : setIdCheck(false);
+     setCheck(true);
     } catch (err) {
       console.log(err);
       setError("알 수 없는 오류 발생. 관리자에게 문의해 주세요");
@@ -90,94 +95,71 @@ function Membership() {
   };
 
   return (
-    <div>
-      <h1>회원가입</h1>
-      <form onSubmit={memberShipSubmit}>
-        <input
-          style={{ marginTop: "20px" }}
-          type="text"
-          value={userId}
-          onChange={(e) => {
-            setUserId(e.target.value);
-            setIdCheck(""); // 아이디 바꾸면 중복 결과 리셋
-          }}
-          placeholder="id"
-        />
-        <br />
-        <button
-          style={{ marginTop: "20px" }}
-          type="button"
-          onClick={id_duplicateCheck}
-          disabled={!userId.trim()}
-        >
-          중복확인
-        </button>
-        {idCheck && (
-          <p style={{ color: idCheck.includes("사용 가능") ? "green" : "red" }}>
-            {idCheck}
-          </p>
-        )}
-
-        <br />
-
-        <input 
-            style={{ marginTop: "20px" }} 
-            type="password" 
-            value={userPassword} 
-            onChange={(e) => setUserPassword(e.target.value)} 
-            placeholder="password" 
-            /> 
-        <br />
-        <ul style={{ fontSize: "14px", marginTop: "10px" }}>
-            <li style={{ color: userPassword.length >= 8 ? "green" : "red" }}>8자 이상</li>
-            <li style={{ color: /[A-Z]/.test(userPassword) ? "green" : "red" }}>대문자 포함</li>
-            <li style={{ color: /[a-z]/.test(userPassword) ? "green" : "red" }}>소문자 포함</li>
-            <li style={{ color: /\d/.test(userPassword) ? "green" : "red" }}>숫자 포함</li>
-            <li style={{ color: /[!@#$%^&*]/.test(userPassword) ? "green" : "red" }}>특수문자 포함</li>
-        </ul>
-
-        <input
-            style={{ marginTop: "20px" }}
-            type="password"
-            value={passwordConfirm}
-            onChange={(e) => setPasswordConfirm(e.target.value)}
-            placeholder="password confirm"
+    <div className="membership">
+      <div className="membership-box">
+        <img className="membership-logo" src={shalomLogo} art="shalomLogo" />
+        <form onSubmit={memberShipSubmit}>
+          <div className="membership-form">
+            <div className="membership-inputChk">
+            <input
+              className={`membership-input ${check? idCheck?"success":"error" : ""}`}
+              style={{ marginTop: "20px"}}
+              type="text"
+              value={userId}
+              onChange={(e) => {
+                setUserId(e.target.value);
+                setCheck(false);
+              }}
+              onBlur={userId.trim() ? id_duplicateCheck : null }
+              placeholder="id"
             />
-        {passwordConfirm && !isPasswordMatch && (
-            <p style={{ color: "red" }}>비밀번호가 일치하지 않습니다.</p>
-        )}
-        {passwordConfirm && isPasswordMatch && (
-            <p style={{ color: "green" }}>비밀번호가 일치합니다.</p>
-        )}
-        <br />
 
-        <input
-          style={{ marginTop: "20px" }}
-          type="text"
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)}
-          placeholder="name"
-        />
-        <br />
+            <input
+              className={`membership-input ${userPassword && !isPasswordValid && "error"}`}
+              type="password"
+              value={userPassword}
+              onChange={(e) => setUserPassword(e.target.value)}
+              placeholder="password"
+            />
 
-        <input
-          style={{ marginTop: "20px" }}
-          type="text"
-          value={userPhoneNumber}
-          onChange={(e) => setUserPhoneNumber(e.target.value)}
-          placeholder="phoneNumber"
-        />
-        <br />
+            <input
+              className={`membership-input ${passwordConfirm && !isPasswordMatch && "error"}`}
+              type="password"
+              value={passwordConfirm}
+              onChange={(e) => setPasswordConfirm(e.target.value)}
+              placeholder="password confirm"
+            />
+            <ul style={{marginTop: "10px", marginBottom:"30px" }}>
+              {check && !idCheck && <li style={{color:"red"}}>아이디: 사용할 수 없는 아이디입니다. 다른 아이디를 입력해 주세요.</li>}
+              {userPassword && !isPasswordValid && <li style={{color:"red"}}>비밀번호: 8자 이상 영문 대/소문자, 숫자, 특수문자를 사용해 주세요.</li>}
+              {passwordConfirm && !isPasswordMatch && <li style={{color:"red"}}>비밀번호가 일치하지 않습니다.</li>}
+            </ul>
+            </div>
 
-        <button
-          style={{ marginTop: "20px" }}
-          type="submit"
-          disabled={!isFormValid}
-        >
-          확인
-        </button>
-      </form>
+            <input
+              type="text"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              placeholder="name"
+            />
+            <input
+              type="text"
+              value={userPhoneNumber}
+              onChange={(e) => setUserPhoneNumber(e.target.value)}
+              placeholder="phoneNumber"
+            />
+            <button
+              className={`membership-button ${isFormValid && "success"}`}
+              style={{ marginTop: "20px" }}
+              type="submit"
+              disabled={!isFormValid}
+            >
+              확인
+            </button>
+          </div>
+        </form>
 
+      </div>
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
