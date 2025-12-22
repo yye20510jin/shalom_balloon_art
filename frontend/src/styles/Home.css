@@ -3,10 +3,9 @@
     width : 100%;
 }
 
-body{
-  background: #f7f9f3;
+.home-container {
+    background: #f7f9f3;
 }
-
 
 .home-box1 {
     display: grid;

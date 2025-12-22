@@ -1,0 +1,67 @@
+.userLogin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.userLogin-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+    width: 40%;
+    max-width: 800px;
+    border: 4px solid #f7f9f3;
+    border-radius: 12px;
+}
+
+img.userLogin-logo {
+    width: 300px;
+}
+
+.userLogin-form{
+    display:flex;
+    flex-direction:column;
+    margin-bottom: 40px;
+    align-items:center;
+}
+
+.userLogin-input{
+    margin-bottom:10px;
+    width:50%;
+    height:30px;
+    border:3px solid #f7f9f3;
+    border-radius: 4px;
+}
+
+.userLogin-input:focus{
+    outline:none;
+    background-color: rgb(181 228 140 / 41%);
+}
+
+.userLogin form{
+    width:100%;
+}
+
+.userLogin-form button{
+    width:50%;
+}
+
+.userLogin-form button:hover{
+    background-color: #d9ed92;
+    border:none;
+}
+
+.userLogin-err {
+    height: 20px;
+    margin-bottom: 30px;
+}
+
+button,
+button:hover,
+button:active,
+button:focus,
+button:focus-visible {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
