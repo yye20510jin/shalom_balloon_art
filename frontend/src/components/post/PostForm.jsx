@@ -178,8 +178,6 @@ function PostForm({
 
     const contentHtml = editor.getHTML();
 
-    console.log("thumbnailUrl : " + thumbnailUrl);
-
     await handleSubmit(mode, contentHtml, thumbnailUrl);
   };
 

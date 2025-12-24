@@ -36,8 +36,9 @@ public class PostController {
 
     // 전체 글 목록 (페이지네이션)
     @GetMapping
-    public ResponseEntity<Page<PostListResponseDTO>> getAllPosts(@RequestParam(defaultValue="0")int page) {
-        return ResponseEntity.ok(postService.getAllPosts(page));
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<Page<PostListResponseDTO>> getAllPosts(@RequestParam(defaultValue="0")int page, @RequestParam(defaultValue="") String searchTitle) {
+        return ResponseEntity.ok(postService.getAllPosts(page,searchTitle));
     }
 
     // 글 하나 조회 (USER만)
@@ -62,7 +63,5 @@ public class PostController {
         postService.deletePost(index);
         return ResponseEntity.ok("success");
     }
-
-    //페이지네이션
 
 }

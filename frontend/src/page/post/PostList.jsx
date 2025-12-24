@@ -1,46 +1,17 @@
 import { useEffect, useState } from "react";
-import { authFetch } from "../../api/authFetch";
 import { useNavigate } from "react-router-dom";
+import { usePostSearch } from "../../hooks/post/usePostSearch";
 
 function PostList() {
-  const [posts, setPosts] = useState([]);      // PostResponseDTO[]
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [startPage,setStartPage] = useState(0);
-  const [endPage, setEndPage] = useState(0); 
 
   const navigate = useNavigate();
+  const{searchText,setSearchText,fnc_searchText,posts,error,
+    fnc_allPost,startPage,setStartPage,endPage,loading} = usePostSearch();
+
+  const search = Boolean(searchText.trim());
+
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        console.log(startPage);
-        const res = await authFetch(
-          `${import.meta.env.VITE_BACKEND_BASE_URL}/api/posts?page=${startPage}`,
-          {
-            method: "GET",
-          }
-        );
-
-        if (!res || !res.ok) {
-          const msg = res ? await res.text() : "서버 응답 없음";
-          setError(msg || "게시글을 불러오지 못했습니다.");
-          setLoading(false);
-          return;
-        }
-
-        const data = await res.json(); 
-        setPosts(data.content);
-        setStartPage(data.number);
-        setEndPage(data.totalElements % 10 > 0 ? Math.ceil(data.totalElements/10) : data.totalElements);
-      } catch (e) {
-        console.error(e);
-        setError("서버 오류가 발생했습니다.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPosts();
+    search ? fnc_searchText() : fnc_allPost();
   }, [startPage]);
 
   const formatDateTime = (dateTimeString) => {
@@ -68,6 +39,14 @@ function PostList() {
   return (
     <div style={{ padding: 20, maxWidth: 800, margin: "0 auto" }}>
       <h2>게시글 목록</h2>
+
+        <div>
+            <input type="text" value={searchText} onChange={(e)=>{setSearchText(e.target.value)}} placeholder="제목을 입력해 주세요" />
+            <button type="button" onClick={(e)=>{
+              setStartPage(0);
+              fnc_searchText(e); // 1 : 처음 검색
+              }}>검색</button>
+        </div>
 
       {posts.map((post) => (
         <div

@@ -48,9 +48,15 @@ public class PostService {
     }
 
     //전체 목록 조회 (페이지네이션)
-    public Page<PostListResponseDTO> getAllPosts(int page){
+    public Page<PostListResponseDTO> getAllPosts(int page, String searchTitle){
         Pageable pageable = PageRequest.of(page,10);
-        return postRepository.findAll(pageable).map(this::toListResponseDTO);
+
+        if (searchTitle.isBlank()){
+            return postRepository.findAll(pageable).map(this::toListResponseDTO);
+        }else{
+            return postRepository.findByTitleContainingIgnoreCase(searchTitle,pageable).map(this::toListResponseDTO);
+        }
+
     }
 
     private PostListResponseDTO toListResponseDTO(Post post) {
@@ -109,7 +115,5 @@ public class PostService {
         fire.delete(post.getThumbnailUrl());
         postRepository.delete(post);
     }
-
-
 
 }
