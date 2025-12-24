@@ -9,6 +9,9 @@ import com.shalom.shalom_balloon_art.entity.PostImage;
 import com.shalom.shalom_balloon_art.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,9 +42,15 @@ public class PostService {
         return toResponseDTO(post);
     }
 
-    // 전체 목록 조회
-    public List<PostListResponseDTO> getAllPosts() {
+    //전체 목록 조회 (홈페이지)
+    public List<PostListResponseDTO> getHomeAllPosts(){
         return postRepository.findAll().stream().map(this::toListResponseDTO).toList();
+    }
+
+    //전체 목록 조회 (페이지네이션)
+    public Page<PostListResponseDTO> getAllPosts(int page){
+        Pageable pageable = PageRequest.of(page,10);
+        return postRepository.findAll(pageable).map(this::toListResponseDTO);
     }
 
     private PostListResponseDTO toListResponseDTO(Post post) {
@@ -55,6 +64,7 @@ public class PostService {
                 .build();
     }
 
+    // 글 미리보기
     private String makePreview(String html, int maxLen){
         if(html == null || html.isBlank()) return "";
         String text = Jsoup.parse(html).text();
@@ -74,7 +84,7 @@ public class PostService {
                 .build();
     }
 
-
+    //글 수정
     public PostResponseDTO editPost(Long index,PostCreateRequestDTO dto) {
 
         Post post = postRepository.findById(index)
@@ -99,5 +109,7 @@ public class PostService {
         fire.delete(post.getThumbnailUrl());
         postRepository.delete(post);
     }
+
+
 
 }

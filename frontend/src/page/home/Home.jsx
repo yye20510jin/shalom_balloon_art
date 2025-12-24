@@ -12,7 +12,7 @@ function Home() {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const res = await authFetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/posts`, {
+                const res = await authFetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/posts/home`, {
                     method: "GET",
                 });
 

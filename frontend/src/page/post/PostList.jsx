@@ -6,13 +6,16 @@ function PostList() {
   const [posts, setPosts] = useState([]);      // PostResponseDTO[]
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [startPage,setStartPage] = useState(0);
+  const [endPage, setEndPage] = useState(0); 
 
   const navigate = useNavigate();
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+        console.log(startPage);
         const res = await authFetch(
-          `${import.meta.env.VITE_BACKEND_BASE_URL}/api/posts`,
+          `${import.meta.env.VITE_BACKEND_BASE_URL}/api/posts?page=${startPage}`,
           {
             method: "GET",
           }
@@ -26,7 +29,9 @@ function PostList() {
         }
 
         const data = await res.json(); 
-        setPosts(data);
+        setPosts(data.content);
+        setStartPage(data.number);
+        setEndPage(data.totalElements % 10 > 0 ? Math.ceil(data.totalElements/10) : data.totalElements);
       } catch (e) {
         console.error(e);
         setError("서버 오류가 발생했습니다.");
@@ -36,7 +41,7 @@ function PostList() {
     };
 
     fetchPosts();
-  }, []);
+  }, [startPage]);
 
   const formatDateTime = (dateTimeString) => {
     if (!dateTimeString) return "";
@@ -123,6 +128,9 @@ function PostList() {
           </div>
         </div>
       ))}
+      <button onClick={()=>{setStartPage(prev => prev-1)}} disabled={startPage <= 0}> 이전 </button>
+      <div>{startPage+1} / {endPage}</div>
+      <button onClick={()=>{setStartPage(prev => prev+1)}} disabled={endPage <= startPage+1}> 다음 </button>
     </div>
   );
 }

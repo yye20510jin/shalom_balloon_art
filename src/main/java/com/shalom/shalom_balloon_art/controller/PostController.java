@@ -5,6 +5,7 @@ import com.shalom.shalom_balloon_art.dto.PostListResponseDTO;
 import com.shalom.shalom_balloon_art.dto.PostResponseDTO;
 import com.shalom.shalom_balloon_art.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -27,10 +28,16 @@ public class PostController {
         return ResponseEntity.ok("success");
     }
 
-    // 전체 글 목록 (누구나)
+    // 전체 썸네일 (홈페이지)
+    @GetMapping("/home")
+    public ResponseEntity<List<PostListResponseDTO>> getHomeAllPosts(){
+        return ResponseEntity.ok(postService.getHomeAllPosts());
+    }
+
+    // 전체 글 목록 (페이지네이션)
     @GetMapping
-    public ResponseEntity<List<PostListResponseDTO>> getAllPosts() {
-        return ResponseEntity.ok(postService.getAllPosts());
+    public ResponseEntity<Page<PostListResponseDTO>> getAllPosts(@RequestParam(defaultValue="0")int page) {
+        return ResponseEntity.ok(postService.getAllPosts(page));
     }
 
     // 글 하나 조회 (USER만)
@@ -55,4 +62,7 @@ public class PostController {
         postService.deletePost(index);
         return ResponseEntity.ok("success");
     }
+
+    //페이지네이션
+
 }
