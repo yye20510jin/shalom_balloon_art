@@ -13,6 +13,7 @@ import AdminLayout from "../page/admin/AdminLayout";
 import RequireAdmin from "../auth/RequireAdmin";
 import RequireUser from "../auth/RequireUser";
 import UserLayout from "../page/User/UserLayout";
+import UserList from "../page/admin/UserList";
 
 export const routes = [
   { path: "/", element: <Home /> },
@@ -30,6 +31,7 @@ export const routes = [
       { path: "", element: <AdminDashboard /> }, 
       { path: "addAdmin", element: <AddAdmin /> }, 
       { path: "userApprove", element: <UserApprove /> },
+      { path: "userList", element: <UserList /> },
       { path: "posts", element: <PostForm /> },
       { path: "posts/editPostPage/:id", element: <EditPostPage /> },
     ],

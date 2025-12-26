@@ -1,5 +1,6 @@
 package com.shalom.shalom_balloon_art.dto;
 
+import com.shalom.shalom_balloon_art.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,4 +18,9 @@ public class MembershipResponseDTO {
     private String userPhoneNumber;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    public static MembershipResponseDTO from(User user){
+        return MembershipResponseDTO.builder().userIndex(user.getUserIndex())
+                .userName(user.getUsername()).userPhoneNumber(user.getUserPhoneNumber()).build();
+    }
 }

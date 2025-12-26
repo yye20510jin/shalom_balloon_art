@@ -8,6 +8,7 @@ export default function AdminLayout() {
         <h2>Admin</h2>
         <nav>
           <a href="/admin/userApprove">사용자 인증</a><br/>
+          <a href="/admin/userList">유저 목록</a><br/>
           <a href="/admin/addAdmin">관리자 추가</a><br/>
           <a href="/admin/posts">글 추가</a>
         </nav>

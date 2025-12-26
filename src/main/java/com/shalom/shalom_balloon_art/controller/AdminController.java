@@ -4,6 +4,7 @@ import com.shalom.shalom_balloon_art.dto.MembershipRequestDTO;
 import com.shalom.shalom_balloon_art.dto.MembershipResponseDTO;
 import com.shalom.shalom_balloon_art.entity.SignupRequest;
 import com.shalom.shalom_balloon_art.entity.User;
+import com.shalom.shalom_balloon_art.service.AdminService;
 import com.shalom.shalom_balloon_art.service.AuthService;
 import com.shalom.shalom_balloon_art.service.SignupRequestService;
 import com.shalom.shalom_balloon_art.service.UserEncryptService;
@@ -22,8 +23,10 @@ public class AdminController {
     private final AuthService authService;
     private final SignupRequestService signupRequestService;
     private final UserEncryptService userEncryptService;
+    private final AdminService adminService;
 
-    public AdminController(AuthService authService, SignupRequestService signupRequestService, UserEncryptService userEncryptService){
+    public AdminController(AuthService authService, SignupRequestService signupRequestService, UserEncryptService userEncryptService,AdminService adminService){
+        this.adminService = adminService;
         this.authService = authService;
         this.signupRequestService = signupRequestService;
         this.userEncryptService = userEncryptService;
@@ -75,4 +78,11 @@ public class AdminController {
         }
         return ResponseEntity.ok("사용자 인증 요청 성공");
     }
+
+    @PostMapping("/userList")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> userList(){
+        return ResponseEntity.ok(adminService.userList());
+    }
+
 }
