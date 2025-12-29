@@ -16,6 +16,7 @@ public class MembershipResponseDTO {
     private Long userIndex;
     private String userName;
     private String userPhoneNumber;
+    private int authStatus;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

@@ -53,8 +53,8 @@ public class AdminController {
 
     @GetMapping("/userApprove")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Page<MembershipResponseDTO>> userApprove(@RequestParam(defaultValue = "0") int page){
-        return ResponseEntity.ok(signupRequestService.userApprove(page));
+    public ResponseEntity<Page<MembershipResponseDTO>> userApprove(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "0") int auth){
+        return ResponseEntity.ok(signupRequestService.userApprove(page,auth));
     }
 
     @PatchMapping("/rejectUser/{userIndex}")
