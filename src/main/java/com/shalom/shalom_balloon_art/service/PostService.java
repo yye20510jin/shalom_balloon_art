@@ -1,11 +1,9 @@
 package com.shalom.shalom_balloon_art.service;
 
 import com.shalom.shalom_balloon_art.dto.PostCreateRequestDTO;
-import com.shalom.shalom_balloon_art.dto.PostImageDTO;
 import com.shalom.shalom_balloon_art.dto.PostListResponseDTO;
 import com.shalom.shalom_balloon_art.dto.PostResponseDTO;
 import com.shalom.shalom_balloon_art.entity.Post;
-import com.shalom.shalom_balloon_art.entity.PostImage;
 import com.shalom.shalom_balloon_art.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
@@ -38,7 +36,7 @@ public class PostService {
     public PostResponseDTO getPost(Long index) {
         Post post = postRepository.findById(index)
                 .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
-
+        post.viewUpdate();
         return toResponseDTO(post);
     }
 

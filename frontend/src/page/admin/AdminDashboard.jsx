@@ -1,12 +1,14 @@
 import{useEffect,useState} from"react";
 import{authFetch} from "../../api/authFetch";
-import Navbar from "../../components/common/Navbar";
 import { useNavigate } from "react-router-dom";  
+import UserList from "./UserList";
+import UserApprove from "./UserApprove";
+import "../../styles/admin/AdminDashboard.css";
 
 function Admin(){
     
     const[error, setError] = useState("");
-
+    const[data, setData] = useState([]);
     const navigate = useNavigate();
 
     useEffect(()=>{
@@ -14,11 +16,14 @@ function Admin(){
             
             try{
                 const res = await authFetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/admin/test`,{method:"GET",}); 
-                if(!res || !res.ok){
+                if(!res.ok){
                     setError("관리자 권한이 없거나, 로그인 필요");
                     navigate("/");
                     return;
                 }
+
+                const res_data = await res.json();
+                setData(res_data.content);
 
             }catch(e){
                 console.error(e);
@@ -29,9 +34,26 @@ function Admin(){
     },[]);
 
     return(
-        <div style={{padding:20}}>
-            <Navbar/>
-            <h1>관리자 페이지</h1>
+        <div className="container" style={{padding:20}}>
+            <section className="AdminDashboard-top3">
+                {data.map((post)=>(
+                    <div className="Ad-top3-box" key={post.index}>
+                        <img className="Ad-top3-img" src={post.thumbnailUrl} alt={`사진${post.index}`}/>
+                        <div className="Ad-top3-sub">{post.title}</div>
+                    </div>
+                    
+                ))}
+            </section>
+            
+            <div className="AdminDashboard-box1">
+            <section className="AdminDashboard-userList">
+                <UserList/>
+            </section>
+
+            <section className="AdminDashboard-userApprove">
+                <UserApprove/>
+            </section>
+            </div>
             {error && <p style={{color:"red"}}>{error}</p>}
         </div>
     );

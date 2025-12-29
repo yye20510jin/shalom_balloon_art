@@ -65,7 +65,7 @@
 
 /* 선택된 썸네일 표시 */
 .thumb.active {
-  border-color: rgba(153, 217, 140, 0.9); /* 네 포인트 연두 */
+  border-color: rgba(153, 217, 140, 0.9); 
 }
 
 /* (선택) auto/paused 표시 */

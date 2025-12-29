@@ -2,12 +2,14 @@ package com.shalom.shalom_balloon_art.controller;
 
 import com.shalom.shalom_balloon_art.dto.MembershipRequestDTO;
 import com.shalom.shalom_balloon_art.dto.MembershipResponseDTO;
-import com.shalom.shalom_balloon_art.entity.SignupRequest;
+import com.shalom.shalom_balloon_art.dto.PostImageDTO;
+import com.shalom.shalom_balloon_art.dto.PostListResponseDTO;
 import com.shalom.shalom_balloon_art.entity.User;
 import com.shalom.shalom_balloon_art.service.AdminService;
 import com.shalom.shalom_balloon_art.service.AuthService;
 import com.shalom.shalom_balloon_art.service.SignupRequestService;
 import com.shalom.shalom_balloon_art.service.UserEncryptService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,8 +36,8 @@ public class AdminController {
 
     @GetMapping("/test")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> adminTest(){
-        return ResponseEntity.ok("관리자 전용 대시보드");
+    public ResponseEntity<Page<PostListResponseDTO>> adminDashboard(){
+        return ResponseEntity.ok(adminService.adminDashboard());
     }
 
     @PostMapping("/addAdmin")

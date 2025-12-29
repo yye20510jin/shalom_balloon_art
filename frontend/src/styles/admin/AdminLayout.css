@@ -1,0 +1,19 @@
+.AdminLayout-aside {
+    height: 100vh;
+    width: 15%;
+    min-width: 100px;
+    max-width: 246px;
+    background-color: #f7f9f3;
+    padding-left:10px;
+}
+
+.AdminLayout-aside nav{
+    margin-top:40px;
+}
+
+.AdminLayout-aside a{
+    color : #000;
+    display:block;
+    margin-bottom:5px;
+}
+

@@ -1,16 +1,23 @@
 import { Outlet } from "react-router-dom";
+import { useContext } from "react";
+import AuthContext from "../../auth/AuthContext";
+import "../../styles/admin/AdminLayout.css";
 
 export default function AdminLayout() {
+const{logout}=useContext(AuthContext);
+
   return (
-    <div style={{ display: "flex" }}>
+    <div className="AdminLayout" style={{ display: "flex" }}>
       {/* 공통 UI */}
-      <aside style={{ width: 200 }}>
+      <aside className="AdminLayout-aside">
         <h2>Admin</h2>
         <nav>
-          <a href="/admin/userApprove">사용자 인증</a><br/>
-          <a href="/admin/userList">유저 목록</a><br/>
-          <a href="/admin/addAdmin">관리자 추가</a><br/>
+          <a href="/admin/userApprove">사용자 인증</a>
+          <a href="/admin/userList">유저 목록</a>
+          <a href="/admin/addAdmin">관리자 추가</a>
           <a href="/admin/posts">글 추가</a>
+          <a href="/user/posts/postList">목록보기</a>
+          <a  style={{cursor:"pointer"}} onClick={logout}>로그아웃</a>
         </nav>
       </aside>
 

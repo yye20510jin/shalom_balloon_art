@@ -20,4 +20,9 @@ public class PostListResponseDTO {
         private String thumbnailUrl;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
+
+        public static PostListResponseDTO from(Post post){
+            return PostListResponseDTO.builder().index(post.getIndex()).title(post.getTitle()).thumbnailUrl(post.getThumbnailUrl())
+                    .createdAt(post.getCreatedAt()).updatedAt(post.getUpdatedAt()).build();
+        }
     }

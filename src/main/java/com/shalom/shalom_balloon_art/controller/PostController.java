@@ -52,7 +52,6 @@ public class PostController {
     @PutMapping("/{index}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> editPost(@PathVariable Long index,@RequestBody PostCreateRequestDTO dto){
-
         return ResponseEntity.ok(postService.editPost(index,dto));
     }
 

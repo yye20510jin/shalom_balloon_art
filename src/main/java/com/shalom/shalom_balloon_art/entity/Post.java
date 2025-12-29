@@ -36,12 +36,15 @@ public class Post {
     @Column
     private LocalDateTime updatedAt;
 
+    @Column(nullable = false)
+    private Long views = 0L;
+
     @PrePersist
     public void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
 
-    @PreUpdate
+
     public void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
@@ -49,5 +52,10 @@ public class Post {
     public void update(String title, String contentHtml ) {
         this.title = title;
         this.contentHtml = contentHtml;
+        onUpdate();
+    }
+
+    public void viewUpdate(){
+        this.views++;
     }
 }
