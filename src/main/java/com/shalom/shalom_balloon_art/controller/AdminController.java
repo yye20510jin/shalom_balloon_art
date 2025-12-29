@@ -2,7 +2,6 @@ package com.shalom.shalom_balloon_art.controller;
 
 import com.shalom.shalom_balloon_art.dto.MembershipRequestDTO;
 import com.shalom.shalom_balloon_art.dto.MembershipResponseDTO;
-import com.shalom.shalom_balloon_art.dto.PostImageDTO;
 import com.shalom.shalom_balloon_art.dto.PostListResponseDTO;
 import com.shalom.shalom_balloon_art.entity.User;
 import com.shalom.shalom_balloon_art.service.AdminService;
@@ -54,8 +53,8 @@ public class AdminController {
 
     @GetMapping("/userApprove")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<MembershipResponseDTO>> userApprove(){
-        return ResponseEntity.ok(signupRequestService.userApprove());
+    public ResponseEntity<Page<MembershipResponseDTO>> userApprove(@RequestParam(defaultValue = "0") int page){
+        return ResponseEntity.ok(signupRequestService.userApprove(page));
     }
 
     @PatchMapping("/rejectUser/{userIndex}")
@@ -83,8 +82,8 @@ public class AdminController {
 
     @PostMapping("/userList")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> userList(){
-        return ResponseEntity.ok(adminService.userList());
+    public ResponseEntity<Page<MembershipResponseDTO>> userList(@RequestBody int page){
+        return ResponseEntity.ok(adminService.userList(page));
     }
 
 }

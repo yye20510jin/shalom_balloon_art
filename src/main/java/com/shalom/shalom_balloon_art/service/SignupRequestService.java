@@ -1,10 +1,12 @@
 package com.shalom.shalom_balloon_art.service;
 
-import com.shalom.shalom_balloon_art.dto.MembershipRequestDTO;
 import com.shalom.shalom_balloon_art.dto.MembershipResponseDTO;
 import com.shalom.shalom_balloon_art.entity.SignupRequest;
 import com.shalom.shalom_balloon_art.repository.SignupRequestRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -27,11 +29,13 @@ public class SignupRequestService {
         System.out.println("[Cleanup] 30일 지난 비인증 요청 삭제: " + deletedCount + "건");
     }
 
-    public List<MembershipResponseDTO> userApprove(){
-        return signupRequestRepository.findAll().stream().map(this::toMembershipResponseDTO).toList();
+    public Page<MembershipResponseDTO> userApprove(int page){
+        Pageable pageable = PageRequest.of(page,5);
+        return signupRequestRepository.findAll(pageable).map(this::toMembershipResponseDTO);
     }
 
     public MembershipResponseDTO toMembershipResponseDTO(SignupRequest s){
+        System.out.println("toMembershipResponseDTO");
         return MembershipResponseDTO.builder().userIndex(s.getUserIndex()).userName(s.getUsername()).userPhoneNumber(s.getUserPhoneNumber()).
             createdAt(s.getCreatedAt()).updatedAt(s.getUpdatedAt()).build();
     }

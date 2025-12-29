@@ -5,24 +5,28 @@ function UserList() {
     const [error, setError] = useState("");
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [startPage, setStartPage] = useState(0);
+    const [endPage, setEndPage] = useState(0);
 
     useEffect(() => {
         const fetchUserList = async () => {
             try {
                 const res = await authFetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/admin/userList`, {
                     method: "POST",
+                    body : JSON.stringify(startPage),
                 }
                 );
 
                 if (!res.ok) {
                     const message = res ? await res.text() : "서버 응답 없음";
                     setError(message);
-                    console.log("서버에러");
                     return;
                 }
 
                 const usersData = await res.json();
-                setData(usersData);
+                setData(usersData.content);
+                setStartPage(usersData.number);
+                setEndPage(Math.ceil(usersData.totalElements / 5));
 
             } catch (err) {
                 console.error(err);
@@ -33,7 +37,7 @@ function UserList() {
         }
 
         fetchUserList();
-    }, []);
+    }, [startPage]);
 
     return (
         <div className="userList">
@@ -58,6 +62,10 @@ function UserList() {
                     <p><strong>전화번호:</strong> {user.userPhoneNumber}</p>
                 </div>
             ))}
+
+            <button onClick={()=>{setStartPage(prev => prev-1)}} disabled={startPage <= 0}>이전</button>
+            <div>{startPage+1} / {endPage}</div>
+            <button onClick={()=>{setStartPage(prev => prev+1)}} disabled={endPage <= startPage+1}>다음</button> 
         </div>
     );
 } export default UserList;

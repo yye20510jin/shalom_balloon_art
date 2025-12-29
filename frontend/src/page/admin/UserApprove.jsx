@@ -7,6 +7,8 @@ function UserApprove() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [reloadKey, setReloadKey] = useState(0);
+  const [startPage, setstartPage]= useState(0);
+  const [endPage, setEndPage] = useState(0);
 
   // 날짜 포맷 함수 추가
   function formatDate(dateString) {
@@ -54,8 +56,9 @@ function UserApprove() {
     const fetchData = async () => {
       try {
         const res = await authFetch(
-          `${import.meta.env.VITE_BACKEND_BASE_URL}/api/admin/userApprove`,
-          { method: "GET" }
+          `${import.meta.env.VITE_BACKEND_BASE_URL}/api/admin/userApprove?page=${startPage}`,
+          { method: "GET",
+           }
         );
 
         if (!res.ok) {
@@ -66,13 +69,11 @@ function UserApprove() {
 
         const res_data = await res.json();
 
-        if (Array.isArray(res_data) && res_data.length === 0) {
-          setData([]);
-          setLoading(false);
-          return;
-        }
+        console.log("res_data : " + res_data.content);
 
-        setData(res_data);
+        setData(res_data.content ?? []);
+        setstartPage(res_data.number);
+        setEndPage(Math.ceil(res_data.totalElements/5));
         setLoading(false);
 
       } catch (e) {
@@ -82,7 +83,7 @@ function UserApprove() {
     };
 
     fetchData();
-  }, [reloadKey]);
+  }, [reloadKey, startPage]);
 
   return (
     <div style={{ padding: "20px" }}>
@@ -120,6 +121,13 @@ function UserApprove() {
           </div>
         ))}
       </div>
+      {data.length > 0 && (
+        <>
+        <button onClick={()=>{setstartPage(prev => prev-1)}} disabled={startPage <= 0 }>이전</button>
+        <div>{startPage+1} / {endPage}</div>
+        <button onClick={()=>{setstartPage(prev => prev-1)}} disabled={endPage <= startPage+1}>다음</button>
+        </>
+      )}
     </div>
   );
 }

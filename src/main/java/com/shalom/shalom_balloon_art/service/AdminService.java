@@ -25,8 +25,9 @@ public class AdminService {
         this.postRepository = postRepository;
     }
 
-    public List<MembershipResponseDTO> userList(){
-        return userRepository.findAll().stream().map(MembershipResponseDTO::from).toList();
+    public Page<MembershipResponseDTO> userList(int page){
+        Pageable pageable = PageRequest.of(page,5);
+        return userRepository.findAll(pageable).map(MembershipResponseDTO::from);
     }
 
     public Page<PostListResponseDTO> adminDashboard(){
