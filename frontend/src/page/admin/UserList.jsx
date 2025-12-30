@@ -47,6 +47,7 @@ function UserList() {
 
     return (
         <div className="userList">
+            <main>
             <h2>유저 리스트 페이지</h2>
             <div className="userList-content">
                 {loading && <p>불러오는 중...</p>}
@@ -67,6 +68,7 @@ function UserList() {
                     ))}
                 </div>
             </div>
+            </main>
             <div className="UL-bt">
                 <button style={{ background: "none" }} onClick={() => { setStartPage(prev => prev - 1) }} disabled={startPage <= 0}><img src={leftArrow} alt="이전" /></button>
                 <div>{startPage + 1} / {endPage}</div>

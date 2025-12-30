@@ -1,3 +1,9 @@
+.UserList{
+    display:flex;
+    flex-direction:column;
+    justify-content: space-between;
+}
+
 .UL-user {
     margin-bottom: 3rem;
 }
@@ -18,13 +24,19 @@
 
 .UL-bt{
     display:flex;
+    justify-content:center;
 }
 
 .UL-bt img{
-    width:10%;
+  width:0.5rem;
+  padding:0;
 }
 
 .UL-bt div{
-    width:100%;
+    width:6rem;
     text-align:center;
+}
+
+.UL-bt button{
+    padding:0;
 }

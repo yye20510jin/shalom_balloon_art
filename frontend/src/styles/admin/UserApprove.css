@@ -20,3 +20,10 @@ header.UP-header {
 .UA-ubt {
     display:flex;
 }
+
+.UserApprove{
+    display:flex;
+    flex-direction:column;
+    justify-content: space-between;
+    height:100%;
+}

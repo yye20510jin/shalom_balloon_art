@@ -98,7 +98,8 @@ function UserApprove() {
   }
 
   return (
-    <div>
+    <div className="UserApprove">
+      <main>
       <header className="UP-header">
       <h2>유저 인증 페이지</h2>
       <div className="UP-check">
@@ -141,6 +142,7 @@ function UserApprove() {
           </div>
         ))}
       </div>
+      </main>
       {data.length > 0 && (
         <div className="UL-bt">
           <button style={{background:"none"}} onClick={() => { setstartPage(prev => prev - 1) }} disabled={startPage <= 0}><img src={leftArrow} alt="이전"/></button>
