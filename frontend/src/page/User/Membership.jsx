@@ -95,7 +95,7 @@ function Membership() {
   };
 
   return (
-    <div className="membership">
+    <div className="container membership">
       <div className="membership-box">
         <img className="membership-logo" src={shalomLogo} art="shalomLogo" />
         <form onSubmit={memberShipSubmit}>

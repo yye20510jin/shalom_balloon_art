@@ -72,3 +72,10 @@ button:focus-visible {
 button:hover{
   background-color: #d9ed92;
 }
+
+.container{
+  width:100%;
+  max-width:80rem;
+  margin-inline:auto;
+  padding-inline:1.5rem;
+}

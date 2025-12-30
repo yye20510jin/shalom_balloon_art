@@ -34,19 +34,20 @@ function Home() {
     return (
         <div className="home-container">
             <div className="home-box1">
-                <HomeGallery
-                images={(posts ?? [])
-                    .filter((post) => post?.thumbnailUrl)
-                    .map((post) => ({
-                    id: post.index,
-                    src: post.thumbnailUrl,
-                    alt: post.title,
-                    }))}
-                />
                 <header className="home-header">
-                    <img  className="logo" src={shalomLogo} alt="Shalom Balloom Art"/>
+                    <img className="logo" src={shalomLogo} alt="Shalom Balloom Art" />
                     <Navbar />
                 </header>
+
+                <HomeGallery
+                    images={(posts ?? [])
+                        .filter((post) => post?.thumbnailUrl)
+                        .map((post) => ({
+                            id: post.index,
+                            src: post.thumbnailUrl,
+                            alt: post.title,
+                        }))}
+                />
             </div>
         </div>
 

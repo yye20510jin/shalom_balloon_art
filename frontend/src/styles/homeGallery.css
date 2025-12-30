@@ -1,6 +1,9 @@
-.home-wrap{
-  margin: 0 auto;
-  padding: 24px;
+.home-wrap {
+    padding: 24px;
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
 }
 
 .home-grid{
@@ -17,7 +20,7 @@
   border-radius: 18px;
   overflow: hidden;
   cursor: pointer;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  box-shadow: 2px 6px 8px rgba(0, 0, 0, 0.08);
   transform: translateY(0);
   transition: transform .18s ease, box-shadow .18s ease;
   position: relative;

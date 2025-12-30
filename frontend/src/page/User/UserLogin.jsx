@@ -53,7 +53,7 @@ function UserLogin() {
     }, [error]);
 
     return (
-        <div className="userLogin">
+        <div className="container userLogin">
             <div className="userLogin-box">
                 <img className="userLogin-logo" src={shalomLogo} alt="shalom" />
                 {error ? <div className="userLogin-err" style={{ color: "red" }}>{error}</div> : <div className="userLogin-err" ></div>}

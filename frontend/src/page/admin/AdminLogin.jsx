@@ -49,7 +49,7 @@ function AdminLogin() {
     }
 
     return (
-        <div className="adminLogin">
+        <div className="container adminLogin">
             <div className="adminLogin-box">
                 <img className="adminLogin-logo" src={shalomLogo} alt="shalom" />
                 {error ? <div className="adminLogin-err" style={{ color: "red" }}>{error}</div> : <div className="userLogin-err" ></div>}
