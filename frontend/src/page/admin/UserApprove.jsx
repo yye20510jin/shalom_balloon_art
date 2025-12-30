@@ -1,5 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext} from "react";
 import { authFetch } from "../../api/authFetch";
+import AdminContext from "../../components/admin/adminContext";
+import "../../styles/admin/UserApprove.css";
+import leftArrow from "../../assets/leftArrow.png";
+import rightArrow from "../../assets/rightArrow.png";
 
 function UserApprove() {
 
@@ -10,7 +14,7 @@ function UserApprove() {
   const [startPage, setstartPage] = useState(0);
   const [endPage, setEndPage] = useState(0);
   const [auth, setAuth] = useState(0); // 미확인 : 0, 비인증 : 2
-
+  const {setAuthChange} = useContext(AdminContext);
   // 날짜 포맷 함수 추가
   function formatDate(dateString) {
     if (!dateString) return "";
@@ -32,6 +36,7 @@ function UserApprove() {
         setError("서버 오류. 요청을 완료하지 못했습니다.");
       } else { alert("사용자 인증 요청을 수락했습니다."); }
       setReloadKey(prev => prev + 1);
+      setAuthChange(prev => prev + 1);
     } catch (e) {
       setError(e.messge || "알 수 없는 오류 발생. 관리자에게 문의해 주세요");
     }
@@ -48,6 +53,7 @@ function UserApprove() {
       } else { alert("사용자 인증 요청을 거부했습니다."); }
 
       setReloadKey(prev => prev + 1);
+      setAuthChange(prev => prev + 1);
     } catch (e) {
       setError(e.message || "알 수 없는 오류 발생. 관리자에게 문의해 주세요");
     }
@@ -92,9 +98,10 @@ function UserApprove() {
   }
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div>
+      <header className="UP-header">
       <h2>유저 인증 페이지</h2>
-
+      <div className="UP-check">
       <label>
         <input type="checkbox" checked={auth === 0} onChange={(e) => toggleAuth(0)} />
         미확인
@@ -103,7 +110,8 @@ function UserApprove() {
         <input type="checkbox" checked={auth === 2} onChange={(e) => toggleAuth(2)} />
         비인증
       </label>
-
+    </div>
+    </header>
       {/* 로딩 */}
       {loading && <p>불러오는 중...</p>}
 
@@ -116,33 +124,29 @@ function UserApprove() {
       )}
 
       {/* 목록 카드 */}
-      <div>
+      <div className="UA-content">
 
         {data.map((item) => (
           <div
+            className="UA-user"
             key={item.userIndex}
-            style={{
-              border: "1px solid #ccc",
-              borderRadius: "8px",
-              padding: "12px",
-              marginBottom: "10px",
-              backgroundColor: "#fafafa"
-            }}
           >
             <p><strong>이름:</strong> {item.userName}</p>
             <p><strong>전화번호:</strong> {item.userPhoneNumber}</p>
             <p><strong>생성일:</strong> {formatDate(item.createdAt)}</p>
-            <button type="button" onClick={() => { approveUser(item.userIndex) }}>인증</button>
-            {item.authStatus !== 2 && <button type="button" onClick={() => { rejectUser(item.userIndex) }}>비인증</button>}
+            <div className="UA-ubt">
+              <button type="button" onClick={() => { approveUser(item.userIndex) }}>인증</button>
+              {item.authStatus !== 2 && <button type="button" style={{marginLeft:"0.3rem"}} onClick={() => { rejectUser(item.userIndex) }}>비인증</button>}
+            </div>
           </div>
         ))}
       </div>
       {data.length > 0 && (
-        <>
-          <button onClick={() => { setstartPage(prev => prev - 1) }} disabled={startPage <= 0}>이전</button>
+        <div className="UL-bt">
+          <button style={{background:"none"}} onClick={() => { setstartPage(prev => prev - 1) }} disabled={startPage <= 0}><img src={leftArrow} alt="이전"/></button>
           <div>{startPage + 1} / {endPage}</div>
-          <button onClick={() => { setstartPage(prev => prev - 1) }} disabled={endPage <= startPage + 1}>다음</button>
-        </>
+          <button style={{background:"none"}} onClick={() => { setstartPage(prev => prev - 1) }} disabled={endPage <= startPage + 1}><img src={rightArrow} alt="다음"/></button>
+        </div>
       )}
     </div>
   );

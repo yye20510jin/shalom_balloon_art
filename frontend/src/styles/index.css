@@ -68,3 +68,7 @@ button:focus-visible {
   }
   
 }
+
+button:hover{
+  background-color: #d9ed92;
+}

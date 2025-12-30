@@ -12,8 +12,6 @@ const{logout}=useContext(AuthContext);
       <aside className="AdminLayout-aside">
         <h2>Admin</h2>
         <nav>
-          <a href="/admin/userApprove">사용자 인증</a>
-          <a href="/admin/userList">유저 목록</a>
           <a href="/admin/addAdmin">관리자 추가</a>
           <a href="/admin/posts">글 추가</a>
           <a href="/user/posts/postList">목록보기</a>
@@ -22,7 +20,7 @@ const{logout}=useContext(AuthContext);
       </aside>
 
       {/* 여기부터 바뀌는 영역 */}
-      <main style={{ flex: 1, padding: 20 }}>
+      <main className="AdminLayout-m">
         <Outlet />
       </main>
     </div>

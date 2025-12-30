@@ -1,0 +1,22 @@
+header.UP-header {
+    display: flex;
+    justify-content: space-between;
+}
+.UP-check {
+    display: flex;
+    align-items: flex-end;
+}
+.UA-user {
+    padding: 0.2rem;
+    border: 3px solid #f7f9f3;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.4rem;
+}
+.UA-ubt button{
+    width:100%;
+}
+
+.UA-ubt {
+    display:flex;
+}

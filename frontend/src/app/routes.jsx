@@ -14,6 +14,7 @@ import RequireAdmin from "../auth/RequireAdmin";
 import RequireUser from "../auth/RequireUser";
 import UserLayout from "../page/User/UserLayout";
 import UserList from "../page/admin/UserList";
+import { AdminContext_f } from "../components/admin/adminContext";
 
 export const routes = [
   { path: "/", element: <Home /> },
@@ -24,12 +25,14 @@ export const routes = [
     path: "/admin",
     element: (
       <RequireAdmin>
-        <AdminLayout /> 
+        <AdminContext_f>
+          <AdminLayout />
+        </AdminContext_f>
       </RequireAdmin>
     ),
     children: [
-      { path: "", element: <AdminDashboard /> }, 
-      { path: "addAdmin", element: <AddAdmin /> }, 
+      { path: "", element: <AdminDashboard /> },
+      { path: "addAdmin", element: <AddAdmin /> },
       { path: "userApprove", element: <UserApprove /> },
       { path: "userList", element: <UserList /> },
       { path: "posts", element: <PostForm /> },
@@ -38,12 +41,12 @@ export const routes = [
   },
   {
     path: "/user",
-    element:(
+    element: (
       <RequireUser>
-        <UserLayout/>
+        <UserLayout />
       </RequireUser>
     ),
-    children:[
+    children: [
       { path: "posts/postList", element: <PostList /> },
       { path: "posts/postDetails/:id", element: <PostDetails /> },
     ],

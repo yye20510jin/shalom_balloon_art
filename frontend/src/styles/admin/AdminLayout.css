@@ -1,5 +1,5 @@
 .AdminLayout-aside {
-    height: 100vh;
+    min-height: 100dvh;
     width: 15%;
     min-width: 100px;
     max-width: 246px;
