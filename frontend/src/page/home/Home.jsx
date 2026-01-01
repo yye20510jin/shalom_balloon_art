@@ -32,13 +32,11 @@ function Home() {
 
 
     return (
-        <div className="home-container">
-            <div className="home-box1">
-                <header className="home-header">
-                    <img className="logo" src={shalomLogo} alt="Shalom Balloom Art" />
-                    <Navbar />
-                </header>
-
+        <div className="home-container ">
+            <div className="navbarUnder">
+            <Navbar />
+            </div>
+            <div className="home-box1 container">
                 <HomeGallery
                     images={(posts ?? [])
                         .filter((post) => post?.thumbnailUrl)

@@ -1,15 +1,8 @@
-.home-wrap {
-    padding: 24px;
-    width: 100%;
-    max-width: 80rem;
-    margin-inline: auto;
-    padding-inline: 1.5rem;
-}
-
 .home-grid{
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: 12px;
+  margin: 3rem 0;
 }
 
 /* 카드 기본 */

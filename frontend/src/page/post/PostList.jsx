@@ -46,6 +46,7 @@ function PostList() {
 
   return (
     <div className="container PostList">
+      <Navbar/>
       <main>
       <h2>게시글 목록</h2>
         <div>
