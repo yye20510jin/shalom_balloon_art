@@ -22,6 +22,7 @@
 }
 
 .home-header {
+    min-width: 130px;
     max-width: 15%;
     text-align: start;
     display: flex;

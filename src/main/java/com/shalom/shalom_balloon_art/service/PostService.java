@@ -62,7 +62,7 @@ public class PostService {
                 .index(post.getIndex())
                 .title(post.getTitle())
                 .thumbnailUrl(post.getThumbnailUrl())
-                .preview(makePreview(post.getContentHtml(),80))
+                .preview(makePreview(post.getContentHtml(),160))
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
                 .build();

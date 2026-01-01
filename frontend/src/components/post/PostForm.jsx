@@ -6,9 +6,15 @@ import Youtube from "@tiptap/extension-youtube";
 import { useFirebaseSingleImageUpload } from "../../hooks/firebase/useFirebaseSingleImageUpload";
 import { useFirebaseSingleImageRemove } from "../../hooks/firebase/useFirebaseSingleImageRemove";
 import { CustomImage } from "../../hooks/post/CustomImage";
+import { getApp } from "firebase/app";
+import { getStorage } from "firebase/storage";
 
+console.log("projectId:", getApp().options.projectId);
+console.log("storageBucket:", getStorage().app.options.storageBucket);
 function Toolbar({ editor, onPickImage, onInsertYoutube }) {
   if (!editor) return null;
+
+
 
   const Btn = ({ onClick, active, children }) => (
     <button

@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePostSearch } from "../../hooks/post/usePostSearch";
+import leftArrow from "../../assets/leftArrow.png";
+import rightArrow from "../../assets/rightArrow.png";
+import Navbar from "../../components/common/Navbar";
+import "../../styles/post/postList.css";
 
 function PostList() {
 
@@ -17,7 +21,11 @@ function PostList() {
   const formatDateTime = (dateTimeString) => {
     if (!dateTimeString) return "";
     const date = new Date(dateTimeString);
-    return date.toLocaleString(); // 시스템 로케일 기준으로 표시
+    return date.toLocaleString("ko-KR",{
+      year:"numeric",
+      month: "2-digit",
+      day: "2-digit"
+    }); // 시스템 로케일 기준으로 표시
   };
 
   if (loading) {
@@ -37,9 +45,9 @@ function PostList() {
   }
 
   return (
-    <div style={{ padding: 20, maxWidth: 800, margin: "0 auto" }}>
+    <div className="container PostList">
+      <main>
       <h2>게시글 목록</h2>
-
         <div>
             <input type="text" value={searchText} onChange={(e)=>{setSearchText(e.target.value)}} placeholder="제목을 입력해 주세요" />
             <button type="button" onClick={(e)=>{
@@ -47,40 +55,28 @@ function PostList() {
               fnc_searchText(e); // 1 : 처음 검색
               }}>검색</button>
         </div>
-
-      {posts.map((post) => (
-        <div
+      <ol className="PL-content">
+      {posts.map((post,index) => (
+        <li className="PL-post"
           key={post.index}
-          style={{
-            border: "1px solid #ccc",
-            borderRadius: 8,
-            padding: 16,
-            marginBottom: 12,
-            display: "flex",
-            gap: 16,
-          }}
           onClick = {()=>navigate(`/user/posts/postDetails/${post.index}`)}
         >
         {/* 이미지 썸네일 */}
 
         {post.thumbnailUrl && 
-              <div key={post.index} style={{ flex: "0 0 120px" }}>
+              <div key={post.index} className="PL-imgBox">
                 <img
+                  className="PL-img"
                   src={post.thumbnailUrl}
                   alt={post.title}
-                  style={{
-                    width: "120px",
-                    height: "80px",
-                    objectFit: "cover",
-                    borderRadius: 4,
-                  }}
                 />
               </div>
         } 
 
           {/* 텍스트 영역 */}
-          <div style={{ flex: 1 }}>
-            <h3 style={{ margin: "0 0 8px" }}>{post.title}</h3>
+          <div className="PL-text">
+            <p style={{margin:"10px 0"}} className="PL-number">{startPage === 0 ? "": startPage}{index+1}</p>
+            <h3 style={{margin:"0 0 5px 0"}}>{post.title}</h3>
 
             <div
               style={{
@@ -97,19 +93,22 @@ function PostList() {
 
             <p
               style={{
-                margin: "0 0 8px",
-                whiteSpace: "pre-line",
+                margin: "30px 0",
+                whiteSpace: "pre-wrap",
               }}
             >
-              {/* 내용 일부만 미리보기 */}
-              {post.preview}
+              {post.preview.length >= 160 ? `${post.preview}...` : post.preview}
             </p>
           </div>
-        </div>
+        </li>
       ))}
-      <button onClick={()=>{setStartPage(prev => prev-1)}} disabled={startPage <= 0}> 이전 </button>
+      </ol>
+      </main>
+      <div className="PL-bt">
+      <button style={{background:"none", marginRight:"0.5rem"}} onClick={()=>{setStartPage(prev => prev-1)}} disabled={startPage <= 0}> <img src={leftArrow} alt="이전"/> </button>
       <div>{startPage+1} / {endPage}</div>
-      <button onClick={()=>{setStartPage(prev => prev+1)}} disabled={endPage <= startPage+1}> 다음 </button>
+      <button style={{background:"none", marginLeft:"0.5rem"}} onClick={()=>{setStartPage(prev => prev+1)}} disabled={endPage <= startPage+1}> <img src={rightArrow} alt="다음"/></button>
+      </div>
     </div>
   );
 }

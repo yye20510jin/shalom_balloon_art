@@ -1,0 +1,69 @@
+.PostList{
+    display:flex;
+    flex-direction:column;
+    height:100dvh;
+    justify-content:space-between;
+}
+
+.PL-post {
+    display: flex;
+    flex-direction: row;
+    margin-top: 2rem;
+    padding: 1rem;
+        border-bottom: 1.3px solid rgb(176 192 116 / 42%);
+    max-height: 210px;
+}
+
+.PL-imgBox {
+    width: 285px;
+    display: flex;
+    justify-content: center;
+    padding: 0.3rem;
+    overflow: hidden;
+}
+
+
+img.PL-img {
+    max-height: calc((142px - 2px) * 1.618 - 10px);
+    width:100%;
+    object-fit:cover;
+}
+
+p.PL-number {
+  background: #d9ed92;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width:1rem;      /* 한 자리 / 두 자리 기준 최소 크기 */
+  padding: 0 0.2rem;    /* 숫자 늘어나면 자동 확장 */
+
+  height: 1.5rem;         /* 세로는 고정 */
+  border-radius: 8px 0 8px 0; /* pill / 원형 유지 */
+
+  text-align: center;
+  font-weight: bold;
+}
+
+.PL-text {
+    margin-left: 2rem;
+    width: 729px;
+    max-width: 729px;
+    height:200px;
+}
+
+.PL-bt {
+    display: flex;
+    justify-content: center;
+    margin: 1.5rem;
+    
+}
+
+.PL-bt img{
+    width:0.8rem;
+}
+
+.PL-content{
+    padding: 0 3rem;
+}
