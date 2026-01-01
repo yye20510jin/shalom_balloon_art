@@ -1,3 +1,15 @@
+.PL-top {
+    padding-inline: 40px;
+    border-bottom: 1.3px solid rgb(176 192 116 / 42%);
+    background: #f7f9f3;
+    padding: 2rem 1rem 1rem 1rem;
+    margin-top: 2rem;
+}
+
+.PL-topInput {
+    text-align: end;
+}
+
 .PostList{
     display:flex;
     flex-direction:column;
@@ -5,12 +17,16 @@
     justify-content:space-between;
 }
 
+ol.PL-content {
+    margin-top: 3rem;
+}
+
 .PL-post {
     display: flex;
     flex-direction: row;
-    margin-top: 2rem;
+    margin-top: 1rem;
     padding: 1rem;
-        border-bottom: 1.3px solid rgb(176 192 116 / 42%);
+    border-bottom: 1.3px solid rgb(176 192 116 / 42%);
     max-height: 210px;
 }
 
@@ -20,6 +36,8 @@
     justify-content: center;
     padding: 0.3rem;
     overflow: hidden;
+    box-shadow: 2px 2px 9px rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
 }
 
 
@@ -27,21 +45,19 @@ img.PL-img {
     max-height: calc((142px - 2px) * 1.618 - 10px);
     width:100%;
     object-fit:cover;
+    border-radius:16px;
 }
 
 p.PL-number {
-  background: #d9ed92;
-
+  border: 2px solid #d9ed92;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
-  min-width:1rem;      /* 한 자리 / 두 자리 기준 최소 크기 */
+  font-size:0.8rem;
+  min-width:0.8rem;      /* 한 자리 / 두 자리 기준 최소 크기 */
   padding: 0 0.2rem;    /* 숫자 늘어나면 자동 확장 */
-
-  height: 1.5rem;         /* 세로는 고정 */
+  height: 1.3rem;         /* 세로는 고정 */
   border-radius: 8px 0 8px 0; /* pill / 원형 유지 */
-
   text-align: center;
   font-weight: bold;
 }
@@ -64,6 +80,12 @@ p.PL-number {
     width:0.8rem;
 }
 
-.PL-content{
+.PostList main{
     padding: 0 3rem;
+}
+
+.PL-update{
+    font-size: 12px;
+    color: rgb(102 102 102 / 52%);
+    margin-bottom: 8px;
 }

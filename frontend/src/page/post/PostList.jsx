@@ -9,8 +9,8 @@ import "../../styles/post/postList.css";
 function PostList() {
 
   const navigate = useNavigate();
-  const{searchText,setSearchText,fnc_searchText,posts,error,
-    fnc_allPost,startPage,setStartPage,endPage,loading} = usePostSearch();
+  const { searchText, setSearchText, fnc_searchText, posts, error,
+    fnc_allPost, startPage, setStartPage, endPage, loading } = usePostSearch();
 
   const search = Boolean(searchText.trim());
 
@@ -21,8 +21,8 @@ function PostList() {
   const formatDateTime = (dateTimeString) => {
     if (!dateTimeString) return "";
     const date = new Date(dateTimeString);
-    return date.toLocaleString("ko-KR",{
-      year:"numeric",
+    return date.toLocaleString("ko-KR", {
+      year: "numeric",
       month: "2-digit",
       day: "2-digit"
     }); // 시스템 로케일 기준으로 표시
@@ -45,70 +45,68 @@ function PostList() {
   }
 
   return (
-    <div className="container PostList">
-      <Navbar/>
-      <main>
-      <h2>게시글 목록</h2>
-        <div>
-            <input type="text" value={searchText} onChange={(e)=>{setSearchText(e.target.value)}} placeholder="제목을 입력해 주세요" />
-            <button type="button" onClick={(e)=>{
-              setStartPage(0);
-              fnc_searchText(e); // 1 : 처음 검색
-              }}>검색</button>
+    <div>
+      <Navbar />
+      <div className="PL-top">
+        <h2 style={{ textAlign: "center", margin: "0" }}>게시글 목록</h2>
+        <div className="PL-topInput">
+          <input type="text" value={searchText} onChange={(e) => { setSearchText(e.target.value) }} placeholder="제목을 입력해 주세요" />
+          <button type="button" onClick={(e) => {
+            setStartPage(0);
+            fnc_searchText(e); // 1 : 처음 검색
+          }}>검색</button>
         </div>
-      <ol className="PL-content">
-      {posts.map((post,index) => (
-        <li className="PL-post"
-          key={post.index}
-          onClick = {()=>navigate(`/user/posts/postDetails/${post.index}`)}
-        >
-        {/* 이미지 썸네일 */}
+      </div>
+      <div className="container PostList">
+        <main>
+          <ol className="PL-content">
+            {posts.map((post, index) => (
+              <li className="PL-post"
+                key={post.index}
+                onClick={() => navigate(`/user/posts/postDetails/${post.index}`)}
+              >
+                {/* 이미지 썸네일 */}
 
-        {post.thumbnailUrl && 
-              <div key={post.index} className="PL-imgBox">
-                <img
-                  className="PL-img"
-                  src={post.thumbnailUrl}
-                  alt={post.title}
-                />
-              </div>
-        } 
+                {post.thumbnailUrl &&
+                  <div key={post.index} className="PL-imgBox">
+                    <img
+                      className="PL-img"
+                      src={post.thumbnailUrl}
+                      alt={post.title}
+                    />
+                  </div>
+                }
 
-          {/* 텍스트 영역 */}
-          <div className="PL-text">
-            <p style={{margin:"10px 0"}} className="PL-number">{startPage === 0 ? "": startPage}{index+1}</p>
-            <h3 style={{margin:"0 0 5px 0"}}>{post.title}</h3>
+                {/* 텍스트 영역 */}
+                <div className="PL-text">
+                  <p style={{ margin: "10px 0" }} className="PL-number">{startPage === 0 ? "" : startPage}{index + 1}</p>
+                  <h3 style={{ margin: "0 0 5px 0" }}>{post.title}</h3>
 
-            <div
-              style={{
-                fontSize: 12,
-                color: "#666",
-                marginBottom: 8,
-              }}
-            >
-              작성일: {formatDateTime(post.createdAt)}
-              {post.updatedAt && (
-                <> · 수정일: {formatDateTime(post.updatedAt)}</>
-              )}
-            </div>
+                  <div className="PL-update">
+                    작성일: {formatDateTime(post.createdAt)}
+                    {post.updatedAt && (
+                      <> · 수정일: {formatDateTime(post.updatedAt)}</>
+                    )}
+                  </div>
 
-            <p
-              style={{
-                margin: "30px 0",
-                whiteSpace: "pre-wrap",
-              }}
-            >
-              {post.preview.length >= 160 ? `${post.preview}...` : post.preview}
-            </p>
-          </div>
-        </li>
-      ))}
-      </ol>
-      </main>
-      <div className="PL-bt">
-      <button style={{background:"none", marginRight:"0.5rem"}} onClick={()=>{setStartPage(prev => prev-1)}} disabled={startPage <= 0}> <img src={leftArrow} alt="이전"/> </button>
-      <div>{startPage+1} / {endPage}</div>
-      <button style={{background:"none", marginLeft:"0.5rem"}} onClick={()=>{setStartPage(prev => prev+1)}} disabled={endPage <= startPage+1}> <img src={rightArrow} alt="다음"/></button>
+                  <p
+                    style={{
+                      margin: "30px 0",
+                      whiteSpace: "pre-wrap",
+                    }}
+                  >
+                    {post.preview.length >= 160 ? `${post.preview}...` : post.preview}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </main>
+        <div className="PL-bt">
+          <button style={{ background: "none", marginRight: "0.5rem" }} onClick={() => { setStartPage(prev => prev - 1) }} disabled={startPage <= 0}> <img src={leftArrow} alt="이전" /> </button>
+          <div>{startPage + 1} / {endPage}</div>
+          <button style={{ background: "none", marginLeft: "0.5rem" }} onClick={() => { setStartPage(prev => prev + 1) }} disabled={endPage <= startPage + 1}> <img src={rightArrow} alt="다음" /></button>
+        </div>
       </div>
     </div>
   );
