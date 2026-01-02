@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import Navbar from "../../components/common/Navbar"
 import { authFetch } from "../../api/authFetch";
 import "../../styles/Home.css";
-import home from "../../assets/home.svg";
+import shalomLogo from "../../assets/shalomBalloonArt.png";
+import HomeGallery from "../../components/home/HomeGallery";
 
 function Home() {
 
@@ -36,7 +37,15 @@ function Home() {
             <Navbar />
             </div>
             <div className="home-box1 container">
-                <img src={home}/>
+                <HomeGallery
+                    images={(posts ?? [])
+                        .filter((post) => post?.thumbnailUrl)
+                        .map((post) => ({
+                            id: post.index,
+                            src: post.thumbnailUrl,
+                            alt: post.title,
+                        }))}
+                />
             </div>
         </div>
 
