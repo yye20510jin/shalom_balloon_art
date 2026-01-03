@@ -13,10 +13,7 @@ export const CustomImage = Image.extend({
   addAttributes(){
  return {
       ...this.parent?.(),
-      align:{
-        default:"center",
-      }
-      ,width: {
+      width: {
         default: null,
         parseHTML: element =>
           element.style.width?.replace("px", "") || null,

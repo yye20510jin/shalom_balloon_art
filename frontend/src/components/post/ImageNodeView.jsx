@@ -79,7 +79,6 @@ export default function ImageNodeView(props) {
       data-drag-handle
     >
       <img
-        className={`pm-img pm-img--${node.attrs.align}`}
         ref={imgRef}
         src={src}
         alt={node.attrs.alt ?? ""}

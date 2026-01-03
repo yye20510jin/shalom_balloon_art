@@ -1,15 +1,32 @@
 import { usePostSubmit } from "../../hooks/post/usePostSubmit";
 import { useEffect, useRef, useState } from "react";
-import { EditorContent, useEditor } from "@tiptap/react";
+import { EditorContent, useEditor, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Youtube from "@tiptap/extension-youtube";
+import TextAlign from "@tiptap/extension-text-align";
+import { TextStyle } from "@tiptap/extension-text-style";
+import { Color } from "@tiptap/extension-color";
+import { FontFamily } from "@tiptap/extension-font-family";
 import { useFirebaseSingleImageUpload } from "../../hooks/firebase/useFirebaseSingleImageUpload";
 import { useFirebaseSingleImageRemove } from "../../hooks/firebase/useFirebaseSingleImageRemove";
 import { CustomImage } from "../../hooks/post/CustomImage";
+import { FontSize } from "../../hooks/post/useFontSize";
+import {CustomListItem} from "../../hooks/post/useCustomListItem";
 import "../../styles/post/PostForm.css";
 
 function Toolbar({ editor, onPickImage, onInsertYoutube }) {
   if (!editor) return null;
+  
+  const editorState = useEditorState({ //editor의 state,selection,transaction 변경을 감지
+    editor, //감시 대상
+    selector:({editor})=>({
+      isBold: editor.isActive("bold"),
+      isItalic: editor.isActive("italic"),
+      isBulletList: editor.isActive("bulletList"),
+      isOrderedList: editor.isActive("orderedList"),
+
+    })
+  });
 
   const Btn = ({ onClick, active, children }) => (
     <button
@@ -55,12 +72,21 @@ function Toolbar({ editor, onPickImage, onInsertYoutube }) {
         1. 목록
       </Btn>
 
+      <Btn onClick={() => (editor.chain().focus().setTextAlign("left").run(),editor.chain().focus().setListItemAlign("left").run())}>
+        왼쪽
+      </Btn>
+
+      <Btn onClick={() => (editor.chain().focus().setTextAlign("center").run(),editor.chain().focus().setListItemAlign("center").run())}>
+        가운데
+      </Btn>
+
+      <Btn onClick={() => (editor.chain().focus().setTextAlign("right").run(),editor.chain().focus().setListItemAlign("right").run())}>
+        오른쪽
+      </Btn>
+
       <div style={{ width: 1, background: "#eee", margin: "0 6px" }} />
 
       <Btn onClick={onPickImage}>이미지</Btn>
-      <Btn onClick={()=>editor.chain().focus().updateAttributes("image",{align:"left"}).run()}>왼쪽</Btn>
-      <Btn onClick={()=>editor.chain().focus().updateAttributes("image",{align:"center"}).run()}>가운데</Btn>
-      <Btn onClick={()=>editor.chain().focus().updateAttributes("image",{align:"right"}).run()}>오른쪽</Btn>
       <Btn onClick={onInsertYoutube}>유튜브</Btn>
     </div>
   );
@@ -97,7 +123,17 @@ function PostForm({
   // ✅ 에디터 생성
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        listItem: false,
+      }),
+      CustomListItem,
+      TextStyle,
+      Color,
+      FontFamily,
+      FontSize,
+      TextAlign.configure({
+        types:["heading","paragraph","orderedList", "bulletList"],
+      }),
       CustomImage.configure({
         inline: true,
         group:"inline",
@@ -278,8 +314,42 @@ function PostForm({
           onInsertYoutube={handleInsertYoutube}
         />
 
+        <input
+          type="color"
+          onChange={(e) =>
+            editor.chain().focus().setColor(e.target.value).run()
+          }
+        />
+
+        <select
+          onChange={(e) =>
+            editor.chain().focus().setFontFamily(e.target.value).run()
+          }
+          defaultValue=""
+        >
+          <option value="" disabled>폰트 선택</option>
+          <option value="Arial">Arial</option>
+          <option value="Pretendard">Pretendard</option>
+          <option value="Noto Sans KR">Noto Sans KR</option>
+        </select>
+
+        <select
+          onChange={(e) =>
+            editor.chain().focus().setFontSize(e.target.value).run()
+          }
+          defaultValue=""
+        >
+          <option value="" disabled>크기</option>
+          <option value="12px">12</option>
+          <option value="14px">14</option>
+          <option value="16px">16</option>
+          <option value="20px">20</option>
+          <option value="24px">24</option>
+        </select>
+
         {/* 에디터 본문 */}
         <div
+          className="ed-content"
           style={{
             border: "1px solid #ddd",
             borderRadius: 8,
