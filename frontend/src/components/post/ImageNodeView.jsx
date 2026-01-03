@@ -1,9 +1,44 @@
-import React from "react";
+import {useRef} from "react";
 import { NodeViewWrapper } from "@tiptap/react";
 
 export default function ImageNodeView(props) {
-  const { node, selected, editor, getPos, extension } = props;
+  const { node, selected, editor, getPos, extension,updateAttributes } = props;
   const src = node.attrs.src;
+  const startX = useRef(0);
+  const startWidth = useRef(0);
+  const dragging = useRef(false);
+  const imgRef = useRef(false);
+
+  const onMouseDown = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    dragging.current = true;
+    startX.current = e.clientX;
+
+    const w = Number(node.attrs.width);
+    const domWidth = imgRef.current?.getBoundingClientRect().width; 
+    startWidth.current = Number.isFinite(w) && w > 0 ? w : Number.isFinite(domWidth) && domWidth > 0 ? domWidth : 300;
+
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup",onMouseUp);
+  };
+
+  const onMouseMove = (e) => {
+    if(!dragging.current) return;
+    
+    const diff = e.clientX - startX.current;
+    const next = Math.max(60,startWidth.current + diff);
+    updateAttributes({
+      width: next,
+    });
+  };
+
+  const onMouseUp = () => {
+    dragging.current = false;
+    document.removeEventListener("mousemove", onMouseMove);
+    document.removeEventListener("mouseup",onMouseUp);
+  };
 
   const removeThisImage = async (e) => {
     e.preventDefault();
@@ -28,8 +63,11 @@ export default function ImageNodeView(props) {
     }
   };
 
+  const widthPx = Number.isFinite(Number(node.attrs.width)) && Number(node.attrs.width) > 0 ? `${node.attrs.width}px` : "100%";
+
   return (
     <NodeViewWrapper
+      contentEditable={false}
       as="span"
       style={{
         display: "inline-block",
@@ -41,15 +79,32 @@ export default function ImageNodeView(props) {
       data-drag-handle
     >
       <img
+        className={`pm-img pm-img--${node.attrs.align}`}
+        ref={imgRef}
         src={src}
         alt={node.attrs.alt ?? ""}
         title={node.attrs.title ?? ""}
         style={{
           display: "block",
           maxWidth: "100%",
+          height: "auto",
+          width : widthPx,
           borderRadius: 8,
         }}
         draggable={false}
+      />
+
+      <div
+        onMouseDown={(e) => onMouseDown(e)}
+        style={{
+          position: "absolute",
+          right: 0,
+          bottom: 0,
+          width: 12,
+          height: 12,
+          background: "#333",
+          cursor: "nwse-resize",
+        }}
       />
 
       {/* ✅ 오버레이 X 버튼 */}

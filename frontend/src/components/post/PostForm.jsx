@@ -6,15 +6,10 @@ import Youtube from "@tiptap/extension-youtube";
 import { useFirebaseSingleImageUpload } from "../../hooks/firebase/useFirebaseSingleImageUpload";
 import { useFirebaseSingleImageRemove } from "../../hooks/firebase/useFirebaseSingleImageRemove";
 import { CustomImage } from "../../hooks/post/CustomImage";
-import { getApp } from "firebase/app";
-import { getStorage } from "firebase/storage";
+import "../../styles/post/PostForm.css";
 
-console.log("projectId:", getApp().options.projectId);
-console.log("storageBucket:", getStorage().app.options.storageBucket);
 function Toolbar({ editor, onPickImage, onInsertYoutube }) {
   if (!editor) return null;
-
-
 
   const Btn = ({ onClick, active, children }) => (
     <button
@@ -63,6 +58,9 @@ function Toolbar({ editor, onPickImage, onInsertYoutube }) {
       <div style={{ width: 1, background: "#eee", margin: "0 6px" }} />
 
       <Btn onClick={onPickImage}>이미지</Btn>
+      <Btn onClick={()=>editor.chain().focus().updateAttributes("image",{align:"left"}).run()}>왼쪽</Btn>
+      <Btn onClick={()=>editor.chain().focus().updateAttributes("image",{align:"center"}).run()}>가운데</Btn>
+      <Btn onClick={()=>editor.chain().focus().updateAttributes("image",{align:"right"}).run()}>오른쪽</Btn>
       <Btn onClick={onInsertYoutube}>유튜브</Btn>
     </div>
   );
@@ -94,16 +92,18 @@ function PostForm({
   const fileInputRef = useRef(null);
 
   const { uploadOne, isUploading, error: uploadError, setError: setUploadError } = useFirebaseSingleImageUpload({ folder: "posts" });
-  const { removeOne , removeTiptapImage } = useFirebaseSingleImageRemove();
+  const { removeOne, removeTiptapImage } = useFirebaseSingleImageRemove();
 
   // ✅ 에디터 생성
   const editor = useEditor({
     extensions: [
       StarterKit,
       CustomImage.configure({
-        inline : false,
-        allowBase64 : false,
-        onRemove : (src) =>{
+        inline: true,
+        group:"inline",
+        draggable: true,
+        allowBase64: false,
+        onRemove: (src) => {
           removeTiptapImage(src);
         }
       }),
@@ -129,7 +129,7 @@ function PostForm({
     if (editor && initialValues.contentHtml) {
 
       queueMicrotask(() => {
-          editor.commands.setContent(initialValues.contentHtml,false);
+        editor.commands.setContent(initialValues.contentHtml, false);
       });
     }
 
@@ -160,12 +160,12 @@ function PostForm({
     const files = Array.from(e.target.files);
     if (!files.length) return;
 
-    for(const file of files){
+    for (const file of files) {
       const url = await uploadOne(file);
 
-      editor.chain().focus().insertContent([{ type: "image", attrs: { src: url } },{ type: "paragraph" },]).run();
+      editor.chain().focus().insertContent([{ type: "image", attrs: { src: url } }, { type: "paragraph" },]).run();
     }
-  
+
     e.target.value = "";
   };
 
@@ -233,7 +233,7 @@ function PostForm({
 
                 <button
                   type="button"
-                  onClick={() => removeOne(thumbnailUrl, setThumbError ,setThumbnailUrl)}
+                  onClick={() => removeOne(thumbnailUrl, setThumbError, setThumbnailUrl)}
                   style={{
                     position: "absolute",
                     top: "-6px",

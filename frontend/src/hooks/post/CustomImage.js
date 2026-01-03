@@ -6,7 +6,27 @@ export const CustomImage = Image.extend({
   addOptions() {
     return {
       ...this.parent?.(),
+
       onRemove: null, // (src) => Promise<void> 같은 콜백을 바깥에서 주입
+    };
+  },
+  addAttributes(){
+ return {
+      ...this.parent?.(),
+      align:{
+        default:"center",
+      }
+      ,width: {
+        default: null,
+        parseHTML: element =>
+          element.style.width?.replace("px", "") || null,
+        renderHTML: attrs => {
+          if (!attrs.width) return {};
+          return {
+            style: `width:${attrs.width}px`,
+          };
+        },
+      },
     };
   },
 

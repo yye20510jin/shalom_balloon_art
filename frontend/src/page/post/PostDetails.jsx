@@ -3,6 +3,7 @@ import { authFetch } from "../../api/authFetch";
 import AuthContext from "../../auth/AuthContext";
 import { useParams, useNavigate } from "react-router-dom";
 import { usePostDelete } from "../../hooks/post/usePostDelete"
+import "../../styles/post/PostDetails.css";
 
 function PostDetails() {
   const [post, setPost] = useState([]);      // PostResponseDTO[]
@@ -98,7 +99,7 @@ function PostDetails() {
         }
 
         {/* 텍스트 영역 */}
-        <div style={{ flex: 1 }}>
+        <div  className="post-content" style={{ flex: 1 }}>
 
           <div
             style={{
