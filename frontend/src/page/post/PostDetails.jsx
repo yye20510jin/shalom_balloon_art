@@ -99,7 +99,7 @@ function PostDetails() {
         }
 
         {/* 텍스트 영역 */}
-        <div  className="post-content" style={{ flex: 1 }}>
+        <div className="post-content ProseMirror" style={{ flex: 1 }}>
 
           <div
             style={{
@@ -128,7 +128,7 @@ function PostDetails() {
           <button onClick={() => navigate(`/admin/posts/editPostPage/${id}`)}>
             수정
           </button>
-          <button onClick={() => { deleteSubmit(post.index, setError) }}>
+          <button onClick={() => { deleteSubmit(post.index, setError, post.contentHtml) }}>
             삭제
           </button>
         </>

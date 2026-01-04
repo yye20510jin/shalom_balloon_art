@@ -58,8 +58,8 @@ public class PostController {
     //글 삭제
     @DeleteMapping("/{index}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> deletePost(@PathVariable Long index){
-        postService.deletePost(index);
+    public ResponseEntity<String> deletePost(@PathVariable Long index, @RequestBody List<String> imagePaths){
+        postService.deletePost(index,imagePaths);
         return ResponseEntity.ok("success");
     }
 

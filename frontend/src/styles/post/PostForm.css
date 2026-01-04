@@ -87,7 +87,7 @@
 .ProseMirror ol:not(ol ol)[data-align="right"]{ justify-content: flex-end; }
 
 /*글자 자간*/
-.ed-content p{
+.ProseMirror p{
   margin: 0;
 }
 

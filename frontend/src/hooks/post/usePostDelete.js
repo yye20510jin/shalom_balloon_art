@@ -1,15 +1,24 @@
 import { authFetch } from "../../api/authFetch";
 import { useNavigate } from "react-router-dom";
+import { firebaseDownloadUrlToObjectPath } from "../firebase/firebaseDownloadUrlToObjectPath";
 
 export function usePostDelete(){
   const navigate = useNavigate();
 
-  const deleteSubmit = async(index,setError) => {
+  const deleteSubmit = async(index,setError,contentHtml) => {
+    const doc = new DOMParser().parseFromString(contentHtml, "text/html");
+    const srcs = Array.from(doc.querySelectorAll("img")).map(img => img.getAttribute("src")).filter(Boolean);
+    const imagUrls = Array.from(new Set(srcs));
+    const imagePaths  = imagUrls.map(firebaseDownloadUrlToObjectPath).filter(Boolean);
+    console.log("imagePaths: " + imagePaths);
     try {
           const res = await authFetch(
             `${import.meta.env.VITE_BACKEND_BASE_URL}/api/posts/${index}`,
               {
                 method: "DELETE",
+                body:JSON.stringify(
+                  imagePaths,
+                ),
               }
             );
       

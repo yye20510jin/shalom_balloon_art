@@ -107,10 +107,13 @@ public class PostService {
     }
 
 
-    public void deletePost(Long index){
+    public void deletePost(Long index, List<String> imagePaths){
         Post post = postRepository.findById(index).orElseThrow(() -> new RuntimeException("id 없음"));
         // Firebase 이미지 삭제 로직
         fire.delete(post.getThumbnailUrl());
+        for(String url : imagePaths) {
+            fire.deleteHtml(url);
+        }
         postRepository.delete(post);
     }
 
