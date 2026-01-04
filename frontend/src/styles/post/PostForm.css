@@ -13,10 +13,10 @@
     outline:none;
 }
 
-/* 리스트 */
+/* Ul 리스트 */
 .ProseMirror ul {
   list-style: none;
-  padding-left: 0;   /* 들여쓰기 제거 */
+  padding-left: 0;  
   margin-left: 0;
 }
 
@@ -28,12 +28,66 @@
 .ProseMirror ul > li::before {
   content: "•";
 }
-.ProseMirror li[data-align="left"] {justify-content: flex-start;}
-.ProseMirror li[data-align="center"] { justify-content: center; }
-.ProseMirror li[data-align="right"]  { justify-content: flex-end;  }
 
+/* Ol 리스트 */
+.ProseMirror ol{
+  list-style:none;
+  padding:0;
+  margin: 0;
+  counter-reset: item;
+  display:grid;
+}
+
+.ProseMirror ol > li{
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 0.6rem;
+}
+
+.ProseMirror ol > li::before {
+  counter-increment: item; /*번호 증가*/
+  content: counter(item) ".";
+  grid-column: 1;
+  grid-row: 1;
+  text-align: right;
+  font-weight: 799;
+}
+
+.ProseMirror ol > li > p{
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+}
+
+.ProseMirror ol > li > ol{
+  grid-column:2;
+  grid-row:2;
+  margin: 0.25rem 0 0 0;
+  padding: 0;
+}
+
+.ProseMirror ol ol {
+  counter-reset:sub;
+}
+
+.ProseMirror ol ol > li:before{
+  counter-increment: sub;
+  content: counter(item) "-" counter(sub)
+}
+
+
+/* 리스트 정렬 */
+.ProseMirror ul li[data-align="left"] { justify-content: flex-start; }
+.ProseMirror ul li[data-align="center"] { justify-content: center; }
+.ProseMirror ul li[data-align="right"]  { justify-content: flex-end;  }
+
+.ProseMirror ol:not(ol ol)[data-align="left"]{ justify-content: flex-start;}
+.ProseMirror ol:not(ol ol)[data-align="center"]{justify-content: center;}
+.ProseMirror ol:not(ol ol)[data-align="right"]{ justify-content: flex-end; }
 
 /*글자 자간*/
 .ed-content p{
   margin: 0;
 }
+

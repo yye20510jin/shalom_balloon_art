@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import { EditorContent, useEditor, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Youtube from "@tiptap/extension-youtube";
-import TextAlign from "@tiptap/extension-text-align";
 import { TextStyle } from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
 import { FontFamily } from "@tiptap/extension-font-family";
@@ -12,6 +11,8 @@ import { useFirebaseSingleImageRemove } from "../../hooks/firebase/useFirebaseSi
 import { CustomImage } from "../../hooks/post/CustomImage";
 import { FontSize } from "../../hooks/post/useFontSize";
 import {CustomListItem} from "../../hooks/post/useCustomListItem";
+import {CustomTextAlign} from "../../hooks/post/useCustomTextAlign";
+import {CustomOrderedList} from "../../hooks/post/useCustomOrderedList";
 import "../../styles/post/PostForm.css";
 
 function Toolbar({ editor, onPickImage, onInsertYoutube }) {
@@ -45,7 +46,7 @@ function Toolbar({ editor, onPickImage, onInsertYoutube }) {
     </button>
   );
 
-  return (
+   return (
     <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 10 }}>
       <Btn
         active={editor.isActive("bold")}
@@ -72,15 +73,27 @@ function Toolbar({ editor, onPickImage, onInsertYoutube }) {
         1. 목록
       </Btn>
 
-      <Btn onClick={() => (editor.chain().focus().setTextAlign("left").run(),editor.chain().focus().setListItemAlign("left").run())}>
+      <Btn onClick={() => {
+        editor.chain().focus().setTextAlign("left").run();
+        editor.chain().focus().setListItemAlign("left").run();
+        editor.chain().focus().setOrderedListAlign("left").run();
+      }}>
         왼쪽
       </Btn>
 
-      <Btn onClick={() => (editor.chain().focus().setTextAlign("center").run(),editor.chain().focus().setListItemAlign("center").run())}>
+      <Btn onClick={() => {
+        editor.chain().focus().setTextAlign("center").run();
+        editor.chain().focus().setListItemAlign("center").run();
+        editor.chain().focus().setOrderedListAlign("center").run();
+      }}>
         가운데
       </Btn>
 
-      <Btn onClick={() => (editor.chain().focus().setTextAlign("right").run(),editor.chain().focus().setListItemAlign("right").run())}>
+      <Btn onClick={() =>{
+        editor.chain().focus().setTextAlign("right").run();
+        editor.chain().focus().setListItemAlign("right").run();
+        editor.chain().focus().setOrderedListAlign("right").run();
+      }}>
         오른쪽
       </Btn>
 
@@ -126,13 +139,14 @@ function PostForm({
       StarterKit.configure({
         listItem: false,
       }),
+      CustomOrderedList,
       CustomListItem,
       TextStyle,
       Color,
       FontFamily,
       FontSize,
-      TextAlign.configure({
-        types:["heading","paragraph","orderedList", "bulletList"],
+      CustomTextAlign.configure({
+        types:["heading","paragraph"],
       }),
       CustomImage.configure({
         inline: true,
