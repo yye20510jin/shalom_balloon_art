@@ -13,36 +13,50 @@
     outline:none;
 }
 
-/* Ul 리스트 */
-.ProseMirror ul {
+/* ul+ol 리스트 */
+.ProseMirror ul, .ProseMirror ol {
   list-style: none;
   padding-left: 0;  
   margin-left: 0;
+  display:grid;
 }
 
-.ProseMirror ul > li {
-  display: flex;
-  gap:8px;
+.ProseMirror ul > li, .ProseMirror ol > li {
+  display:grid;
+  grid-template-columns: max-content 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 0.6rem;
 }
 
 .ProseMirror ul > li::before {
+  grid-column:1;
+  grid-row:1;
+  text-align:right;
   content: "•";
+}
+
+.ProseMirror ul > li > p , .ProseMirror ol > li > p{
+  grid-column:2;
+  grid-row:1;
+  margin:0;
+}
+
+.ProseMirror ul > li > ul{
+  grid-column:2;
+  grid-row:2;
+  margin: 0.25rem 0 0 0;
+  padding: 0;
+  display: grid;
+  justify-items: start;
+}
+
+.ProseMirror ul ul > li::before{
+  content: "▫";
 }
 
 /* Ol 리스트 */
 .ProseMirror ol{
-  list-style:none;
-  padding:0;
-  margin: 0;
   counter-reset: item;
-  display:grid;
-}
-
-.ProseMirror ol > li{
-  display: grid;
-  grid-template-columns: max-content 1fr;
-  grid-template-rows: auto auto;
-  column-gap: 0.6rem;
 }
 
 .ProseMirror ol > li::before {
@@ -52,12 +66,6 @@
   grid-row: 1;
   text-align: right;
   font-weight: 799;
-}
-
-.ProseMirror ol > li > p{
-  grid-column: 2;
-  grid-row: 1;
-  margin: 0;
 }
 
 .ProseMirror ol > li > ol{
@@ -78,9 +86,9 @@
 
 
 /* 리스트 정렬 */
-.ProseMirror ul li[data-align="left"] { justify-content: flex-start; }
-.ProseMirror ul li[data-align="center"] { justify-content: center; }
-.ProseMirror ul li[data-align="right"]  { justify-content: flex-end;  }
+.ProseMirror ul:not(ul ul)[data-align="left"] { justify-content: flex-start; }
+.ProseMirror ul:not(ul ul)[data-align="center"] { justify-content: center; }
+.ProseMirror ul:not(ul ul)[data-align="right"]  { justify-content: flex-end;  }
 
 .ProseMirror ol:not(ol ol)[data-align="left"]{ justify-content: flex-start;}
 .ProseMirror ol:not(ol ol)[data-align="center"]{justify-content: center;}

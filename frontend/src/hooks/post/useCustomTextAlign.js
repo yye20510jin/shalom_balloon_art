@@ -12,7 +12,7 @@ export const CustomTextAlign = TextAlign.extend({
 
                     const {editor} = props;
 
-                    if(editor.isActive("listItem")){return false;}
+                    if(editor.isActive("orderedList") || editor.isActive("bulletList")){return false;}
 
                     return parent.setTextAlign(align)(props);
                 },

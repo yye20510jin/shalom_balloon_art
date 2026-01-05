@@ -13,6 +13,7 @@ import { FontSize } from "../../hooks/post/useFontSize";
 import {CustomListItem} from "../../hooks/post/useCustomListItem";
 import {CustomTextAlign} from "../../hooks/post/useCustomTextAlign";
 import {CustomOrderedList} from "../../hooks/post/useCustomOrderedList";
+import { CustomBulletList } from "../../hooks/post/useCustomBulletList";
 import "../../styles/post/PostForm.css";
 
 function Toolbar({ editor, onPickImage, onInsertYoutube }) {
@@ -75,7 +76,7 @@ function Toolbar({ editor, onPickImage, onInsertYoutube }) {
 
       <Btn onClick={() => {
         editor.chain().focus().setTextAlign("left").run();
-        editor.chain().focus().setListItemAlign("left").run();
+        editor.chain().focus().setBulletListAlign("left").run();
         editor.chain().focus().setOrderedListAlign("left").run();
       }}>
         왼쪽
@@ -83,7 +84,7 @@ function Toolbar({ editor, onPickImage, onInsertYoutube }) {
 
       <Btn onClick={() => {
         editor.chain().focus().setTextAlign("center").run();
-        editor.chain().focus().setListItemAlign("center").run();
+        editor.chain().focus().setBulletListAlign("center").run();
         editor.chain().focus().setOrderedListAlign("center").run();
       }}>
         가운데
@@ -91,7 +92,7 @@ function Toolbar({ editor, onPickImage, onInsertYoutube }) {
 
       <Btn onClick={() =>{
         editor.chain().focus().setTextAlign("right").run();
-        editor.chain().focus().setListItemAlign("right").run();
+        editor.chain().focus().setBulletListAlign("right").run();
         editor.chain().focus().setOrderedListAlign("right").run();
       }}>
         오른쪽
@@ -136,9 +137,8 @@ function PostForm({
   // ✅ 에디터 생성
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({
-        listItem: false,
-      }),
+      StarterKit,
+      CustomBulletList,
       CustomOrderedList,
       CustomListItem,
       TextStyle,
