@@ -1,0 +1,29 @@
+:root {
+  --anim-duration: 520ms;
+  --anim-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --anim-distance: 48px;
+  --anim-scale: 0.92;
+}
+
+/* 공통 베이스 */
+.anim {
+  animation-duration: var(--anim-duration);
+  animation-timing-function: var(--anim-ease);
+  animation-fill-mode: both;
+  will-change: transform, opacity;
+}
+
+/* 옵션 */
+.anim--fast { animation-duration: 320ms; }
+.anim--slow { animation-duration: 760ms; }
+
+.anim--delay-100 { animation-delay: 100ms; }
+.anim--delay-200 { animation-delay: 200ms; }
+.anim--delay-300 { animation-delay: 300ms; }
+.anim--delay-500 { animation-delay: 500ms; }
+
+/* 진입 전 숨김*/
+.anim-pre {
+  opacity: 0;
+  transform: translate3d(0, 0, 0);
+}

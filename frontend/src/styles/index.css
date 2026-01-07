@@ -69,10 +69,6 @@ button:focus-visible {
   
 }
 
-button:hover{
-  background-color: #b5e48c;
-}
-
 .container{
   width:100%;
   max-width:80rem;

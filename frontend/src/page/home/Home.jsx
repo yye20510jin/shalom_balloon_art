@@ -3,7 +3,8 @@ import Navbar from "../../components/common/Navbar"
 import { authFetch } from "../../api/authFetch";
 import "../../styles/Home.css";
 import home from "../../assets/home.svg";
-
+import Reveal from"../../components/animations/Reveal";
+import "../../styles/animations/index.css";
 function Home() {
 
     const [posts, setPosts] = useState([]);
@@ -31,13 +32,30 @@ function Home() {
 
 
     return (
-        <div className="home-container ">
-            <div className="navbarUnder">
-            <Navbar />
-            </div>
-            <div className="home-box1 container">
-                <img src={home}/>
-            </div>
+        <div className="home-container container ">    
+                <Navbar />
+            <main className="home">
+                <img src={home} />
+
+                <section className="HM-s1">
+                    <Reveal useThreshold="0.48" extras="anim--slow" className="HM-s1sub1">
+                        <div className="HM-sub1-img"></div>
+                        <div className="HM-sub1-text"></div>
+                    </Reveal>
+                    <Reveal useThreshold="0.51" effect="anim-fade-in" extras="anim--slow" className="HM-s1sub2">
+                        <div className="HM-sun2-img"></div>
+                        <div className="HM-sub2-text"></div>
+                    </Reveal> 
+                </section>
+            </main>
+
+            <footer className="HM-ft">
+                <div className="HM-ft-text">
+                    아트, 풍선이 되다.<br/>
+                    Eun-kyung Park
+                </div>
+            </footer>
+
         </div>
 
     );

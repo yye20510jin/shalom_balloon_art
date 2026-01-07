@@ -1,0 +1,41 @@
+/* ---------- fade ---------- */
+@keyframes anim-fade-in {
+  from { opacity: 0; transform: translate3d(0,calc(var(--anim-distance)*-1),0);}
+  to   { opacity: 1; transform: translate3d(0,0,0);}
+}
+.anim-fade-in { animation-name: anim-fade-in; }
+
+@keyframes anim-fade-up {
+  from { opacity: 0; transform: translate3d(0, var(--anim-distance), 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+.anim-fade-up { animation-name: anim-fade-up; }
+
+
+/* ---------- slide ---------- */
+@keyframes anim-slide-left {
+  from { opacity: 0; transform: translate3d(calc(var(--anim-distance) * -1), 0, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+.anim-slide-left { animation-name: anim-slide-left; }
+
+@keyframes anim-slide-right {
+  from { opacity: 0; transform: translate3d(var(--anim-distance), 0, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+.anim-slide-right { animation-name: anim-slide-right; }
+
+
+/* ---------- zoom ---------- */
+@keyframes anim-zoom-in {
+  from { opacity: 0; transform: scale(var(--anim-scale)); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.anim-zoom-in { animation-name: anim-zoom-in; }
+
+/* 사라지는 용도 */
+@keyframes anim-zoom-out {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(var(--anim-scale)); }
+}
+.anim-zoom-out { animation-name: anim-zoom-out; }

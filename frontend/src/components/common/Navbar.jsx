@@ -24,7 +24,7 @@ function Navbar() {
         navigate("/user/posts/postList");
     };
     return (
-        <nav className="navbar container">
+        <nav className="navbar">
             <div className="Nb-box">
                 <img className="logo" src={logo} alt="shalomBalloonArt" />
                 <div className="Nb-bt">
