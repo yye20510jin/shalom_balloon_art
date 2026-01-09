@@ -6,20 +6,35 @@ import home from "../../assets/home.svg";
 import Reveal from"../../components/animations/Reveal";
 import "../../styles/animations/index.css";
 function Home() {
-
-    const [posts, setPosts] = useState([]);
-
+    const[imgUrl, setImgUrl] = useState([null,null]);
+    const[text, setText] = useState(["",""]);
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const res = await authFetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/posts/home`, {
+                const res = await authFetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/home`, {
                     method: "GET",
                 });
 
-                if (!res) return;
+                if (!res.ok){
+                    console.error("홈 카드를 가져오지 못했습니다.");
+                    return;
+                }
 
                 const data = await res.json();
-                setPosts(data);
+
+                for(let i = 0; i < 2; i++){
+                    setImgUrl(prev => {
+                        const next = [...prev];
+                        next[i] = data[i].imgUrl;
+                        return next;
+                    });
+
+                    setText(prev => {
+                        const next = [...prev];
+                        next[i] = data[i].text;
+                        return next;
+                    });
+                }
 
             } catch (err) {
                 console.error(err);
@@ -36,15 +51,14 @@ function Home() {
                 <Navbar />
             <main className="home">
                 <img src={home} />
-
-                <section className="HM-s1">
-                    <Reveal useThreshold="0.48" extras="anim--slow" className="HM-s1sub1">
-                        <div className="HM-sub1-img"></div>
-                        <div className="HM-sub1-text"></div>
+                <section className="HM-cardSection">
+                    <Reveal useThreshold="0.48" extras="anim--slow" className="HM-card one">
+                        <div className="cardImg"><img src={imgUrl[0]} alt="HomeCard1"/></div>
+                        <div className="cardText">{text[0]}</div>
                     </Reveal>
-                    <Reveal useThreshold="0.51" effect="anim-fade-in" extras="anim--slow" className="HM-s1sub2">
-                        <div className="HM-sun2-img"></div>
-                        <div className="HM-sub2-text"></div>
+                    <Reveal useThreshold="0.51" effect="anim-fade-in" extras="anim--slow" className="HM-card two">
+                        <div className="cardImg"><img src={imgUrl[1]} alt="HomeCard2"/></div>
+                        <div className="cardText">{text[1]}</div>
                     </Reveal> 
                 </section>
             </main>

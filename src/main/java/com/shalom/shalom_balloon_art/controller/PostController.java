@@ -28,12 +28,6 @@ public class PostController {
         return ResponseEntity.ok("success");
     }
 
-    // 전체 썸네일 (홈페이지)
-    @GetMapping("/home")
-    public ResponseEntity<List<PostListResponseDTO>> getHomeAllPosts(){
-        return ResponseEntity.ok(postService.getHomeAllPosts());
-    }
-
     // 전체 글 목록 (페이지네이션)
     @GetMapping
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
