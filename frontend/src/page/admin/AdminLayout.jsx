@@ -15,6 +15,7 @@ const{logout}=useContext(AuthContext);
           <a href="/admin/addAdmin">관리자 추가</a>
           <a href="/admin/posts">글 추가</a>
           <a href="/user/posts/postList">목록보기</a>
+          <a href="/admin/AdminHomeCard">홈 카드</a>"
           <a  style={{cursor:"pointer"}} onClick={logout}>로그아웃</a>
         </nav>
       </aside>

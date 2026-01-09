@@ -1,5 +1,6 @@
 package com.shalom.shalom_balloon_art.controller;
 
+import com.shalom.shalom_balloon_art.dto.HomeCardRequestDTO;
 import com.shalom.shalom_balloon_art.dto.MembershipRequestDTO;
 import com.shalom.shalom_balloon_art.dto.MembershipResponseDTO;
 import com.shalom.shalom_balloon_art.dto.PostListResponseDTO;
@@ -86,4 +87,22 @@ public class AdminController {
         return ResponseEntity.ok(adminService.userList(page));
     }
 
+    //HomeCard가져오기
+    @GetMapping("/homeCard")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> homeCard(){
+        return ResponseEntity.ok(adminService.homeCard());
+    }
+
+    //HomeCard 수정
+    @PostMapping("/homeCard")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> homeCardEdit(@RequestBody HomeCardRequestDTO h){
+        try{
+            adminService.homeCardEdit(h);
+        }catch(IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        return ResponseEntity.ok("homeCard 업데이트 성공");
+    }
 }

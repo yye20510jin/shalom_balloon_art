@@ -14,6 +14,7 @@ import RequireAdmin from "../auth/RequireAdmin";
 import RequireUser from "../auth/RequireUser";
 import UserLayout from "../page/User/UserLayout";
 import UserList from "../page/admin/UserList";
+import AdminHomeCard from "../page/admin/AdminHomecard";
 import { AdminContext_f } from "../components/admin/adminContext";
 
 export const routes = [
@@ -37,6 +38,7 @@ export const routes = [
       { path: "userList", element: <UserList /> },
       { path: "posts", element: <PostForm /> },
       { path: "posts/editPostPage/:id", element: <EditPostPage /> },
+      { path: "adminHomeCard" ,element:<AdminHomeCard/>},
     ],
   },
   {

@@ -283,7 +283,11 @@ function PostForm({
 
                 <button
                   type="button"
-                  onClick={() => removeOne(thumbnailUrl, setThumbError, setThumbnailUrl)}
+                  onClick={async () =>{
+                    const ok =  await removeOne(thumbnailUrl);
+                    if(!ok) {setThumbError("썸네일 삭제 실패"); return;}
+                    setThumbnailUrl("");
+                  }}
                   style={{
                     position: "absolute",
                     top: "-6px",
