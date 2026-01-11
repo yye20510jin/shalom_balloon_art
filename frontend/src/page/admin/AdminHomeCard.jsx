@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useLocalImageCandidates } from "../../hooks/post/useLocalImageCandidates";
 import { authFetch } from "../../api/authFetch";
 import { useFirebaseSingleImageUpload } from "../../hooks/firebase/useFirebaseSingleImageUpload";
+import "../../styles/admin/AdminHomeCard.css";
 function AdminHomeCard() {
     const [imgUrl, setImgUrl] = useState(["", ""]);
     const [text, setText] = useState(["", ""]);
@@ -102,12 +103,13 @@ function AdminHomeCard() {
     };
 
     return (
-        <div>
+        <div className="container AHC_main">
             {error && <div style={{ color: "red" }}>{error}</div>}
+            <div className="AHC_sub">
             {Array.from({ length: 2 }).map((_, i) => (
-                <section key={i} className={`AHC-section${i}`}>
+                <section key={i} className={`AHC_section${i}`}>
                     {imgUrl[i] ? (
-                        <div>
+                        <div className="AHC_imgBox">
                             <img src={imgUrl[i]} alt="HomeCardImg1" />
                             <button onClick={() => {
                                 setImgUrl(prev => {
@@ -119,8 +121,7 @@ function AdminHomeCard() {
                             }}>x</button>
                         </div>
                     ) : (
-                        <div className={`AHC-noIMG${i}`}>
-                            이미지 자체가 없는 경우
+                        <div className={`AHC_noIMG${i}`}>
                             <button onClick={() => imgUrlInput.current[i]?.click()}>+</button>
                         </div>
                     )}
@@ -133,6 +134,7 @@ function AdminHomeCard() {
                     }} placeholder="설명을 입력하세요" />
                 </section>
             ))}
+            </div>
 
             {Array.from({ length: 2 }).map((_, i) => (
                 <input key={i} ref={(el) => imgUrlInput.current[i] = el}

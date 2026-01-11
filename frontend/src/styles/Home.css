@@ -55,6 +55,9 @@
 .cardText {
     background-color: #c2e6ac;
     height:200px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
 }
 
 
