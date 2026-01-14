@@ -4,7 +4,6 @@ import com.shalom.shalom_balloon_art.dto.HomeCardRequestDTO;
 import com.shalom.shalom_balloon_art.dto.MembershipRequestDTO;
 import com.shalom.shalom_balloon_art.dto.MembershipResponseDTO;
 import com.shalom.shalom_balloon_art.dto.post.AnalyticsResponseDTO;
-import com.shalom.shalom_balloon_art.dto.post.PostListResponseDTO;
 import com.shalom.shalom_balloon_art.entity.User;
 import com.shalom.shalom_balloon_art.service.*;
 import org.springframework.data.domain.Page;

@@ -6,6 +6,7 @@ import com.shalom.shalom_balloon_art.dto.MembershipRequestDTO;
 import com.shalom.shalom_balloon_art.entity.Role;
 import com.shalom.shalom_balloon_art.entity.SignupRequest;
 import com.shalom.shalom_balloon_art.entity.User;
+import com.shalom.shalom_balloon_art.global.error.BusinessException;
 import com.shalom.shalom_balloon_art.repository.RoleRepository;
 import com.shalom.shalom_balloon_art.repository.SignupRequestRepository;
 import com.shalom.shalom_balloon_art.repository.UserRepository;
@@ -17,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.shalom.shalom_balloon_art.global.error.ErrorCode.*;
 
 @Service
 public class AuthService {
@@ -108,7 +111,12 @@ public class AuthService {
     }
 
     public void idDuplicateCheck(String id){
-        userRepository.findByUserId(id).orElseThrow(() -> new RuntimeException("해당 아이디는 존재하지 않습니다."));
+        boolean existsInUser = userRepository.existsByUserId(id);
+        boolean existsInSignupRequest = signupRequestRepository.existsByUserId(id);
+
+        if(existsInUser || existsInSignupRequest){
+            throw new RuntimeException("이미 사용 중인 아이디 입니다.");
+        }
     }
 
     @Transactional

@@ -1,8 +1,10 @@
 import {useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useContext} from "react";
 import {authFetch} from "../../api/authFetch"
+import AuthContext from "../../auth/AuthContext";
 
 function AddAdmin(){
+        const{roles} = useContext(AuthContext);
 
         const[userId,setUserId] = useState("");
         const[userPassword,setUserPassword] = useState("");

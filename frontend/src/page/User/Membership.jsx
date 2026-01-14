@@ -1,9 +1,12 @@
-import { useState,useEffect } from "react";
+import { useState,useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { authFetch } from "../../api/authFetch";
 import shalomLogo from "../../assets/shalomBalloonArt.png";
+import AuthContext from "../../auth/AuthContext";
 import "../../styles/user/Membership.css";
 
 function Membership() {
+  const{roles} = useContext(AuthContext);
   const [userId, setUserId] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [userName, setUserName] = useState("");
@@ -27,7 +30,8 @@ function Membership() {
     idCheck &&
     isPasswordMatch &&
     isPasswordValid;
-  
+  const admin = roles.some(role=> role === "ROLE_ADMIN"); 
+
   const memberShipSubmit = async (e) => {
     e.preventDefault();
 
@@ -35,15 +39,13 @@ function Membership() {
       setError("입력 내용을 다시 확인해 주세요.");
       return;
     }
-
+    const url = admin ? `${import.meta.env.VITE_BACKEND_BASE_URL}/api/admin/addAdmin`: `${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/membership`;
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/membership`,
+
+      const res = await authFetch(
+        url,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
           body: JSON.stringify({
             userId,
             userPassword,
@@ -61,8 +63,13 @@ function Membership() {
         return;
       }
 
-      alert("회원가입 완료")
-      navigate("/");
+      if(admin){
+        alert("관리자 추가 완료");
+        navigate("/admin");
+      }else{
+        alert("회원가입 완료");
+        navigate("/");
+      }
 
     } catch (err) {
 

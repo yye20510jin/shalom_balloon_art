@@ -18,7 +18,7 @@ public enum ErrorCode {
 
     //===User===
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "U001", "사용자를 찾을 수 없습니다."),
-    DUPLICATE_EMAIL(HttpStatus.CONFLICT, "U002", "이미 사용 중인 이메일입니다."),
+    DUPLICATE_ID(HttpStatus.CONFLICT, "U002", "이미 사용 중인 아아디입니다."),
 
     // ===Post===
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "P001", "게시글이 존재하지 않습니다.");
