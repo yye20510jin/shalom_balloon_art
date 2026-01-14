@@ -4,28 +4,27 @@ import { useNavigate } from "react-router-dom";
 import UserList from "./UserList";
 import UserApprove from "./UserApprove";
 import "../../styles/admin/AdminDashboard.css";
-import imgCard from "../../assets/imgCard.png";
+import PostViewLineChart from "../../components/admin/postViewLineChart";
 
 function Admin() {
 
     const [error, setError] = useState("");
-    const [data, setData] = useState([]);
+    const [data, setData] = useState(null);
     const navigate = useNavigate();
-    const max = 3;
 
     useEffect(() => {
         const fetchAdminData = async () => {
 
             try {
-                const res = await authFetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/admin/test`, { method: "GET", });
+                const res = await authFetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/admin`, { method: "GET", });
                 if (!res.ok) {
-                    setError("관리자 권한이 없거나, 로그인 필요");
                     navigate("/");
                     return;
                 }
 
                 const res_data = await res.json();
-                setData(res_data.content);
+                console.log(res_data.series);
+                setData(res_data ?? []);
 
             } catch (e) {
                 console.error(e);
@@ -37,21 +36,8 @@ function Admin() {
 
     return (
         <div className="container" style={{ padding: 20 }}>
-            <section className="Ad-top3-section">
-                <div className="AdminDashboard-top3">
-                {[...data, ...Array(Math.max(0, max - data.length)).fill(null)].map((post, index) =>
-                    post ? (
-                        <div className="Ad-top3-box" key={post.index}>
-                            <img className="Ad-top3-img" src={post.thumbnailUrl} alt={`사진${post.index}`} />
-                            <div className="Ad-top3-sub">{post.title}</div>
-                        </div>
-                    ) : (
-                        <div className="Ad-top3-box-sub" key={`sub${index}`}>
-                            <img src={imgCard} alt="게시물이 없습니다."/>
-                        </div>
-                    )
-                )}
-                </div>
+            <section className="Ad-top5-section">
+                {data && <PostViewLineChart data={data}/>}
             </section>
 
             <div className="AdminDashboard-box1">

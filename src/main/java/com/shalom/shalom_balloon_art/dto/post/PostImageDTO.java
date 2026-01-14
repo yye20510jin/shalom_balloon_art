@@ -1,4 +1,4 @@
-package com.shalom.shalom_balloon_art.dto;
+package com.shalom.shalom_balloon_art.dto.post;
 
 import com.shalom.shalom_balloon_art.entity.Post;
 import lombok.AllArgsConstructor;

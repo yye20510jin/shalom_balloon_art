@@ -1,11 +1,9 @@
-package com.shalom.shalom_balloon_art.dto;
+package com.shalom.shalom_balloon_art.dto.post;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter

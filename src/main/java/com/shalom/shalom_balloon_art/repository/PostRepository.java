@@ -9,10 +9,26 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAll(Pageable pageable);
 
     Page<Post> findByTitleContainingIgnoreCase(String searchTitle,Pageable pageable);
+
+    @Query("""
+        SELECT p.index, p.title
+        FROM Post p
+        WHERE p.index IN :index
+    """)
+    List<Object[]> findTitlesByIds(@Param("index") List<Long> index);
+
+    @Modifying
+    @Query("""
+        UPDATE Post p
+        SET p.views = p.views + 1 
+        WHERE p.index = :postIndex
+    """)
+    int incrementViews(@Param("postIndex") Long postIndex);
 }

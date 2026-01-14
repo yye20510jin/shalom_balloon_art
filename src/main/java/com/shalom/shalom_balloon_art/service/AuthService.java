@@ -73,7 +73,9 @@ public class AuthService {
             //User(user.getUserId(), user.getUserPassword(), authorities);
 
             List<String> listRoles = userdetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+            System.out.println("listRoles 확인");
             for(String role : listRoles){
+                System.out.println("Auth role : " + role);
                 if(role.contains("USER")) throw new RuntimeException("");
             }
 

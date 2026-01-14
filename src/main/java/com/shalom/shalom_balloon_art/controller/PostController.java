@@ -1,13 +1,16 @@
 package com.shalom.shalom_balloon_art.controller;
 
-import com.shalom.shalom_balloon_art.dto.PostCreateRequestDTO;
-import com.shalom.shalom_balloon_art.dto.PostListResponseDTO;
-import com.shalom.shalom_balloon_art.dto.PostResponseDTO;
+import com.shalom.shalom_balloon_art.auth.jwt.CustomUserDetails;
+import com.shalom.shalom_balloon_art.dto.post.PostCreateRequestDTO;
+import com.shalom.shalom_balloon_art.dto.post.PostListResponseDTO;
+import com.shalom.shalom_balloon_art.dto.post.PostResponseDTO;
+import com.shalom.shalom_balloon_art.service.PostAnalyticsService;
 import com.shalom.shalom_balloon_art.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,15 +33,17 @@ public class PostController {
 
     // 전체 글 목록 (페이지네이션)
     @GetMapping
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Page<PostListResponseDTO>> getAllPosts(@RequestParam(defaultValue="0")int page, @RequestParam(defaultValue="") String searchTitle) {
         return ResponseEntity.ok(postService.getAllPosts(page,searchTitle));
     }
 
     // 글 하나 조회 (USER만)
     @GetMapping("/{index}")
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public ResponseEntity<PostResponseDTO> getPost(@PathVariable Long index) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<PostResponseDTO> getPost(@PathVariable Long index, @AuthenticationPrincipal CustomUserDetails cud ) {
+        Long userIndex = cud.getUserIndex();
+        postService.recordView(index, userIndex);
         return ResponseEntity.ok(postService.getPost(index));
     }
 

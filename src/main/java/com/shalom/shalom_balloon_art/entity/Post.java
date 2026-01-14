@@ -54,8 +54,4 @@ public class Post {
         this.contentHtml = contentHtml;
         onUpdate();
     }
-
-    public void viewUpdate(){
-        this.views++;
-    }
 }

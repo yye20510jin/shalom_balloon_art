@@ -1,10 +1,16 @@
 package com.shalom.shalom_balloon_art.service;
 
-import com.shalom.shalom_balloon_art.dto.PostCreateRequestDTO;
-import com.shalom.shalom_balloon_art.dto.PostListResponseDTO;
-import com.shalom.shalom_balloon_art.dto.PostResponseDTO;
+import com.shalom.shalom_balloon_art.config.ViewLimitProperties;
+import com.shalom.shalom_balloon_art.dto.post.PostCreateRequestDTO;
+import com.shalom.shalom_balloon_art.dto.post.PostListResponseDTO;
+import com.shalom.shalom_balloon_art.dto.post.PostResponseDTO;
 import com.shalom.shalom_balloon_art.entity.Post;
+import com.shalom.shalom_balloon_art.entity.PostViewUser;
+import com.shalom.shalom_balloon_art.entity.User;
+import com.shalom.shalom_balloon_art.repository.PostDailyViewRepository;
 import com.shalom.shalom_balloon_art.repository.PostRepository;
+import com.shalom.shalom_balloon_art.repository.PostViewUserRepository;
+import com.shalom.shalom_balloon_art.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.springframework.data.domain.Page;
@@ -13,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -22,6 +29,10 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final FirebaseStorageService fire;
+    private final ViewLimitProperties viewLimitProperties;
+    private final PostViewUserRepository postViewUserRepository;
+    private final PostDailyViewRepository postDailyViewRepository;
+    private final UserRepository userRepository;
 
     // 글 저장
     public void createPost(PostCreateRequestDTO req){
@@ -32,11 +43,10 @@ public class PostService {
         Post saved = postRepository.save(post);
     }
 
-    // 글 하나 조회
+    // 글 자세히 보기
     public PostResponseDTO getPost(Long index) {
         Post post = postRepository.findById(index)
                 .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
-        post.viewUpdate();
         return toResponseDTO(post);
     }
 
@@ -106,7 +116,7 @@ public class PostService {
         return toResponseDTO(post);
     }
 
-
+    //글 삭제
     public void deletePost(Long index, List<String> imagePaths){
         Post post = postRepository.findById(index).orElseThrow(() -> new RuntimeException("id 없음"));
         // Firebase 이미지 삭제 로직
@@ -117,4 +127,28 @@ public class PostService {
         postRepository.delete(post);
     }
 
+    //N분 제한 조회수 증가
+    public void recordView(Long postIndex, Long userIndex){
+       int minutes = viewLimitProperties.getMinutes();
+
+       PostViewUser existing = postViewUserRepository.findForUpdate(postIndex, userIndex).orElse(null);
+
+       LocalDateTime now = LocalDateTime.now();
+
+       if (existing != null){
+           LocalDateTime allowedAt = existing.getLastViewedAt().plusMinutes(minutes);
+           if(now.isBefore(allowedAt)){return;}
+           existing.updateLastViewedAt(now);
+       }else{
+           Post postRef = postRepository.getReferenceById(postIndex);
+           User userRef = userRepository.getReferenceById(userIndex);
+           PostViewUser created = new PostViewUser(postRef, userRef);
+           created.updateLastViewedAt(now);
+           postViewUserRepository.save(created);
+       }
+        //일별 집계
+        postDailyViewRepository.upsertIncrease(postIndex, now.toLocalDate());
+        //누적 집계
+        postRepository.incrementViews(postIndex);
+    }
 }

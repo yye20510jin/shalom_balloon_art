@@ -105,7 +105,7 @@ function UserApprove() {
       <div className="UP-check">
       <label>
         <input type="checkbox" checked={auth === 0} onChange={(e) => toggleAuth(0)} />
-        미확인
+        미인증
       </label>
       <label>
         <input type="checkbox" checked={auth === 2} onChange={(e) => toggleAuth(2)} />

@@ -3,19 +3,17 @@ package com.shalom.shalom_balloon_art.controller;
 import com.shalom.shalom_balloon_art.dto.HomeCardRequestDTO;
 import com.shalom.shalom_balloon_art.dto.MembershipRequestDTO;
 import com.shalom.shalom_balloon_art.dto.MembershipResponseDTO;
-import com.shalom.shalom_balloon_art.dto.PostListResponseDTO;
+import com.shalom.shalom_balloon_art.dto.post.AnalyticsResponseDTO;
+import com.shalom.shalom_balloon_art.dto.post.PostListResponseDTO;
 import com.shalom.shalom_balloon_art.entity.User;
-import com.shalom.shalom_balloon_art.service.AdminService;
-import com.shalom.shalom_balloon_art.service.AuthService;
-import com.shalom.shalom_balloon_art.service.SignupRequestService;
-import com.shalom.shalom_balloon_art.service.UserEncryptService;
+import com.shalom.shalom_balloon_art.service.*;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.time.LocalDate;
 import java.util.Map;
 
 @RestController
@@ -26,18 +24,25 @@ public class AdminController {
     private final SignupRequestService signupRequestService;
     private final UserEncryptService userEncryptService;
     private final AdminService adminService;
+    private final PostAnalyticsService postAnalyticsService;
 
-    public AdminController(AuthService authService, SignupRequestService signupRequestService, UserEncryptService userEncryptService,AdminService adminService){
+    public AdminController(AuthService authService, SignupRequestService signupRequestService, UserEncryptService userEncryptService
+            ,AdminService adminService,PostAnalyticsService postAnalyticsService){
         this.adminService = adminService;
         this.authService = authService;
         this.signupRequestService = signupRequestService;
         this.userEncryptService = userEncryptService;
+        this.postAnalyticsService = postAnalyticsService;
     }
 
-    @GetMapping("/test")
+    @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Page<PostListResponseDTO>> adminDashboard(){
-        return ResponseEntity.ok(adminService.adminDashboard());
+    public ResponseEntity<AnalyticsResponseDTO> adminDashboard(){
+        LocalDate to = LocalDate.now();
+        LocalDate from = to.minusMonths(1);
+        int top = 5;
+
+        return ResponseEntity.ok(postAnalyticsService.getTopViewedDaily(from,to,top));
     }
 
     @PostMapping("/addAdmin")

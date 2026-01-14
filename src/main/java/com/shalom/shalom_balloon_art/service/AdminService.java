@@ -3,7 +3,7 @@ package com.shalom.shalom_balloon_art.service;
 import com.shalom.shalom_balloon_art.dto.HomeCardRequestDTO;
 import com.shalom.shalom_balloon_art.dto.HomeCardResponseDTO;
 import com.shalom.shalom_balloon_art.dto.MembershipResponseDTO;
-import com.shalom.shalom_balloon_art.dto.PostListResponseDTO;
+import com.shalom.shalom_balloon_art.dto.post.PostListResponseDTO;
 import com.shalom.shalom_balloon_art.entity.HomeCard;
 import com.shalom.shalom_balloon_art.repository.HomeCardRepository;
 import com.shalom.shalom_balloon_art.repository.PostRepository;
@@ -38,14 +38,14 @@ public class AdminService {
         return userRepository.findAll(pageable).map(MembershipResponseDTO::from);
     }
 
-    public Page<PostListResponseDTO> adminDashboard(){
-        Pageable pageable = PageRequest.of(0,3,
-                Sort.by(
-                        Sort.Order.desc("views"),
-                        Sort.Order.desc("createdAt")
-                ));
-        return postRepository.findAll(pageable).map(PostListResponseDTO::from);
-    }
+//    public Page<PostListResponseDTO> adminDashboard(){
+//        Pageable pageable = PageRequest.of(0,3,
+//                Sort.by(
+//                        Sort.Order.desc("views"),
+//                        Sort.Order.desc("createdAt")
+//                ));
+//        return postRepository.findAll(pageable).map(PostListResponseDTO::from);
+//    }
 
     public List<HomeCardResponseDTO> homeCard(){
         return homeCardRepository.findAll().stream().map(HomeCardResponseDTO::from).toList();

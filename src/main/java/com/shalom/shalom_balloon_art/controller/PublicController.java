@@ -1,7 +1,6 @@
 package com.shalom.shalom_balloon_art.controller;
 
 import com.shalom.shalom_balloon_art.dto.HomeCardResponseDTO;
-import com.shalom.shalom_balloon_art.dto.PostListResponseDTO;
 import com.shalom.shalom_balloon_art.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
