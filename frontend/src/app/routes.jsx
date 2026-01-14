@@ -1,7 +1,6 @@
 import Home from "../page/home/Home";
 import AdminLogin from "../page/admin/AdminLogin";
 import AdminDashboard from "../page/admin/AdminDashboard"
-import AddAdmin from "../page/admin/AddAdmin";
 import Membership from "../page/User/Membership";
 import UserLogin from "../page/User/UserLogin";
 import PostForm from "../components/post/PostForm";
@@ -33,7 +32,6 @@ export const routes = [
     ),
     children: [
       { path: "", element: <AdminDashboard /> },
-      { path: "addAdmin", element: <AddAdmin /> },
       { path: "userApprove", element: <UserApprove /> },
       { path: "userList", element: <UserList /> },
       { path: "posts", element: <PostForm /> },
