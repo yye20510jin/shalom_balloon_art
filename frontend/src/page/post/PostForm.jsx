@@ -8,12 +8,12 @@ import { Color } from "@tiptap/extension-color";
 import { FontFamily } from "@tiptap/extension-font-family";
 import { useFirebaseSingleImageUpload } from "../../hooks/firebase/useFirebaseSingleImageUpload";
 import { useFirebaseSingleImageRemove } from "../../hooks/firebase/useFirebaseSingleImageRemove";
-import { CustomImage } from "../../hooks/post/CustomImage";
-import { FontSize } from "../../hooks/post/useFontSize";
-import {CustomListItem} from "../../hooks/post/useCustomListItem";
-import {CustomTextAlign} from "../../hooks/post/useCustomTextAlign";
-import {CustomOrderedList} from "../../hooks/post/useCustomOrderedList";
-import { CustomBulletList } from "../../hooks/post/useCustomBulletList";
+import { CustomImage } from "../../hooks/post/toolbar/useCustomImage";
+import { FontSize } from "../../hooks/post/toolbar/useFontSize";
+import {CustomListItem} from "../../hooks/post/toolbar/useCustomListItem";
+import {CustomTextAlign} from "../../hooks/post/toolbar/useCustomTextAlign";
+import {CustomOrderedList} from "../../hooks/post/toolbar/useCustomOrderedList";
+import { CustomBulletList } from "../../hooks/post/toolbar/useCustomBulletList";
 import "../../styles/post/PostForm.css";
 
 function Toolbar({ editor, onPickImage, onInsertYoutube }) {

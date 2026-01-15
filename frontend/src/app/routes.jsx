@@ -3,7 +3,7 @@ import AdminLogin from "../page/admin/AdminLogin";
 import AdminDashboard from "../page/admin/AdminDashboard"
 import Membership from "../page/User/Membership";
 import UserLogin from "../page/User/UserLogin";
-import PostForm from "../components/post/PostForm";
+import PostForm from "../page/post/PostForm";
 import PostList from "../page/post/PostList";
 import PostDetails from "../page/post/PostDetails";
 import EditPostPage from "../page/post/EditPostPage";
