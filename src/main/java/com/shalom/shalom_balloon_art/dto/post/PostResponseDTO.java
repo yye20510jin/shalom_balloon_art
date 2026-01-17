@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Builder
@@ -17,6 +18,7 @@ public class PostResponseDTO {
     private String title;
     private String contentHtml;
     private String thumbnailUrl;
+    private List<PostTagDTO> postTags;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

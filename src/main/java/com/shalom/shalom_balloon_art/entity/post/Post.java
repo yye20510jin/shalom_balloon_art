@@ -1,10 +1,15 @@
-package com.shalom.shalom_balloon_art.entity;
+package com.shalom.shalom_balloon_art.entity.post;
 
+import com.shalom.shalom_balloon_art.dto.post.PostCreateRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
 
 @Entity
 @Table(name = "posts")
@@ -37,7 +42,17 @@ public class Post {
     private LocalDateTime updatedAt;
 
     @Column(nullable = false)
+    @Builder.Default
     private Long views = 0L;
+
+    @ManyToMany
+    @JoinTable(
+            name = "post_tag",
+            joinColumns = @JoinColumn(name = "post_index"),
+            inverseJoinColumns = @JoinColumn(name = "tag_index")
+    )
+    @Builder.Default
+    private Set<Tags> postTag = new HashSet<>();
 
     @PrePersist
     public void onCreate() {
@@ -53,5 +68,9 @@ public class Post {
         this.title = title;
         this.contentHtml = contentHtml;
         onUpdate();
+    }
+
+    public static Post from(PostCreateRequestDTO p){
+        return builder().title(p.getTitle()).contentHtml(p.getContentHtml()).thumbnailUrl(p.getThumbnailUrl()).build();
     }
 }

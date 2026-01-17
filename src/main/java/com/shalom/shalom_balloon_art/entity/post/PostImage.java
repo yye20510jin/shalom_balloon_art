@@ -1,4 +1,4 @@
-package com.shalom.shalom_balloon_art.entity;
+package com.shalom.shalom_balloon_art.entity.post;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

@@ -1,7 +1,7 @@
 package com.shalom.shalom_balloon_art.repository;
 
-import com.shalom.shalom_balloon_art.entity.PostDailyView;
-import com.shalom.shalom_balloon_art.entity.PostDailyViewId;
+import com.shalom.shalom_balloon_art.entity.post.PostDailyView;
+import com.shalom.shalom_balloon_art.entity.post.PostDailyViewId;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

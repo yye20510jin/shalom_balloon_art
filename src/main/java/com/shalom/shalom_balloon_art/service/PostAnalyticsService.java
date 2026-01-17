@@ -3,7 +3,7 @@ package com.shalom.shalom_balloon_art.service;
 import com.shalom.shalom_balloon_art.dto.post.AnalyticsResponseDTO;
 import com.shalom.shalom_balloon_art.dto.post.DailySeriesDTO;
 import com.shalom.shalom_balloon_art.dto.post.PostMetaDTO;
-import com.shalom.shalom_balloon_art.entity.PostDailyView;
+import com.shalom.shalom_balloon_art.entity.post.PostDailyView;
 import com.shalom.shalom_balloon_art.repository.PostDailyViewRepository;
 import com.shalom.shalom_balloon_art.repository.PostRepository;
 import lombok.RequiredArgsConstructor;

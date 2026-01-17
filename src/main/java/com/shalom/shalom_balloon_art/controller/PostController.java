@@ -4,7 +4,8 @@ import com.shalom.shalom_balloon_art.auth.jwt.CustomUserDetails;
 import com.shalom.shalom_balloon_art.dto.post.PostCreateRequestDTO;
 import com.shalom.shalom_balloon_art.dto.post.PostListResponseDTO;
 import com.shalom.shalom_balloon_art.dto.post.PostResponseDTO;
-import com.shalom.shalom_balloon_art.service.PostAnalyticsService;
+import com.shalom.shalom_balloon_art.dto.post.PostTagDTO;
+import com.shalom.shalom_balloon_art.service.AdminService;
 import com.shalom.shalom_balloon_art.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final AdminService adminService;
 
     // 글 작성 (ADMIN만)
     @PostMapping
@@ -50,7 +52,7 @@ public class PostController {
     //글 수정
     @PutMapping("/{index}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> editPost(@PathVariable Long index,@RequestBody PostCreateRequestDTO dto){
+    public ResponseEntity<PostResponseDTO> editPost(@PathVariable Long index,@RequestBody PostCreateRequestDTO dto){
         return ResponseEntity.ok(postService.editPost(index,dto));
     }
 
@@ -60,6 +62,20 @@ public class PostController {
     public ResponseEntity<String> deletePost(@PathVariable Long index, @RequestBody List<String> imagePaths){
         postService.deletePost(index,imagePaths);
         return ResponseEntity.ok("success");
+    }
+
+    //태그 가져오기
+    @GetMapping("/getPostTag")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<PostTagDTO>> getPostTag(){
+        return ResponseEntity.ok(adminService.getPostTag());
+    }
+
+    //태그 추가
+    @PostMapping("/addPostTag")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<PostTagDTO> addPostTag(@RequestBody PostTagDTO t){
+        return ResponseEntity.ok(adminService.createOrGet(t.getTagName()));
     }
 
 }

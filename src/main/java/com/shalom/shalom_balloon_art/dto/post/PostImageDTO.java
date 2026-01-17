@@ -1,6 +1,6 @@
 package com.shalom.shalom_balloon_art.dto.post;
 
-import com.shalom.shalom_balloon_art.entity.Post;
+import com.shalom.shalom_balloon_art.entity.post.Post;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

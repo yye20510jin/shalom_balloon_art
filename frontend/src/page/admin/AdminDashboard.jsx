@@ -23,7 +23,6 @@ function Admin() {
                 }
 
                 const res_data = await res.json();
-                console.log(res_data.series);
                 setData(res_data ?? []);
 
             } catch (e) {

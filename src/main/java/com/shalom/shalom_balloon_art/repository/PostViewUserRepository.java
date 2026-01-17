@@ -1,7 +1,7 @@
 package com.shalom.shalom_balloon_art.repository;
 
-import com.shalom.shalom_balloon_art.entity.PostViewUser;
-import com.shalom.shalom_balloon_art.entity.PostViewUserId;
+import com.shalom.shalom_balloon_art.entity.post.PostViewUser;
+import com.shalom.shalom_balloon_art.entity.post.PostViewUserId;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;

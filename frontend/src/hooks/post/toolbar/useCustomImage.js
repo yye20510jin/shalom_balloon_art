@@ -1,6 +1,6 @@
 import Image from "@tiptap/extension-image";
 import { ReactNodeViewRenderer } from "@tiptap/react";
-import ImageNodeView from "../../components/post/ImageNodeView";
+import ImageNodeView from "../../../components/post/ImageNodeView";
 
 export const CustomImage = Image.extend({
   addOptions() {

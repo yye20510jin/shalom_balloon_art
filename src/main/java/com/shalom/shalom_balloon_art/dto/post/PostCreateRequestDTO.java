@@ -1,9 +1,12 @@
 package com.shalom.shalom_balloon_art.dto.post;
 
+import com.shalom.shalom_balloon_art.entity.post.Tags;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,5 +17,6 @@ public class PostCreateRequestDTO {
     private String title;
     private String contentHtml;
     private String thumbnailUrl;
+    private List<String> postTag;
     // getter/setter
 }

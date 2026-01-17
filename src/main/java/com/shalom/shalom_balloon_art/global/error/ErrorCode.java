@@ -21,7 +21,13 @@ public enum ErrorCode {
     DUPLICATE_ID(HttpStatus.CONFLICT, "U002", "이미 사용 중인 아아디입니다."),
 
     // ===Post===
-    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "P001", "게시글이 존재하지 않습니다.");
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "P001", "게시글이 존재하지 않습니다."),
+
+    //===Tag===
+    TAG_NOT_SAVE(HttpStatus.CONFLICT, "T005", "태그 저장 실패"),
+    DUPLICATE_TagName(HttpStatus.CONFLICT, "T003", "이미 존재하는 태그"),
+    TAG_NAME_REQUIRED(HttpStatus.BAD_REQUEST,"T001", "빈 태그 이름"),
+    TAG_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "T006" , "태그 조회 실패");
 
     private final HttpStatus status;
     private final String code;

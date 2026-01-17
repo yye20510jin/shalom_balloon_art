@@ -44,6 +44,8 @@ function PostList() {
     return <div style={{ padding: 20 }}>등록된 게시글이 없습니다.</div>;
   }
 
+  console.log("posts : ",posts);
+
   return (
     <div>
       <Navbar />
@@ -81,6 +83,8 @@ function PostList() {
                 <div className="PL-text">
                   <p style={{ margin: "10px 0" }} className="PL-number">{startPage === 0 ? "" : startPage}{index + 1}</p>
                   <h3 style={{ margin: "0 0 5px 0" }}>{post.title}</h3>
+
+                  {post.postTag && post.postTag.map((tag) => <span key={tag.tagIndex}>#{tag.tagName} </span> )}
 
                   <div className="PL-update">
                     작성일: {formatDateTime(post.createdAt)}

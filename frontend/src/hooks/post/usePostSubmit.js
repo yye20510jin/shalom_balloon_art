@@ -12,7 +12,8 @@ export function usePostSubmit() {
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (mode,contentHtml,thumbnailUrl) => {
+  const handleSubmit = async (mode,contentHtml,thumbnailUrl, tagSelected) => {
+    console.log("tagSelected : ", tagSelected);
     setError("");
     setSuccessMessage("");
 
@@ -24,7 +25,8 @@ export function usePostSubmit() {
     const payload = {
       title: title.trim(),
       contentHtml,
-      thumbnailUrl
+      thumbnailUrl,
+      postTag: tagSelected
     };
 
     try {

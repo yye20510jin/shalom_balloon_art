@@ -1,4 +1,5 @@
 import { usePostSubmit } from "../../hooks/post/usePostSubmit";
+import Toolbar from"../../components/post/Toolbar";
 import { useEffect, useRef, useState } from "react";
 import { EditorContent, useEditor, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -14,97 +15,9 @@ import {CustomListItem} from "../../hooks/post/toolbar/useCustomListItem";
 import {CustomTextAlign} from "../../hooks/post/toolbar/useCustomTextAlign";
 import {CustomOrderedList} from "../../hooks/post/toolbar/useCustomOrderedList";
 import { CustomBulletList } from "../../hooks/post/toolbar/useCustomBulletList";
+import { useLocalImageCandidates } from "../../hooks/post/useLocalImageCandidates";
+import PostTag from "../../components/post/PostTag";
 import "../../styles/post/PostForm.css";
-
-function Toolbar({ editor, onPickImage, onInsertYoutube }) {
-  if (!editor) return null;
-  
-  const editorState = useEditorState({ //editor의 state,selection,transaction 변경을 감지
-    editor, //감시 대상
-    selector:({editor})=>({
-      isBold: editor.isActive("bold"),
-      isItalic: editor.isActive("italic"),
-      isBulletList: editor.isActive("bulletList"),
-      isOrderedList: editor.isActive("orderedList"),
-
-    })
-  });
-
-  const Btn = ({ onClick, active, children }) => (
-    <button
-      type="button"
-      onClick={onClick}
-      style={{
-        padding: "6px 10px",
-        border: "1px solid #ddd",
-        background: active ? "#111" : "#fff",
-        color: active ? "#fff" : "#111",
-        borderRadius: 6,
-        cursor: "pointer",
-      }}
-    >
-      {children}
-    </button>
-  );
-
-   return (
-    <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 10 }}>
-      <Btn
-        active={editor.isActive("bold")}
-        onClick={() => editor.chain().focus().toggleBold().run()}
-      >
-        B
-      </Btn>
-      <Btn
-        active={editor.isActive("italic")}
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-      >
-        I
-      </Btn>
-      <Btn
-        active={editor.isActive("bulletList")}
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-      >
-        • 목록
-      </Btn>
-      <Btn
-        active={editor.isActive("orderedList")}
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-      >
-        1. 목록
-      </Btn>
-
-      <Btn onClick={() => {
-        editor.chain().focus().setTextAlign("left").run();
-        editor.chain().focus().setBulletListAlign("left").run();
-        editor.chain().focus().setOrderedListAlign("left").run();
-      }}>
-        왼쪽
-      </Btn>
-
-      <Btn onClick={() => {
-        editor.chain().focus().setTextAlign("center").run();
-        editor.chain().focus().setBulletListAlign("center").run();
-        editor.chain().focus().setOrderedListAlign("center").run();
-      }}>
-        가운데
-      </Btn>
-
-      <Btn onClick={() =>{
-        editor.chain().focus().setTextAlign("right").run();
-        editor.chain().focus().setBulletListAlign("right").run();
-        editor.chain().focus().setOrderedListAlign("right").run();
-      }}>
-        오른쪽
-      </Btn>
-
-      <div style={{ width: 1, background: "#eee", margin: "0 6px" }} />
-
-      <Btn onClick={onPickImage}>이미지</Btn>
-      <Btn onClick={onInsertYoutube}>유튜브</Btn>
-    </div>
-  );
-}
 
 function PostForm({
   mode = "create",
@@ -121,6 +34,12 @@ function PostForm({
     isSubmitting,
     handleSubmit,
   } = usePostSubmit();
+
+  //이미지 candidates 임시 저장
+  const {} = useLocalImageCandidates();
+  
+  //태그
+  const [tagSelected,setTagSelected] = useState([]);
 
   //썸네일 이미지
   const [thumbnailUrl, setThumbnailUrl] = useState("");
@@ -174,6 +93,15 @@ function PostForm({
     setId(initialValues.id || "");
     setTitle(initialValues.title || "");
     setThumbnailUrl(initialValues.thumbnailUrl || "")
+    setTagSelected((prev)=>{
+      if(!initialValues.postTags) return [];
+      const next = [...prev];
+      for(const tag of initialValues.postTags){
+        const name = tag.tagName;
+        next.push(name);
+      }
+      return next;
+    });
 
     // 서버에 저장한 contentHtml을 다시 에디터에 주입하는 형태 추천
     if (editor && initialValues.contentHtml) {
@@ -234,7 +162,7 @@ function PostForm({
 
     const contentHtml = editor.getHTML();
 
-    await handleSubmit(mode, contentHtml, thumbnailUrl);
+    await handleSubmit(mode, contentHtml, thumbnailUrl, tagSelected);
   };
 
 
@@ -320,10 +248,9 @@ function PostForm({
               hidden
               onChange={handleThumbnailChange}
             />
+            <PostTag tagSelected={tagSelected} setTagSelected={setTagSelected}/>
           </div>
         </div>
-
-
 
         {/* 툴바 */}
         <Toolbar

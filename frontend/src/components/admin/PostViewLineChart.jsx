@@ -1,6 +1,7 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, } from "recharts";
 
 export default function PostViewLineChart({ data }) {
+    if (!data || !data.posts || !data.series) return null; 
     const { posts, series } = data;
     const chartData = series.map(item => ({
         date: item.date,
@@ -10,10 +11,10 @@ export default function PostViewLineChart({ data }) {
     const CustomDot = ({cx, cy, color, r = 5}) => {
         return<circle cx={cx} cy={cy} r={r} fill={color}/>
     };
-
+    
     return (
-        <div style={{ width: "95%", height: 400 }}>
-            <ResponsiveContainer>
+        <div style={{ width: "95%", height: 400, minWidth: 0}}>
+            <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={chartData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="date" />

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import PostForm from "../../components/post/PostForm";
+import PostForm from "../post/PostForm";
 import { authFetch } from "../../api/authFetch";
 
 function EditPostPage() {
@@ -28,7 +28,8 @@ function EditPostPage() {
           id: id ? Number(id) : null,
           title: data.title,
           thumbnailUrl : data.thumbnailUrl,
-          contentHtml : data.contentHtml
+          contentHtml : data.contentHtml,
+          postTags : data.postTags
         });
       } catch (err) {
         console.error(err);

@@ -4,13 +4,13 @@ import com.shalom.shalom_balloon_art.config.ViewLimitProperties;
 import com.shalom.shalom_balloon_art.dto.post.PostCreateRequestDTO;
 import com.shalom.shalom_balloon_art.dto.post.PostListResponseDTO;
 import com.shalom.shalom_balloon_art.dto.post.PostResponseDTO;
-import com.shalom.shalom_balloon_art.entity.Post;
-import com.shalom.shalom_balloon_art.entity.PostViewUser;
+import com.shalom.shalom_balloon_art.dto.post.PostTagDTO;
+import com.shalom.shalom_balloon_art.entity.post.Post;
+import com.shalom.shalom_balloon_art.entity.post.PostViewUser;
 import com.shalom.shalom_balloon_art.entity.User;
-import com.shalom.shalom_balloon_art.repository.PostDailyViewRepository;
-import com.shalom.shalom_balloon_art.repository.PostRepository;
-import com.shalom.shalom_balloon_art.repository.PostViewUserRepository;
-import com.shalom.shalom_balloon_art.repository.UserRepository;
+import com.shalom.shalom_balloon_art.entity.post.Tags;
+import com.shalom.shalom_balloon_art.global.error.BusinessException;
+import com.shalom.shalom_balloon_art.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.springframework.data.domain.Page;
@@ -21,6 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.shalom.shalom_balloon_art.global.error.ErrorCode.INTERNAL_SERVER_ERROR;
+import static com.shalom.shalom_balloon_art.global.error.ErrorCode.POST_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -33,14 +36,18 @@ public class PostService {
     private final PostViewUserRepository postViewUserRepository;
     private final PostDailyViewRepository postDailyViewRepository;
     private final UserRepository userRepository;
+    private final TagRepository tagRepository;
 
     // 글 저장
     public void createPost(PostCreateRequestDTO req){
-        Post post = new Post();
-        post.setTitle(req.getTitle());
-        post.setContentHtml(req.getContentHtml());
-        post.setThumbnailUrl(req.getThumbnailUrl());
-        Post saved = postRepository.save(post);
+        Post p = Post.from(req);
+
+        for(String tagName : req.getPostTag()){
+            Tags t = tagRepository.findByTagName(tagName).orElseThrow(() -> new BusinessException(INTERNAL_SERVER_ERROR));
+            p.getPostTag().add(t);
+        }
+
+        Post saved = postRepository.save(p);
     }
 
     // 글 자세히 보기
@@ -73,6 +80,7 @@ public class PostService {
                 .title(post.getTitle())
                 .thumbnailUrl(post.getThumbnailUrl())
                 .preview(makePreview(post.getContentHtml(),160))
+                .postTag(post.getPostTag().stream().map(PostTagDTO::from).toList())
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
                 .build();
@@ -93,6 +101,7 @@ public class PostService {
                 .title(post.getTitle())
                 .contentHtml(post.getContentHtml())
                 .thumbnailUrl(post.getThumbnailUrl())
+                .postTags(post.getPostTag().stream().map(PostTagDTO::from).toList())
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
                 .build();
@@ -102,9 +111,11 @@ public class PostService {
     public PostResponseDTO editPost(Long index,PostCreateRequestDTO dto) {
 
         Post post = postRepository.findById(index)
-                .orElseThrow(() -> new RuntimeException("게시글 없음"));
+                .orElseThrow(() -> new BusinessException(POST_NOT_FOUND));
 
+        //새로 들어온 썸네일 여부
         boolean hasNewThumb = dto.getThumbnailUrl() != null && !dto.getThumbnailUrl().isBlank();
+        //새로 들어온 썸네일과 기존 썸네일 일치 여부
         boolean changedThumb = hasNewThumb && !dto.getThumbnailUrl().equals(post.getThumbnailUrl());
 
         if(changedThumb){
@@ -112,6 +123,9 @@ public class PostService {
                 fire.delete(post.getThumbnailUrl());}
             post.setThumbnailUrl(dto.getThumbnailUrl());
         }
+        post.getPostTag().clear();
+        List<Tags> newTags = dto.getPostTag().stream().map(name -> tagRepository.findByTagName(name).orElseGet(() -> tagRepository.save(new Tags(name)))).toList();
+        post.getPostTag().addAll(newTags);
         post.update(dto.getTitle(), dto.getContentHtml());
         return toResponseDTO(post);
     }
@@ -119,12 +133,13 @@ public class PostService {
     //글 삭제
     public void deletePost(Long index, List<String> imagePaths){
         Post post = postRepository.findById(index).orElseThrow(() -> new RuntimeException("id 없음"));
+        postRepository.delete(post);
+        postRepository.flush();
         // Firebase 이미지 삭제 로직
         fire.delete(post.getThumbnailUrl());
         for(String url : imagePaths) {
             fire.deleteHtml(url);
         }
-        postRepository.delete(post);
     }
 
     //N분 제한 조회수 증가
