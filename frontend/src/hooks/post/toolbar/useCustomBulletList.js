@@ -6,7 +6,7 @@ export const CustomBulletList = BulletList.extend({
             ...this.parent?.(),
             align:{
                 default:null,
-                parseHTML: element => element.getAttribute("data-aling") || null,
+                parseHTML: element => element.getAttribute("data-align") || null,
                 renderHTML: attrs => {
                     if(!attrs.align) return {};
                     return{

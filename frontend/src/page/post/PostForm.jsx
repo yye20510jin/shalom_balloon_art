@@ -1,7 +1,7 @@
 import { usePostSubmit } from "../../hooks/post/usePostSubmit";
 import Toolbar from"../../components/post/Toolbar";
 import { useEffect, useRef, useState } from "react";
-import { EditorContent, useEditor, useEditorState } from "@tiptap/react";
+import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Youtube from "@tiptap/extension-youtube";
 import { TextStyle } from "@tiptap/extension-text-style";
@@ -56,10 +56,15 @@ function PostForm({
   // ✅ 에디터 생성
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        bulletList:false,
+        orderedList:false,
+        listItem:false
+      }
+      ),
+      CustomListItem,
       CustomBulletList,
       CustomOrderedList,
-      CustomListItem,
       TextStyle,
       Color,
       FontFamily,

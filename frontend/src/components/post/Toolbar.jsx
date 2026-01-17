@@ -1,10 +1,11 @@
 import { useEditorState } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import {CustomOrderedList} from "../../hooks/post/toolbar/useCustomOrderedList";
 
 export default function Toolbar({ editor, onPickImage, onInsertYoutube }) {
   if (!editor) return null;
-  
+ console.log("toggleBold:", typeof editor.commands.toggleBold);
+console.log("toggleItalic:", typeof editor.commands.toggleItalic);
+console.log("canItalic:", editor.can().chain().focus().toggleItalic().run());
+console.log("activeItalic:", editor.isActive("italic"));
   const editorState = useEditorState({ //editor의 state,selection,transaction 변경을 감지
     editor, //감시 대상
     selector:({editor})=>({
@@ -36,26 +37,26 @@ export default function Toolbar({ editor, onPickImage, onInsertYoutube }) {
    return (
     <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 10 }}>
       <Btn
-        active={editor.isActive("bold")}
+        active={editorState.isBold}
         onClick={() => editor.chain().focus().toggleBold().run()}
       >
         B
       </Btn>
       <Btn
-        active={editor.isActive("italic")}
+        active={editorState.isItalic}
         onClick={() => editor.chain().focus().toggleItalic().run()}
       >
         I
       </Btn>
       <Btn
-        active={editor.isActive("bulletList")}
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
+        active={editorState.isBulletList}
+        onClick={() => editor.chain().focus().toggleList("bulletList","listItem").run()}
       >
         • 목록
       </Btn>
       <Btn
-        active={editor.isActive("orderedList")}
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
+        active={editorState.isOrderedList}
+        onClick={() => editor.chain().focus().toggleList("orderedList","listItem").run()}
       >
         1. 목록
       </Btn>
