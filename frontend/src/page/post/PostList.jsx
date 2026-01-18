@@ -44,7 +44,6 @@ function PostList() {
     return <div style={{ padding: 20 }}>등록된 게시글이 없습니다.</div>;
   }
 
-  console.log("posts : ",posts);
 
   return (
     <div>

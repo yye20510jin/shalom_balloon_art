@@ -52,15 +52,20 @@ export default function ImageNodeView(props) {
       .deleteRange({ from: pos, to: pos + node.nodeSize })
       .run();
 
+      if(typeof extension.options.onRemove === "function"){
+          extension.options.onRemove(src);
+      }
+
     // 2) (선택) Firebase/서버에서도 삭제하고 싶으면 콜백 호출
     //    실패해도 에디터 삭제는 이미 됐으니, 여기서만 예외 처리 권장
-    try {
-      if (typeof extension.options.onRemove === "function") {
-        await extension.options.onRemove(src);
-      }
-    } catch (err) {
-      console.error("이미지 파일 삭제 실패:", err);
-    }
+    // try {
+    //   if (typeof extension.options.onRemove === "function") {
+        
+    //     await extension.options.onRemove(src);
+    //   }
+    // } catch (err) {
+    //   console.error("이미지 파일 삭제 실패:", err);
+    // }
   };
 
   const widthPx = Number.isFinite(Number(node.attrs.width)) && Number(node.attrs.width) > 0 ? `${node.attrs.width}px` : "100%";

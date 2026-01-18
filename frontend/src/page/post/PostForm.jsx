@@ -36,7 +36,7 @@ function PostForm({
   } = usePostSubmit();
 
   //이미지 candidates 임시 저장
-  const {} = useLocalImageCandidates();
+  const {addFile,candidates,removeCandidateUrl} = useLocalImageCandidates();
   
   //태그
   const [tagSelected,setTagSelected] = useState([]);
@@ -78,7 +78,8 @@ function PostForm({
         draggable: true,
         allowBase64: false,
         onRemove: (src) => {
-          removeTiptapImage(src);
+          // removeTiptapImage(src);
+          removeCandidateUrl(src);
         }
       }),
       Youtube.configure({
@@ -125,17 +126,21 @@ function PostForm({
     if (!file) return;
 
     setThumbError("");
-    setThumbUploading(true);
+    // setThumbUploading(true);
 
-    try {
-      const url = await uploadOne(file);
-      setThumbnailUrl(url);
-    } catch (err) {
-      setThumbError(err.message || "썸네일 업로드 실패");
-    } finally {
-      setThumbUploading(false);
-      e.target.value = "";
-    }
+    const url = addFile(file);
+    setThumbnailUrl(url);
+    e.target.value = "";
+
+    // try {
+    //   const url = await uploadOne(file);
+    //   setThumbnailUrl(url);
+    // } catch (err) {
+    //   setThumbError(err.message || "썸네일 업로드 실패");
+    // } finally {
+    //   setThumbUploading(false);
+    //   e.target.value = "";
+    // }
   };
 
   // 이미지 업로드 및 삽입
@@ -144,7 +149,8 @@ function PostForm({
     if (!files.length) return;
 
     for (const file of files) {
-      const url = await uploadOne(file);
+      const url = addFile(file);
+      // const url = await uploadOne(file);
 
       editor.chain().focus().insertContent([{ type: "image", attrs: { src: url } }, { type: "paragraph" },]).run();
     }
@@ -167,10 +173,81 @@ function PostForm({
 
     const contentHtml = editor.getHTML();
 
-    await handleSubmit(mode, contentHtml, thumbnailUrl, tagSelected);
+    const {finalContentHtml, finalThumbnailUrl} = await prepareSubmitPayload({
+      contentHtml,
+      thumbnailUrl,
+      candidates,
+      uploadOne
+    });
+
+    await handleSubmit(mode, finalContentHtml, finalThumbnailUrl, tagSelected);
   };
 
 
+
+    // ------------- 이미지 firebase로 전환 -----------------
+  
+    async function buildUrlMapFromCandidates(candidates, uploadOne){
+      //중복 업로드 방지
+      const unique = new Map();
+      for(const c of candidates){
+          if(!c?.previewUrl || !c?.file) continue;
+          if(!unique.has(c.previewUrl))unique.set(c.previewUrl,{file:c.file,id:c.id});
+      }
+  
+      const entries = Array.from(unique.entries());
+      //await Promise.all : 여러 개의 비동기 작업을 동시에 실행하고, 전부 끝날 때까지 가디린다.
+      const results = await Promise.all(
+          entries.map(async ([candidateUrl, { file }]) => {
+          const firebaseUrl = await uploadOne(file);
+          return [candidateUrl, firebaseUrl];
+          })
+      );
+  
+      return new Map(results);
+  
+  };
+  
+  function replaceImgSrcInHtml(contentHtml, urlMap){
+      if(!contentHtml) return contentHtml;
+  
+      const doc = new DOMParser().parseFromString(contentHtml,"text/html");
+      const imgs = doc.querySelectorAll("img");
+  
+      imgs.forEach((img)=>{
+          const src = img.getAttribute("src");
+          if(!src) return;
+          const replaced = urlMap.get(src);
+          if(replaced) img.setAttribute("src",replaced);
+      });
+  
+      return doc.body.innerHTML;
+  };
+  
+  function replaceUrlIfCandidate(url, urlMap){
+      if(!url) return url;
+      return urlMap.get(url) ?? url;
+  };
+  
+  
+  async function prepareSubmitPayload({
+      contentHtml,
+      thumbnailUrl,
+      candidates,
+      uploadOne,
+  }){
+      //업로드 후 맵 생성
+      const urlMap = await buildUrlMapFromCandidates(candidates, uploadOne);
+  
+      //html, thumbnail 치황
+      const finalContentHtml = replaceImgSrcInHtml(contentHtml, urlMap);
+      const finalThumbnailUrl = replaceUrlIfCandidate(thumbnailUrl,urlMap);
+  
+      return {finalContentHtml, finalThumbnailUrl};
+  };
+  
+
+ // --------------------------------------
 
   return (
     <div style={{ maxWidth: 800, margin: "0 auto", padding: 20 }}>
@@ -216,11 +293,12 @@ function PostForm({
 
                 <button
                   type="button"
-                  onClick={async () =>{
-                    const ok =  await removeOne(thumbnailUrl);
-                    if(!ok) {setThumbError("썸네일 삭제 실패"); return;}
-                    setThumbnailUrl("");
-                  }}
+                  onClick={() =>
+                    setThumbnailUrl("")
+                    // const ok =  await removeOne(thumbnailUrl);
+                    // if(!ok) {setThumbError("썸네일 삭제 실패"); return;}
+                    // setThumbnailUrl("");
+                  }
                   style={{
                     position: "absolute",
                     top: "-6px",

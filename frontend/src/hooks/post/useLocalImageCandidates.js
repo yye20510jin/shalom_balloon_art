@@ -43,6 +43,15 @@ export function useLocalImageCandidates() {
         setPickedId((prev) => (prev === id ? null : prev));
     };
 
+    const removeCandidateUrl = (src) =>{
+        setCandidates((prev)=>{
+            if(src.startsWith("blob:")) return [...prev];
+            const target = prev.find((x) => x.previewUrl === src);
+            if(target) URL.revokeObjectURL(target.previewUrl);
+            return prev.filter((x)=>x.previewUrl !== src);
+        });
+    };
+
     //forEach, filter,find
     const clearAll = () => {
         setCandidates((prev) => {
@@ -85,6 +94,7 @@ return {
     addFiles,
     addFile,
     removeCandidate,
+    removeCandidateUrl,
     clearAll,
 };
 } 

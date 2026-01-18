@@ -2,10 +2,6 @@ import { useEditorState } from "@tiptap/react";
 
 export default function Toolbar({ editor, onPickImage, onInsertYoutube }) {
   if (!editor) return null;
- console.log("toggleBold:", typeof editor.commands.toggleBold);
-console.log("toggleItalic:", typeof editor.commands.toggleItalic);
-console.log("canItalic:", editor.can().chain().focus().toggleItalic().run());
-console.log("activeItalic:", editor.isActive("italic"));
   const editorState = useEditorState({ //editor의 state,selection,transaction 변경을 감지
     editor, //감시 대상
     selector:({editor})=>({

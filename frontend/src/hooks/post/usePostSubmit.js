@@ -12,8 +12,10 @@ export function usePostSubmit() {
 
   const navigate = useNavigate();
 
+
+// -------------- 서버 전송 ----------------
+
   const handleSubmit = async (mode,contentHtml,thumbnailUrl, tagSelected) => {
-    console.log("tagSelected : ", tagSelected);
     setError("");
     setSuccessMessage("");
 
@@ -31,9 +33,6 @@ export function usePostSubmit() {
 
     try {
       setIsSubmitting(true);
-      console.log("mode,id,url =", mode, id,
-  `${import.meta.env.VITE_BACKEND_BASE_URL}/api/posts${mode === "edit" ? `/${id}` : ""}`
-);
       const res = await authFetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/posts${mode === "edit" ? `/${id}` : ""}`,{
         method : mode === "edit" ? "PUT":"POST",
         body : JSON.stringify(payload),
