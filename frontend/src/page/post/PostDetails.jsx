@@ -9,6 +9,7 @@ function PostDetails() {
   const [post, setPost] = useState([]);      // PostResponseDTO[]
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [like, setLike] = useState(false);
 
   const { id } = useParams();
   const { roles } = useContext(AuthContext);
@@ -46,6 +47,20 @@ function PostDetails() {
 
     fetchPosts();
   }, []);
+
+  const handlePostLike = async (chk) => {
+    //chk => 0 : 좋아요 취소, 1 : 좋아요
+    const res = await authFetch( `${import.meta.env.VITE_BACKEND_BASE_URL}/api/posts/${id}/${chk}`,{
+      method : "POST",
+    });
+
+    if(!res.ok){
+      //에러처리 예정
+      return;}
+
+      setLike(prev => !prev);
+
+  }
 
   const formatDateTime = (dateTimeString) => {
     if (!dateTimeString) return "";
@@ -97,6 +112,9 @@ function PostDetails() {
             />
           </div>
         }
+        <div>
+          {!like ? <button type="button" onClick={()=>handlePostLike(1)}>좋아요</button> : <button type="button" onClick={()=>handlePostLike(0)}>좋아요 취소</button>}
+        </div>
 
         {/* 텍스트 영역 */}
         <div className="post-content ProseMirror" style={{ flex: 1 }}>

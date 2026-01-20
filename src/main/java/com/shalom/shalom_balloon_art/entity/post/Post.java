@@ -3,8 +3,6 @@ package com.shalom.shalom_balloon_art.entity.post;
 import com.shalom.shalom_balloon_art.dto.post.PostCreateRequestDTO;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -53,6 +51,10 @@ public class Post {
     )
     @Builder.Default
     private Set<Tags> postTag = new HashSet<>();
+
+    // orphanRemoval : 연관관계 제거 = 자식 제거
+    @OneToMany(mappedBy="post")
+    private Set<PostUserLike> postUserLikes = new HashSet<>();
 
     @PrePersist
     public void onCreate() {

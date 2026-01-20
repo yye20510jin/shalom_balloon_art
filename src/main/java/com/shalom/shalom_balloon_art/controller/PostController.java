@@ -49,6 +49,14 @@ public class PostController {
         return ResponseEntity.ok(postService.getPost(index));
     }
 
+    //좋아요
+    @PostMapping("/{index}/{chk}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> postUserLike( @PathVariable Long index, @PathVariable int chk, @AuthenticationPrincipal CustomUserDetails cud){
+        Long userIndex = cud.getUserIndex();
+        postService.postUserLike(index, chk, userIndex);
+        return ResponseEntity.ok("ok");
+    }
     //글 수정
     @PutMapping("/{index}")
     @PreAuthorize("hasRole('ADMIN')")
@@ -77,5 +85,7 @@ public class PostController {
     public ResponseEntity<PostTagDTO> addPostTag(@RequestBody PostTagDTO t){
         return ResponseEntity.ok(adminService.createOrGet(t.getTagName()));
     }
+
+
 
 }

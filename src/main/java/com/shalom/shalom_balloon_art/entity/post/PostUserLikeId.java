@@ -1,0 +1,26 @@
+package com.shalom.shalom_balloon_art.entity.post;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+
+
+@Embeddable
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@EqualsAndHashCode
+public class PostUserLikeId implements Serializable {
+
+    @Column(name="post_index", nullable = false)
+    private Long postIndex;
+
+    @Column(name="user_index", nullable = false)
+    private Long userIndex;
+}

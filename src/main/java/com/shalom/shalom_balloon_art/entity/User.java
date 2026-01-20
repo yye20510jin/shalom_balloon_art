@@ -1,5 +1,6 @@
 package com.shalom.shalom_balloon_art.entity;
 
+import com.shalom.shalom_balloon_art.entity.post.PostUserLike;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,7 +39,11 @@ public class User{
     @Builder.Default
     private Set<Role> userRoles = new HashSet<>();
 
+    @OneToMany(mappedBy="user")
+    private Set<PostUserLike> postUserLikes = new HashSet<>();
+
     public void addRole(Role role){
         this.userRoles.add(role);
     }
+
 }

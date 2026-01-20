@@ -125,22 +125,9 @@ function PostForm({
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setThumbError("");
-    // setThumbUploading(true);
-
     const url = addFile(file);
     setThumbnailUrl(url);
     e.target.value = "";
-
-    // try {
-    //   const url = await uploadOne(file);
-    //   setThumbnailUrl(url);
-    // } catch (err) {
-    //   setThumbError(err.message || "썸네일 업로드 실패");
-    // } finally {
-    //   setThumbUploading(false);
-    //   e.target.value = "";
-    // }
   };
 
   // 이미지 업로드 및 삽입
@@ -150,7 +137,6 @@ function PostForm({
 
     for (const file of files) {
       const url = addFile(file);
-      // const url = await uploadOne(file);
 
       editor.chain().focus().insertContent([{ type: "image", attrs: { src: url } }, { type: "paragraph" },]).run();
     }

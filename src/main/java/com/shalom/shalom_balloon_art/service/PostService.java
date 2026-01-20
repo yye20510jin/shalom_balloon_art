@@ -6,6 +6,7 @@ import com.shalom.shalom_balloon_art.dto.post.PostListResponseDTO;
 import com.shalom.shalom_balloon_art.dto.post.PostResponseDTO;
 import com.shalom.shalom_balloon_art.dto.post.PostTagDTO;
 import com.shalom.shalom_balloon_art.entity.post.Post;
+import com.shalom.shalom_balloon_art.entity.post.PostUserLike;
 import com.shalom.shalom_balloon_art.entity.post.PostViewUser;
 import com.shalom.shalom_balloon_art.entity.User;
 import com.shalom.shalom_balloon_art.entity.post.Tags;
@@ -37,6 +38,7 @@ public class PostService {
     private final PostDailyViewRepository postDailyViewRepository;
     private final UserRepository userRepository;
     private final TagRepository tagRepository;
+    private final PostUserLikeRepository postUserLikeRepository;
 
     // 글 저장
     public void createPost(PostCreateRequestDTO req){
@@ -55,6 +57,23 @@ public class PostService {
         Post post = postRepository.findById(index)
                 .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
         return toResponseDTO(post);
+    }
+
+    // 글 좋아요
+    public void postUserLike(Long postIndex, int chk, Long userIndex){
+        if(chk == 0){
+            postUserLikeRepository.deleteByIdPostIndexAndIdUserIndex(postIndex, userIndex);
+            return;
+        }
+
+        boolean exists = postUserLikeRepository.existsByIdPostIndexAndIdUserIndex(postIndex, userIndex);
+
+        if(exists) return;
+
+        Post post = postRepository.getReferenceById(postIndex);
+        User user = userRepository.getReferenceById(userIndex);
+
+        postUserLikeRepository.save(PostUserLike.of(post, user));
     }
 
     //전체 목록 조회 (홈페이지)
