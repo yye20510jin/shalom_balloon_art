@@ -15,7 +15,7 @@ export function usePostSubmit() {
 
 // -------------- 서버 전송 ----------------
 
-  const handleSubmit = async (mode,contentHtml,thumbnailUrl, tagSelected) => {
+  const handleSubmit = async (mode,contentHtml,thumbnailUrl, tagSelected, supplies) => {
     setError("");
     setSuccessMessage("");
 
@@ -28,7 +28,8 @@ export function usePostSubmit() {
       title: title.trim(),
       contentHtml,
       thumbnailUrl,
-      postTag: tagSelected
+      postTag: tagSelected,
+      supplies
     };
 
     try {

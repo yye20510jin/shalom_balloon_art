@@ -56,6 +56,9 @@ public class Post {
     @OneToMany(mappedBy="post")
     private Set<PostUserLike> postUserLikes = new HashSet<>();
 
+    @Column
+    private String supplies;
+
     @PrePersist
     public void onCreate() {
         this.createdAt = LocalDateTime.now();
@@ -66,9 +69,10 @@ public class Post {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void update(String title, String contentHtml ) {
+    public void update(String title, String contentHtml, String supplies ) {
         this.title = title;
         this.contentHtml = contentHtml;
+        this.supplies = supplies;
         onUpdate();
     }
 

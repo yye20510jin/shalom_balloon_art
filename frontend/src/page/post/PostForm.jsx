@@ -47,6 +47,9 @@ function PostForm({
   const [thumbError, setThumbError] = useState("");
   const thumbInputRef = useRef(null);
 
+  //준비물
+  const [supplies, setSupplies] = useState("");
+
   // 파일 input을 버튼으로 열기 위해
   const fileInputRef = useRef(null);
 
@@ -98,7 +101,7 @@ function PostForm({
 
     setId(initialValues.id || "");
     setTitle(initialValues.title || "");
-    setThumbnailUrl(initialValues.thumbnailUrl || "")
+    setThumbnailUrl(initialValues.thumbnailUrl || "");
     setTagSelected((prev)=>{
       if(!initialValues.postTags) return [];
       const next = [...prev];
@@ -108,6 +111,7 @@ function PostForm({
       }
       return next;
     });
+    setSupplies(initialValues.supplies || "");
 
     // 서버에 저장한 contentHtml을 다시 에디터에 주입하는 형태 추천
     if (editor && initialValues.contentHtml) {
@@ -166,7 +170,7 @@ function PostForm({
       uploadOne
     });
 
-    await handleSubmit(mode, finalContentHtml, finalThumbnailUrl, tagSelected);
+    await handleSubmit(mode, finalContentHtml, finalThumbnailUrl, tagSelected, supplies);
   };
 
 
@@ -281,9 +285,6 @@ function PostForm({
                   type="button"
                   onClick={() =>
                     setThumbnailUrl("")
-                    // const ok =  await removeOne(thumbnailUrl);
-                    // if(!ok) {setThumbError("썸네일 삭제 실패"); return;}
-                    // setThumbnailUrl("");
                   }
                   style={{
                     position: "absolute",
@@ -360,6 +361,8 @@ function PostForm({
           <option value="20px">20</option>
           <option value="24px">24</option>
         </select>
+
+        <input type="text" value={supplies} onChange={(e)=>setSupplies(e.target.value)} placeholder="준비물을 입력 하세요"/>
 
         {/* 에디터 본문 */}
         <div

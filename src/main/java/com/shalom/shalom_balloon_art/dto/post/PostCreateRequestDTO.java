@@ -18,5 +18,6 @@ public class PostCreateRequestDTO {
     private String contentHtml;
     private String thumbnailUrl;
     private List<String> postTag;
+    private String supplies;
     // getter/setter
 }

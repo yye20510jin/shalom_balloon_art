@@ -19,6 +19,7 @@ public class PostListResponseDTO {
         private String title;
         private String preview;
         private String thumbnailUrl;
+        private String supplies;
         private List<PostTagDTO> postTag;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;

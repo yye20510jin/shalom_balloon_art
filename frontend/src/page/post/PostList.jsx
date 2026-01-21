@@ -98,6 +98,7 @@ function PostList() {
                       whiteSpace: "pre-wrap",
                     }}
                   >
+                    {post.supplies}
                     {post.preview.length >= 160 ? `${post.preview}...` : post.preview}
                   </p>
                 </div>

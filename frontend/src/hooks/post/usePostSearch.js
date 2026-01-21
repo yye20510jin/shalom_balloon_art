@@ -26,6 +26,7 @@ export function usePostSearch() {
             }
 
             const data = await res.json();
+            console.log("data : " ,data);
             setPosts(data.content);
             setStartPage(data.number);
             setEndPage(Math.ceil(data.totalElements / 10));

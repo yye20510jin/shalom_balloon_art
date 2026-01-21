@@ -18,6 +18,7 @@ public class PostResponseDTO {
     private String title;
     private String contentHtml;
     private String thumbnailUrl;
+    private String supplies;
     private List<PostTagDTO> postTags;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

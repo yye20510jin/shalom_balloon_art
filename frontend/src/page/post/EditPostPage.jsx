@@ -29,7 +29,8 @@ function EditPostPage() {
           title: data.title,
           thumbnailUrl : data.thumbnailUrl,
           contentHtml : data.contentHtml,
-          postTags : data.postTags
+          postTags : data.postTags,
+          supplies : data.supplies
         });
       } catch (err) {
         console.error(err);

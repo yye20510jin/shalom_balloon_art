@@ -100,6 +100,7 @@ public class PostService {
                 .thumbnailUrl(post.getThumbnailUrl())
                 .preview(makePreview(post.getContentHtml(),160))
                 .postTag(post.getPostTag().stream().map(PostTagDTO::from).toList())
+                .supplies(post.getSupplies())
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
                 .build();
@@ -120,6 +121,7 @@ public class PostService {
                 .title(post.getTitle())
                 .contentHtml(post.getContentHtml())
                 .thumbnailUrl(post.getThumbnailUrl())
+                .supplies(post.getSupplies())
                 .postTags(post.getPostTag().stream().map(PostTagDTO::from).toList())
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
@@ -145,7 +147,7 @@ public class PostService {
         post.getPostTag().clear();
         List<Tags> newTags = dto.getPostTag().stream().map(name -> tagRepository.findByTagName(name).orElseGet(() -> tagRepository.save(new Tags(name)))).toList();
         post.getPostTag().addAll(newTags);
-        post.update(dto.getTitle(), dto.getContentHtml());
+        post.update(dto.getTitle(), dto.getContentHtml(), dto.getSupplies());
         return toResponseDTO(post);
     }
 

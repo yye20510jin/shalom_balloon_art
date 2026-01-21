@@ -21,6 +21,7 @@ import java.util.Map;
 
 import static com.shalom.shalom_balloon_art.global.error.ErrorCode.*;
 
+@Transactional
 @Service
 public class AuthService {
     private final UserEncryptService userEncryptService;
@@ -40,35 +41,41 @@ public class AuthService {
         this.signupRequestRepository = signupRequestRepository;
     }
 
+    //회원가입
     public SignupRequest signupRequest(MembershipRequestDTO m){
         String pw = userEncryptService.signup(m.getUserPassword());
         SignupRequest s = SignupRequest.builder().userId(m.getUserId()).userPassword(pw).username(m.getUserName()).userPhoneNumber(m.getUserPhoneNumber()).build();
         return signupRequestRepository.save(s);
     }
 
+    //회원탈퇴
+    public void unregister(Long userIndex){
+        User u = userRepository.findById(userIndex).orElseThrow(() -> new BusinessException(USER_NOT_FOUND));
+        // User => 조회수, 태그, 좋아요 DB쪽 ON DELETE CASCADE 완료
+        userRepository.delete(u);
+    }
+
+    //권한 설정
     public boolean membership(User u, String s){
         Role r;
-        try{
-            if(s.equals("admin")) {
-                r = roleRepository.findByRoleName("ADMIN").orElseThrow(() -> new RuntimeException("일치하는 권한이 없습니다."));
-            }else{
-                r = roleRepository.findByRoleName("USER").orElseThrow(() -> new RuntimeException("일치하는 권한이 없습니다."));
-            }
 
+            if(s.equals("admin")) {
+                r = roleRepository.findByRoleName("ADMIN").orElseThrow(() -> new BusinessException(AUTH_NOT_FOUND));
+            }else{
+                r = roleRepository.findByRoleName("USER").orElseThrow(() -> new BusinessException(AUTH_NOT_FOUND));
+            }
             u.addRole(r);
 
             userRepository.save(u);
-        }catch(RuntimeException e){
-            return false;
-        }
 
         return true;
     }
 
+    //admin 로그인
     public Map<String,Object> adminLogin(LoginRequestDTO l){
             //id 조회
             User u;
-            u = userRepository.findByUserId(l.getUserId()).orElseThrow(()->new RuntimeException(""));
+            u = userRepository.findByUserId(l.getUserId()).orElseThrow(()->new BusinessException(USER_NOT_FOUND));
 
             userEncryptService.pwDecrypt(u.getUserId(),l.getPassword());
 
@@ -77,7 +84,7 @@ public class AuthService {
 
             List<String> listRoles = userdetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
             for(String role : listRoles){
-                if(role.contains("USER")) throw new RuntimeException("");
+                if(role.contains("USER")) throw new BusinessException(ACCESS_DENIED);
             }
 
             Map<String,Object> result = new HashMap<>();
@@ -87,17 +94,18 @@ public class AuthService {
             return result;
     }
 
+    //user 로그인
     public Map<String,Object> userLogin(LoginRequestDTO l){
         //id 조회
         User u;
-        u = userRepository.findByUserId(l.getUserId()).orElseThrow(()->new RuntimeException(""));
+        u = userRepository.findByUserId(l.getUserId()).orElseThrow(()->new BusinessException(USER_NOT_FOUND));
         userEncryptService.pwDecrypt(u.getUserId(),l.getPassword());
         UserDetails userdetails = coustomUserDetailsService.loadUserByUsername(l.getUserId());
 
         List<String> listRoles = userdetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
 
         for(String role : listRoles){
-            if(role.contains("ADMIN")) throw new RuntimeException("");
+            if(role.contains("ADMIN")) throw new BusinessException(ACCESS_DENIED);
         }
 
         Map<String,Object> result = new HashMap<>();
@@ -108,20 +116,20 @@ public class AuthService {
         return result;
     }
 
+    //아이디 중복 체크
     public void idDuplicateCheck(String id){
         boolean existsInUser = userRepository.existsByUserId(id);
         boolean existsInSignupRequest = signupRequestRepository.existsByUserId(id);
 
         if(existsInUser || existsInSignupRequest){
-            throw new RuntimeException("이미 사용 중인 아이디 입니다.");
-        }
+            throw new BusinessException(DUPLICATE_ID);}
     }
 
-    @Transactional
+    //유저 등록
     public void approveUser(Long userIndex) {
 
         SignupRequest req = signupRequestRepository.findById(userIndex)
-                .orElseThrow(() -> new RuntimeException("요청을 찾을 수 없습니다."));
+                .orElseThrow(() -> new BusinessException(RESOURCE_NOT_FOUND));
 
         User user = User.builder()
                 .userId(req.getUserId())
@@ -133,13 +141,12 @@ public class AuthService {
         membership(user,"USER");
 
         if(signupRequestRepository.deleteByUserIndex(userIndex) == 0){
-            throw new RuntimeException("삭제 실패");
+            throw new BusinessException(USER_SAVE_FALSE);
         }
     }
 
-    @Transactional
     public void rejectUser(Long userIndex){
-        SignupRequest req = signupRequestRepository.findById(userIndex).orElseThrow(() -> new RuntimeException("해당 아이디는 존재하지 않습니다."));
+        SignupRequest req = signupRequestRepository.findById(userIndex).orElseThrow(() -> new BusinessException(USER_NOT_FOUND));
 
             req.setAuthStatus(2);   // 변경
 
