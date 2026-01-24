@@ -46,4 +46,6 @@ public class User{
         this.userRoles.add(role);
     }
 
+    public void changePw(String pw) {this.userPassword = pw;}
+
 }

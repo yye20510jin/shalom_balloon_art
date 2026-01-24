@@ -14,6 +14,8 @@ import RequireUser from "../auth/RequireUser";
 import UserLayout from "../page/User/UserLayout";
 import UserList from "../page/admin/UserList";
 import AdminHomeCard from "../page/admin/AdminHomecard";
+import FindId from "../page/User/FindId";
+import FindPassword from "../page/User/FindPassword";
 import { AdminContext_f } from "../components/admin/adminContext";
 
 export const routes = [
@@ -21,6 +23,8 @@ export const routes = [
   { path: "/admin/adminLogin", element: <AdminLogin /> },
   { path: "/membership", element: <Membership /> },
   { path: "/userLogin", element: <UserLogin /> },
+  { path: "/user/FindId", element: <FindId/>},
+  { path: "/user/FindPw", element: <FindPassword/>},
   {
     path: "/admin",
     element: (

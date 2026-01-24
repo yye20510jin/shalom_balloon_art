@@ -44,6 +44,7 @@ public class AdminController {
         return ResponseEntity.ok(postAnalyticsService.getTopViewedDaily(from,to,top));
     }
 
+    //관리자 추가
     @PostMapping("/addAdmin")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> addAdmin(@RequestBody MembershipRequestDTO m){
@@ -56,6 +57,7 @@ public class AdminController {
         return ResponseEntity.ok("success");
     }
 
+    //유저 인증
     @GetMapping("/userApprove")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<MembershipResponseDTO>> userApprove(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "0") int auth){
@@ -74,6 +76,7 @@ public class AdminController {
         return ResponseEntity.ok("사용자 인증 거부 성공");
     }
 
+    //유저 인증
     @PostMapping("/approveUser/{userIndex}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> approveUser(@PathVariable Long userIndex){

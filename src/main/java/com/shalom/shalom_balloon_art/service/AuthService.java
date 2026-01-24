@@ -3,6 +3,7 @@ package com.shalom.shalom_balloon_art.service;
 import com.shalom.shalom_balloon_art.auth.jwt.JwtTokenProvider;
 import com.shalom.shalom_balloon_art.dto.LoginRequestDTO;
 import com.shalom.shalom_balloon_art.dto.MembershipRequestDTO;
+import com.shalom.shalom_balloon_art.dto.user.FindMembershipDTO;
 import com.shalom.shalom_balloon_art.entity.Role;
 import com.shalom.shalom_balloon_art.entity.SignupRequest;
 import com.shalom.shalom_balloon_art.entity.User;
@@ -125,7 +126,7 @@ public class AuthService {
             throw new BusinessException(DUPLICATE_ID);}
     }
 
-    //유저 등록
+    //유저 등록 (ADMIN service로 이전)
     public void approveUser(Long userIndex) {
 
         SignupRequest req = signupRequestRepository.findById(userIndex)
@@ -144,11 +145,20 @@ public class AuthService {
             throw new BusinessException(USER_SAVE_FALSE);
         }
     }
-
+    //유저 등록 (ADMIN service로 이전)
     public void rejectUser(Long userIndex){
         SignupRequest req = signupRequestRepository.findById(userIndex).orElseThrow(() -> new BusinessException(USER_NOT_FOUND));
 
             req.setAuthStatus(2);   // 변경
 
         }
+
+    //아이디 찾기
+    public String findId(FindMembershipDTO f){
+        boolean chk = userRepository.existsByUsernameAndUserPhoneNumber(f.getUserName(), f.getUserPhoneNumber());
+        if(!chk) throw new BusinessException(USER_NOT_FOUND);
+        return userRepository.findUserIdByUsernameAndUserPhoneNumber(f.getUserName(), f.getUserPhoneNumber());
+    }
+
+
     }

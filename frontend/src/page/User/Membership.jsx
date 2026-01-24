@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { authFetch } from "../../api/authFetch";
 import shalomLogo from "../../assets/shalomBalloonArt.png";
 import AuthContext from "../../auth/AuthContext";
+import { useFormatPhoneNumber } from "../../hooks/user/UseformatPhoneNumber";
 import "../../styles/user/Membership.css";
 
 function Membership() {
@@ -41,7 +42,7 @@ function Membership() {
     }
     const url = admin ? `${import.meta.env.VITE_BACKEND_BASE_URL}/api/admin/addAdmin`: `${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/membership`;
     try {
-
+      const formatPn = userPhoneNumber.replace(/\D/g,"");
       const res = await authFetch(
         url,
         {
@@ -50,7 +51,7 @@ function Membership() {
             userId,
             userPassword,
             userName,
-            userPhoneNumber,
+            userPhoneNumber : formatPn,
           }),
         }
       );
@@ -152,7 +153,10 @@ function Membership() {
             <input
               type="text"
               value={userPhoneNumber}
-              onChange={(e) => setUserPhoneNumber(e.target.value)}
+              onChange={(e) => 
+                setUserPhoneNumber(prev =>
+                  prev = useFormatPhoneNumber(e.target.value))
+              }
               placeholder="phoneNumber"
             />
             <button

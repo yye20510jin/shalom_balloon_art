@@ -1,7 +1,6 @@
 package com.shalom.shalom_balloon_art.service;
 
 import com.shalom.shalom_balloon_art.entity.User;
-import com.shalom.shalom_balloon_art.repository.RoleRepository;
 import com.shalom.shalom_balloon_art.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
