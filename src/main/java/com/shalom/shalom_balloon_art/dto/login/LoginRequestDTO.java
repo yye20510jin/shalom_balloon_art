@@ -1,4 +1,4 @@
-package com.shalom.shalom_balloon_art.dto;
+package com.shalom.shalom_balloon_art.dto.login;
 
 import lombok.Data;
 import lombok.ToString;

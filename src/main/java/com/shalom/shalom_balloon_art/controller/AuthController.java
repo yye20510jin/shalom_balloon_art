@@ -1,16 +1,15 @@
 package com.shalom.shalom_balloon_art.controller;
 
 import com.shalom.shalom_balloon_art.auth.jwt.CustomUserDetails;
-import com.shalom.shalom_balloon_art.dto.LoginRequestDTO;
-import com.shalom.shalom_balloon_art.dto.LoginResponseDTO;
-import com.shalom.shalom_balloon_art.dto.MembershipRequestDTO;
-import com.shalom.shalom_balloon_art.dto.user.FindMembershipDTO;
+import com.shalom.shalom_balloon_art.dto.login.*;
 import com.shalom.shalom_balloon_art.service.AuthService;
+import com.shalom.shalom_balloon_art.service.PasswordResetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +19,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
+    private final PasswordResetService passwordResetService;
 
     //관리자 로그인
     @PostMapping("/adminLogin")
@@ -61,9 +61,27 @@ public class AuthController {
 
     //아이디 찾기
     @PostMapping("/findId")
-    public ResponseEntity<String> findId(@RequestBody FindMembershipDTO f){
+    public ResponseEntity<String> findId(@RequestBody FindIdDTO f){
         return ResponseEntity.ok(authService.findId(f));
     }
 
+    //----비밀번호 수정 토큰----
+    @PostMapping("/resetPw")
+    public ResponseEntity<ResetTokenResponseDTO> resetPw(@RequestBody ResetRequestDTO r){
+        String token = passwordResetService.requestReset(r.getUserId(), r.getUserPhoneNumber());
+        return ResponseEntity.ok(new ResetTokenResponseDTO(token));
+    }
 
+    @PostMapping("/validateTokenPw")
+    public ResponseEntity<Void> validateTokenPw(@RequestBody ResetConfirmDTO r){
+        passwordResetService.getValidToken(r.getToken(),null);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/confirmPw")
+    public ResponseEntity<Void> confirmPw(@RequestBody ResetConfirmDTO r){
+        passwordResetService.confirmReset(r.getToken(), r.getNewPassword());
+        return ResponseEntity.ok().build();
+    }
+    // -----------------------
 }

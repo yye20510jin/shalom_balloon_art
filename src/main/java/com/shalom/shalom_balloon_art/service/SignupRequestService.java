@@ -1,6 +1,6 @@
 package com.shalom.shalom_balloon_art.service;
 
-import com.shalom.shalom_balloon_art.dto.MembershipResponseDTO;
+import com.shalom.shalom_balloon_art.dto.login.MembershipResponseDTO;
 import com.shalom.shalom_balloon_art.entity.SignupRequest;
 import com.shalom.shalom_balloon_art.repository.SignupRequestRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,14 +12,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class SignupRequestService {
     private final SignupRequestRepository signupRequestRepository;
 
-    // 매일 새벽 3시에 실행 (cron: 초 분 시 일 월 요일)
+    // 매일 정각에 실행 (cron: 초 분 시 일 월 요일)
     @Scheduled(cron = "0 0 0 * * ?")
     public void deleteOldRejectedSignupRequests() {
         LocalDateTime threshold = LocalDateTime.now().minusDays(30);

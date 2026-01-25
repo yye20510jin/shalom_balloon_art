@@ -15,7 +15,8 @@ import UserLayout from "../page/User/UserLayout";
 import UserList from "../page/admin/UserList";
 import AdminHomeCard from "../page/admin/AdminHomecard";
 import FindId from "../page/User/FindId";
-import FindPassword from "../page/User/FindPassword";
+import ResetPassword from "../page/User/ResetPassword";
+import ResetPw from "../page/User/ResetPw";
 import { AdminContext_f } from "../components/admin/adminContext";
 
 export const routes = [
@@ -24,7 +25,8 @@ export const routes = [
   { path: "/membership", element: <Membership /> },
   { path: "/userLogin", element: <UserLogin /> },
   { path: "/user/FindId", element: <FindId/>},
-  { path: "/user/FindPw", element: <FindPassword/>},
+  { path: "/user/ResetPassword", element: <ResetPassword/>},
+  { path: "/user/ResetPw", element:<ResetPw/>},
   {
     path: "/admin",
     element: (

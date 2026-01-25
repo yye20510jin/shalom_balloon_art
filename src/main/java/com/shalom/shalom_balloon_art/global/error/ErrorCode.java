@@ -30,7 +30,11 @@ public enum ErrorCode {
     TAG_NOT_SAVE(HttpStatus.CONFLICT, "T005", "태그 저장 실패"),
     DUPLICATE_TagName(HttpStatus.CONFLICT, "T003", "이미 존재하는 태그"),
     TAG_NAME_REQUIRED(HttpStatus.BAD_REQUEST,"T001", "빈 태그 이름"),
-    TAG_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "T006" , "태그 조회 실패");
+    TAG_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "T006" , "태그 조회 실패"),
+
+    //===RESET TOKEN===
+    INVALID_RESET_TOKEN(HttpStatus.FORBIDDEN, "R001","토큰 검증 실패"),
+    EXPIRED_RESET_TOKEN(HttpStatus.UNAUTHORIZED, "R002", "토큰 만료");
 
     private final HttpStatus status;
     private final String code;

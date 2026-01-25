@@ -2,7 +2,7 @@ package com.shalom.shalom_balloon_art.service;
 
 import com.shalom.shalom_balloon_art.dto.HomeCardRequestDTO;
 import com.shalom.shalom_balloon_art.dto.HomeCardResponseDTO;
-import com.shalom.shalom_balloon_art.dto.MembershipResponseDTO;
+import com.shalom.shalom_balloon_art.dto.login.MembershipResponseDTO;
 import com.shalom.shalom_balloon_art.dto.post.PostTagDTO;
 import com.shalom.shalom_balloon_art.entity.HomeCard;
 import com.shalom.shalom_balloon_art.entity.post.Tags;

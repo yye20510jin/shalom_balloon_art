@@ -9,6 +9,7 @@ function FindId() {
     const [userPhoneNumber, setUserPhoneNumber] = useState("");
     const [userId, setUserId] = useState("");
     const chk = !!userName.trim() && !!userPhoneNumber.trim();
+    const formatPhoneNumber = useFormatPhoneNumber;
     const navigate = useNavigate();
 
     const findIdFetch = async (e) => {
@@ -39,7 +40,7 @@ function FindId() {
                 <input type="text" value={userName} onChange={(e) => setUserName(e.target.value)} placeholder="닉네임을 입력하세요" />
                 <input type="text" value={userPhoneNumber} onChange={(e) =>
                     setUserPhoneNumber(prev =>
-                        prev = useFormatPhoneNumber(e.target.value))
+                        prev = formatPhoneNumber(e.target.value))
                 } placeholder="전화번호를 입력하세요" />
                 <button type="submit" disabled={!chk}>찾기</button>
             </form>

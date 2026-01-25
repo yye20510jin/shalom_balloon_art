@@ -66,7 +66,7 @@ function UserLogin() {
                 </form>
             </div>
             <button type="button" onClick={()=>navigate("/user/FindId")}>아이디 찾기</button>
-            <button type="button" onClick={()=>navigate("/user/FindPw")}>비밀번호 찾기</button>
+            <button type="button" onClick={()=>navigate("/user/ResetPassword")}>비밀번호 찾기</button>
         </div>
     );
 } export default UserLogin;

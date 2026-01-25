@@ -1,9 +1,9 @@
 package com.shalom.shalom_balloon_art.service;
 
 import com.shalom.shalom_balloon_art.auth.jwt.JwtTokenProvider;
-import com.shalom.shalom_balloon_art.dto.LoginRequestDTO;
-import com.shalom.shalom_balloon_art.dto.MembershipRequestDTO;
-import com.shalom.shalom_balloon_art.dto.user.FindMembershipDTO;
+import com.shalom.shalom_balloon_art.dto.login.LoginRequestDTO;
+import com.shalom.shalom_balloon_art.dto.login.MembershipRequestDTO;
+import com.shalom.shalom_balloon_art.dto.login.FindIdDTO;
 import com.shalom.shalom_balloon_art.entity.Role;
 import com.shalom.shalom_balloon_art.entity.SignupRequest;
 import com.shalom.shalom_balloon_art.entity.User;
@@ -154,7 +154,7 @@ public class AuthService {
         }
 
     //아이디 찾기
-    public String findId(FindMembershipDTO f){
+    public String findId(FindIdDTO f){
         boolean chk = userRepository.existsByUsernameAndUserPhoneNumber(f.getUserName(), f.getUserPhoneNumber());
         if(!chk) throw new BusinessException(USER_NOT_FOUND);
         return userRepository.findUserIdByUsernameAndUserPhoneNumber(f.getUserName(), f.getUserPhoneNumber());
