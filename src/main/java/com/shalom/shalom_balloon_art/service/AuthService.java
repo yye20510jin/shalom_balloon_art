@@ -49,13 +49,6 @@ public class AuthService {
         return signupRequestRepository.save(s);
     }
 
-    //회원탈퇴
-    public void unregister(Long userIndex){
-        User u = userRepository.findById(userIndex).orElseThrow(() -> new BusinessException(USER_NOT_FOUND));
-        // User => 조회수, 태그, 좋아요 DB쪽 ON DELETE CASCADE 완료
-        userRepository.delete(u);
-    }
-
     //권한 설정
     public boolean membership(User u, String s){
         Role r;

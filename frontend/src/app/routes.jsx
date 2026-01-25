@@ -17,6 +17,8 @@ import AdminHomeCard from "../page/admin/AdminHomecard";
 import FindId from "../page/User/FindId";
 import ResetPassword from "../page/User/ResetPassword";
 import ResetPw from "../page/User/ResetPw";
+import UserLikePosts from "../page/User/UserLikePosts";
+import UserDashboard from "../page/User/UserDashboard";
 import { AdminContext_f } from "../components/admin/adminContext";
 
 export const routes = [
@@ -53,8 +55,10 @@ export const routes = [
       </RequireUser>
     ),
     children: [
-      { path: "posts/postList", element: <PostList /> },
+      { path: "posts/postList/:mode", element: <PostList /> },
       { path: "posts/postDetails/:id", element: <PostDetails /> },
+      { path: "userLikePosts", element: <UserLikePosts/>},
+      { path: "userDashboard", element: <UserDashboard/>}
     ],
   },
 

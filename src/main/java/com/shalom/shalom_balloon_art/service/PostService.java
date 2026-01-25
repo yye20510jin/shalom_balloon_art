@@ -53,10 +53,13 @@ public class PostService {
     }
 
     // 글 자세히 보기
-    public PostResponseDTO getPost(Long index) {
-        Post post = postRepository.findById(index)
+    public PostResponseDTO getPost(Long postIndex, Long userIndex) {
+        Post post = postRepository.findById(postIndex)
                 .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
-        return toResponseDTO(post);
+
+        boolean likedPost = postUserLikeRepository.existsByIdPostIndexAndIdUserIndex(post.getIndex(),userIndex);
+
+        return PostResponseDTO.from(post,likedPost);
     }
 
     // 글 좋아요
@@ -76,43 +79,16 @@ public class PostService {
         postUserLikeRepository.save(PostUserLike.of(post, user));
     }
 
-    //전체 목록 조회 (홈페이지)
-    public List<PostListResponseDTO> getHomeAllPosts(){
-        return postRepository.findAll().stream().map(this::toListResponseDTO).toList();
-    }
-
     //전체 목록 조회 (페이지네이션)
     public Page<PostListResponseDTO> getAllPosts(int page, String searchTitle){
         Pageable pageable = PageRequest.of(page,10);
 
         if (searchTitle.isBlank()){
-            return postRepository.findAll(pageable).map(this::toListResponseDTO);
+            return postRepository.findAll(pageable).map(r->PostListResponseDTO.from(r,false));
         }else{
-            return postRepository.findByTitleContainingIgnoreCase(searchTitle,pageable).map(this::toListResponseDTO);
+            return postRepository.findByTitleContainingIgnoreCase(searchTitle,pageable).map(r->PostListResponseDTO.from(r,false));
         }
 
-    }
-
-    private PostListResponseDTO toListResponseDTO(Post post) {
-        return PostListResponseDTO.builder()
-                .index(post.getIndex())
-                .title(post.getTitle())
-                .thumbnailUrl(post.getThumbnailUrl())
-                .preview(makePreview(post.getContentHtml(),160))
-                .postTag(post.getPostTag().stream().map(PostTagDTO::from).toList())
-                .supplies(post.getSupplies())
-                .createdAt(post.getCreatedAt())
-                .updatedAt(post.getUpdatedAt())
-                .build();
-    }
-
-    // 글 미리보기
-    private String makePreview(String html, int maxLen){
-        if(html == null || html.isBlank()) return "";
-        String text = Jsoup.parse(html).text();
-        text = text.replaceAll("\\s+"," ").trim();
-        if(text.length() <= maxLen) return text;
-        return text.substring(0,maxLen);
     }
 
     private PostResponseDTO toResponseDTO(Post post) {
@@ -129,7 +105,7 @@ public class PostService {
     }
 
     //글 수정
-    public PostResponseDTO editPost(Long index,PostCreateRequestDTO dto) {
+    public PostResponseDTO editPost(Long index,PostCreateRequestDTO dto, Long userIndex) {
 
         Post post = postRepository.findById(index)
                 .orElseThrow(() -> new BusinessException(POST_NOT_FOUND));
@@ -148,7 +124,10 @@ public class PostService {
         List<Tags> newTags = dto.getPostTag().stream().map(name -> tagRepository.findByTagName(name).orElseGet(() -> tagRepository.save(new Tags(name)))).toList();
         post.getPostTag().addAll(newTags);
         post.update(dto.getTitle(), dto.getContentHtml(), dto.getSupplies());
-        return toResponseDTO(post);
+
+        boolean likedPost = postUserLikeRepository.existsByIdPostIndexAndIdUserIndex(post.getIndex(),userIndex);
+
+        return PostResponseDTO.from(post,likedPost);
     }
 
     //글 삭제

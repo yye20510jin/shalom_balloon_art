@@ -11,16 +11,24 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
+
     Page<Post> findAll(Pageable pageable);
+
+    @Query("""
+            SELECT p
+            FROM Post p
+            WHERE p.index IN :postIndex
+            """)
+    Page<Post> findByIds(@Param("postIndex") List<Long> index, Pageable pageable);
 
     Page<Post> findByTitleContainingIgnoreCase(String searchTitle,Pageable pageable);
 
     @Query("""
         SELECT p.index, p.title
         FROM Post p
-        WHERE p.index IN :index
+        WHERE p.index IN :postIndex
     """)
-    List<Object[]> findTitlesByIds(@Param("index") List<Long> index);
+    List<Object[]> findTitlesByIds(@Param("postIndex") List<Long> index);
 
     @Modifying
     @Query("""

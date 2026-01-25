@@ -28,10 +28,12 @@ public class PostAnalyticsService {
         //Top N 게시글 ID
         List<Object[]> topRows =
                 dailyViewRepository.findTopPostIds(from, to, PageRequest.of(0,top));
+
         List<Long> postIndex = topRows.stream().map(r ->(Long) r[0]).toList();
 
         //게시글 메타(ID를 이용해 게시글 제목 가져오기)
         Map<Long, String> titleMap = postRepository.findTitlesByIds(postIndex).stream().collect(Collectors.toMap(row -> (Long)row[0], row -> (String) row[1]));
+
         List<PostMetaDTO> posts = topRows.stream().map(
                 r -> new PostMetaDTO(
                         (Long) r[0],

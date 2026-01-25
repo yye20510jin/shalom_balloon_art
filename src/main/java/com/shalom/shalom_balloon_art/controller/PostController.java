@@ -40,13 +40,13 @@ public class PostController {
         return ResponseEntity.ok(postService.getAllPosts(page,searchTitle));
     }
 
-    // 글 하나 조회 (USER만)
+    // 글 하나 조회
     @GetMapping("/{index}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<PostResponseDTO> getPost(@PathVariable Long index, @AuthenticationPrincipal CustomUserDetails cud ) {
         Long userIndex = cud.getUserIndex();
         postService.recordView(index, userIndex);
-        return ResponseEntity.ok(postService.getPost(index));
+        return ResponseEntity.ok(postService.getPost(index, userIndex));
     }
 
     //좋아요
@@ -60,8 +60,9 @@ public class PostController {
     //글 수정
     @PutMapping("/{index}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<PostResponseDTO> editPost(@PathVariable Long index,@RequestBody PostCreateRequestDTO dto){
-        return ResponseEntity.ok(postService.editPost(index,dto));
+    public ResponseEntity<PostResponseDTO> editPost(@PathVariable Long index,@RequestBody PostCreateRequestDTO dto, @AuthenticationPrincipal CustomUserDetails cud){
+        Long userIndex = cud.getUserIndex();
+        return ResponseEntity.ok(postService.editPost(index,dto, userIndex));
     }
 
     //글 삭제

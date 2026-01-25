@@ -10,7 +10,8 @@ export function usePostSearch() {
     const [loading, setLoading] = useState(true);
 
     //All search
-    const fnc_allPost = async () => {
+    const fnc_allPost = async (e) => {
+        e?.preventDefault();
         try {
             const res = await authFetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/posts?page=${startPage}&searchTitle=${searchText}`,
                 {
@@ -26,7 +27,6 @@ export function usePostSearch() {
             }
 
             const data = await res.json();
-            console.log("data : " ,data);
             setPosts(data.content);
             setStartPage(data.number);
             setEndPage(Math.ceil(data.totalElements / 10));
@@ -69,8 +69,36 @@ export function usePostSearch() {
         }
     }
 
+    //user Like
+    const fnc_userLikePost = async(e)=>{
+        e?.preventDefault();
+        try{
+            const res = await authFetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/userLikePosts?page=${startPage}`,{
+                method:"GET"
+            });
+
+            if(!res.ok){
+                const data = await res.json();
+                console.log(data.message);
+                setPosts([]);
+                setLoading(false);
+                return;
+            }
+
+            const data = await res.json();
+            setPosts(data.content);
+            setStartPage(data.number);
+            setEndPage(Math.ceil(data.totalElements / 6));
+
+        }catch(err){
+            console.error(err);
+        }finally{
+            setLoading(false);
+        }
+    }
+
     return {
-        searchText, setSearchText, fnc_searchText, posts, error, fnc_allPost, startPage, setStartPage, endPage, loading
+        fnc_userLikePost, searchText, setSearchText, fnc_searchText, posts, error, fnc_allPost, startPage, setStartPage, endPage, loading
     };
 
 }

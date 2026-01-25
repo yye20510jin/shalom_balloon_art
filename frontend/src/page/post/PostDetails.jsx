@@ -37,6 +37,7 @@ function PostDetails() {
 
         const data = await res.json();
         setPost(data);
+        setLike(data.postLike);
       } catch (e) {
         console.error(e);
         setError("서버 오류가 발생했습니다.");
@@ -55,8 +56,10 @@ function PostDetails() {
     });
 
     if(!res.ok){
-      //에러처리 예정
-      return;}
+      const data = await res.json();
+      console.log(data.message);
+      return;
+    }
 
       setLike(prev => !prev);
 

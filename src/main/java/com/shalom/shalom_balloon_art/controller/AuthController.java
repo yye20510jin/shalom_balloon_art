@@ -53,11 +53,7 @@ public class AuthController {
         return ResponseEntity.ok("사용 가능한 아이디입니다.");
     }
 
-    //회원탈퇴(UserController로 이전)
-    @DeleteMapping("/membership")
-    public void unregister(@AuthenticationPrincipal CustomUserDetails cud){
-        authService.unregister(cud.getUserIndex());
-    }
+
 
     //아이디 찾기
     @PostMapping("/findId")

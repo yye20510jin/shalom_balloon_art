@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { usePostSearch } from "../../hooks/post/usePostSearch";
 import leftArrow from "../../assets/leftArrow.png";
 import rightArrow from "../../assets/rightArrow.png";
@@ -8,15 +8,24 @@ import "../../styles/post/postList.css";
 
 function PostList() {
 
+  const { mode } = useParams();
+  const finalMode = mode ?? "post";
+
   const navigate = useNavigate();
-  const { searchText, setSearchText, fnc_searchText, posts, error,
+  const { fnc_userLikePost, searchText, setSearchText, fnc_searchText, posts, error,
     fnc_allPost, startPage, setStartPage, endPage, loading } = usePostSearch();
 
   const search = Boolean(searchText.trim());
 
   useEffect(() => {
-    search ? fnc_searchText() : fnc_allPost();
-  }, [startPage]);
+    
+    if(finalMode === "like"){
+      fnc_userLikePost();
+    }else{
+      search ? fnc_searchText() : fnc_allPost();
+    }
+
+  }, [startPage,mode]);
 
   const formatDateTime = (dateTimeString) => {
     if (!dateTimeString) return "";
