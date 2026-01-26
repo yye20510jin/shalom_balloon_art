@@ -26,6 +26,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PostUserLikeRepository postUserLikeRepository;
     private final PostRepository postRepository;
+    private final UserEncryptService userEncryptService;
     private final PostService postService;
 
     //회원탈퇴
@@ -36,6 +37,7 @@ public class UserService {
     }
 
     //좋아요 글 목록
+    @Transactional(readOnly = true)
     public Page<PostListResponseDTO> getUserLikePosts(Long userIndex, int page){
 
         Pageable pageable = PageRequest.of(page, 6);
@@ -46,6 +48,22 @@ public class UserService {
         }
 
         return postRepository.findByIds(p,pageable).map(r -> PostListResponseDTO.from(r,true));
+    }
+
+    //비밀번호 찾기
+    public void chkPw(Long userIndex, String chkPw){
+        String userId = userRepository.findUserIdByUserIndex(userIndex);
+
+        if(userId.isBlank()) throw new BusinessException(USER_NOT_FOUND);
+
+        userEncryptService.pwDecrypt(userId, chkPw);
+    }
+
+    //비밀번호 변경
+    public void userChangePw(Long userIndex, String newPw){
+        User u = userRepository.findById(userIndex).orElseThrow(()->new BusinessException(USER_NOT_FOUND));
+        String signupPw = userEncryptService.signup(newPw);
+        u.changePw(signupPw);
     }
 
 }

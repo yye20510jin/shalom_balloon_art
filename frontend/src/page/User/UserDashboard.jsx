@@ -37,11 +37,14 @@ function UserDashboard() {
     };
 
     //비밀번호 변경
+    const changePw = () =>{
+        navigate("/user/changePw");
+    };
 
     return (
         <div>
             <button onClick={likePost}>좋아요</button>
-            <button onClick={null}>비밀번호 변경</button>
+            <button onClick={changePw}>비밀번호 변경</button>
             <button onClick={unregister}>회원탈퇴</button>
         </div>
     );

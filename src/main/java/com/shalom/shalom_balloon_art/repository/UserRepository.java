@@ -27,5 +27,12 @@ public interface UserRepository extends JpaRepository<User,Long>{
             """)
     Optional<Long> findUserIndexByUserIdAndUserPhoneNumber(@Param("userId") String userId, @Param("userPhoneNumber") String userPhoneNumber);
 
+    @Query("""
+            SELECT u.userId
+            FROM User u
+            WHERE u.userIndex = :userIndex
+            """)
+    String findUserIdByUserIndex(@Param("userIndex")Long userIndex);
+
     boolean existsByUserIdAndUserPhoneNumber(String userId, String userPhoneNumber);
 }
