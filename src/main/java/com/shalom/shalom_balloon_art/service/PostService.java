@@ -4,7 +4,7 @@ import com.shalom.shalom_balloon_art.config.ViewLimitProperties;
 import com.shalom.shalom_balloon_art.dto.post.PostCreateRequestDTO;
 import com.shalom.shalom_balloon_art.dto.post.PostListResponseDTO;
 import com.shalom.shalom_balloon_art.dto.post.PostResponseDTO;
-import com.shalom.shalom_balloon_art.dto.post.PostTagDTO;
+import com.shalom.shalom_balloon_art.dto.post.PostSearchCond;
 import com.shalom.shalom_balloon_art.entity.post.Post;
 import com.shalom.shalom_balloon_art.entity.post.PostUserLike;
 import com.shalom.shalom_balloon_art.entity.post.PostViewUser;
@@ -12,8 +12,11 @@ import com.shalom.shalom_balloon_art.entity.User;
 import com.shalom.shalom_balloon_art.entity.post.Tags;
 import com.shalom.shalom_balloon_art.global.error.BusinessException;
 import com.shalom.shalom_balloon_art.repository.*;
+import com.shalom.shalom_balloon_art.repository.post.PostDailyViewRepository;
+import com.shalom.shalom_balloon_art.repository.post.PostRepository;
+import com.shalom.shalom_balloon_art.repository.post.PostUserLikeRepository;
+import com.shalom.shalom_balloon_art.repository.post.PostViewUserRepository;
 import lombok.RequiredArgsConstructor;
-import org.jsoup.Jsoup;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -80,28 +83,11 @@ public class PostService {
     }
 
     //전체 목록 조회 (페이지네이션)
-    public Page<PostListResponseDTO> getAllPosts(int page, String searchTitle){
-        Pageable pageable = PageRequest.of(page,10);
+    public Page<PostListResponseDTO> getSearchPosts(int page, PostSearchCond cond){
+        Pageable pageable = PageRequest.of(page,6);
 
-        if (searchTitle.isBlank()){
-            return postRepository.findAll(pageable).map(r->PostListResponseDTO.from(r,false));
-        }else{
-            return postRepository.findByTitleContainingIgnoreCase(searchTitle,pageable).map(r->PostListResponseDTO.from(r,false));
-        }
+        return postRepository.search(cond,pageable).map(p-> PostListResponseDTO.from(p,false));
 
-    }
-
-    private PostResponseDTO toResponseDTO(Post post) {
-        return PostResponseDTO.builder()
-                .index(post.getIndex())
-                .title(post.getTitle())
-                .contentHtml(post.getContentHtml())
-                .thumbnailUrl(post.getThumbnailUrl())
-                .supplies(post.getSupplies())
-                .postTags(post.getPostTag().stream().map(PostTagDTO::from).toList())
-                .createdAt(post.getCreatedAt())
-                .updatedAt(post.getUpdatedAt())
-                .build();
     }
 
     //글 수정

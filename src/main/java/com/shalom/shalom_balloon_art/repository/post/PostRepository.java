@@ -1,5 +1,6 @@
-package com.shalom.shalom_balloon_art.repository;
+package com.shalom.shalom_balloon_art.repository.post;
 
+import com.shalom.shalom_balloon_art.dto.post.PostSearchCond;
 import com.shalom.shalom_balloon_art.entity.post.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface PostRepository extends JpaRepository<Post, Long> {
+public interface PostRepository extends JpaRepository<Post, Long>, PostRepositoryCustom {
 
     Page<Post> findAll(Pageable pageable);
 
@@ -21,7 +22,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             """)
     Page<Post> findByIds(@Param("postIndex") List<Long> index, Pageable pageable);
 
-    Page<Post> findByTitleContainingIgnoreCase(String searchTitle,Pageable pageable);
+    public Page<Post> search(PostSearchCond cond, Pageable pageable);
 
     @Query("""
         SELECT p.index, p.title

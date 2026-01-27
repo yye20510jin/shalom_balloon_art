@@ -22,7 +22,7 @@ function Navbar() {
     };
 
     const GoPostList = () => {
-        navigate("/user/posts/postList/post");
+        navigate("/user/posts/postList/list");
     };
 
     const goUserDashboard = () =>{

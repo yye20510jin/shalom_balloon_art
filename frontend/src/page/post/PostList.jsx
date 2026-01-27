@@ -4,16 +4,17 @@ import { usePostSearch } from "../../hooks/post/usePostSearch";
 import leftArrow from "../../assets/leftArrow.png";
 import rightArrow from "../../assets/rightArrow.png";
 import Navbar from "../../components/common/Navbar";
+import { SearchPostTag } from "../../components/post/SearchPostTag";
 import "../../styles/post/postList.css";
 
 function PostList() {
 
   const { mode } = useParams();
-  const finalMode = mode ?? "post";
+  const finalMode = mode ?? "";
 
   const navigate = useNavigate();
-  const { fnc_userLikePost, searchText, setSearchText, fnc_searchText, posts, error,
-    fnc_allPost, startPage, setStartPage, endPage, loading } = usePostSearch();
+  const { fnc_userLikePost, searchText, setSearchText, posts, error,
+    fnc_postList, startPage, setStartPage, endPage, loading, searchTags, setSearchTags } = usePostSearch();
 
   const search = Boolean(searchText.trim());
 
@@ -22,7 +23,7 @@ function PostList() {
     if(finalMode === "like"){
       fnc_userLikePost();
     }else{
-      search ? fnc_searchText() : fnc_allPost();
+      fnc_postList();
     }
 
   }, [startPage,mode]);
@@ -63,8 +64,11 @@ function PostList() {
           <input type="text" value={searchText} onChange={(e) => { setSearchText(e.target.value) }} placeholder="제목을 입력해 주세요" />
           <button type="button" onClick={(e) => {
             setStartPage(0);
-            fnc_searchText(e); // 1 : 처음 검색
+            fnc_postList(e); // 1 : 처음 검색
           }}>검색</button>
+          <div className="PL-topTag">
+          <SearchPostTag finalMode={finalMode} fnc_postList={fnc_postList} searchTags={searchTags} setSearchTags={setSearchTags}/>
+          </div>
         </div>
       </div>
       <div className="container PostList">

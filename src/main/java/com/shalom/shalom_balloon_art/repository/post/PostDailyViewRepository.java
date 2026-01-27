@@ -1,4 +1,4 @@
-package com.shalom.shalom_balloon_art.repository;
+package com.shalom.shalom_balloon_art.repository.post;
 
 import com.shalom.shalom_balloon_art.entity.post.PostDailyView;
 import com.shalom.shalom_balloon_art.entity.post.PostDailyViewId;

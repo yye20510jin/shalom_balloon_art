@@ -1,10 +1,7 @@
 package com.shalom.shalom_balloon_art.controller;
 
 import com.shalom.shalom_balloon_art.auth.jwt.CustomUserDetails;
-import com.shalom.shalom_balloon_art.dto.post.PostCreateRequestDTO;
-import com.shalom.shalom_balloon_art.dto.post.PostListResponseDTO;
-import com.shalom.shalom_balloon_art.dto.post.PostResponseDTO;
-import com.shalom.shalom_balloon_art.dto.post.PostTagDTO;
+import com.shalom.shalom_balloon_art.dto.post.*;
 import com.shalom.shalom_balloon_art.service.AdminService;
 import com.shalom.shalom_balloon_art.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -36,8 +33,9 @@ public class PostController {
     // 전체 글 목록 (페이지네이션)
     @GetMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Page<PostListResponseDTO>> getAllPosts(@RequestParam(defaultValue="0")int page, @RequestParam(defaultValue="") String searchTitle) {
-        return ResponseEntity.ok(postService.getAllPosts(page,searchTitle));
+    public ResponseEntity<Page<PostListResponseDTO>> getAllPosts(@RequestParam(defaultValue="0")int page, @RequestParam(defaultValue="") String searchTitle, @RequestParam List<Long> searchTags) {
+        PostSearchCond cond = new PostSearchCond(searchTitle, searchTags);
+        return ResponseEntity.ok(postService.getSearchPosts(page,cond));
     }
 
     // 글 하나 조회
@@ -75,7 +73,7 @@ public class PostController {
 
     //태그 가져오기
     @GetMapping("/getPostTag")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<PostTagDTO>> getPostTag(){
         return ResponseEntity.ok(adminService.getPostTag());
     }

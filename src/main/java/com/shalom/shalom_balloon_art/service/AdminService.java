@@ -8,7 +8,7 @@ import com.shalom.shalom_balloon_art.entity.HomeCard;
 import com.shalom.shalom_balloon_art.entity.post.Tags;
 import com.shalom.shalom_balloon_art.global.error.BusinessException;
 import com.shalom.shalom_balloon_art.repository.HomeCardRepository;
-import com.shalom.shalom_balloon_art.repository.PostRepository;
+import com.shalom.shalom_balloon_art.repository.post.PostRepository;
 import com.shalom.shalom_balloon_art.repository.TagRepository;
 import com.shalom.shalom_balloon_art.repository.UserRepository;
 import org.springframework.dao.DataIntegrityViolationException;
