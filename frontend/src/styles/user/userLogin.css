@@ -7,18 +7,18 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 50px;
-    width: 40%;
-    max-width: 800px;
-    border: 4px solid #f7f9f3;
+    margin-top: 6vh;
+    max-width: 400px;
+    min-width: 300px;
     border-radius: 12px;
 }
 
 img.userLogin-logo {
-    width: 300px;
+    width: 200px;
 }
 
 .userLogin-form{
+    margin-top: 20px;
     display:flex;
     flex-direction:column;
     margin-bottom: 40px;
@@ -26,9 +26,9 @@ img.userLogin-logo {
 }
 
 .userLogin-input{
-    margin-bottom:10px;
-    width:50%;
-    height:30px;
+    margin-bottom: 17px;
+    width:100%;
+    height: 35px;
     border:3px solid #f7f9f3;
     border-radius: 4px;
 }
@@ -42,19 +42,14 @@ img.userLogin-logo {
     width:100%;
 }
 
-.userLogin-form button{
-    width:50%;
-}
 
-.userLogin-form button:hover{
-    background-color: #d9ed92;
-    border:none;
-}
 
 .userLogin-err {
     height: 20px;
     margin-bottom: 30px;
 }
+
+/*버튼*/
 
 button,
 button:hover,
@@ -64,4 +59,24 @@ button:focus-visible {
   border: none;
   outline: none;
   box-shadow: none;
+}
+
+.userLogin-form button{
+    width: 100%;
+}
+
+.userLogin-form button:hover{
+    background-color: #d9ed92;
+    border:none;
+}
+
+/* 회원정보 찾기 */
+.uL-find {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.uL-find a {
+    color: black;
 }

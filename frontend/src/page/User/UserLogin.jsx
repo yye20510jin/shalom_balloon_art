@@ -55,7 +55,7 @@ function UserLogin() {
     return (
         <div className="container userLogin">
             <div className="userLogin-box">
-                <img className="userLogin-logo" src={shalomLogo} alt="shalom" />
+                <img className="userLogin-logo" src={shalomLogo} alt="shalom" onClick={()=>navigate("/")}/>
                 {error ? <div className="userLogin-err" style={{ color: "red" }}>{error}</div> : <div className="userLogin-err" ></div>}
                 <form onSubmit={handleSubmit}>
                     <div className="userLogin-form">
@@ -64,9 +64,12 @@ function UserLogin() {
                         <button type="submit">로그인</button>
                     </div>
                 </form>
+                <div className=" uL-find ">
+                    <a href="/user/FindId" style={{marginRight:"20px"}}>아이디 찾기</a>
+                    <a href="/user/ResetPassword">비밀번호 찾기</a>
+                </div>
             </div>
-            <button type="button" onClick={()=>navigate("/user/FindId")}>아이디 찾기</button>
-            <button type="button" onClick={()=>navigate("/user/ResetPassword")}>비밀번호 찾기</button>
+
         </div>
     );
 } export default UserLogin;

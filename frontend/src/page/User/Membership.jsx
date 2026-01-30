@@ -160,7 +160,7 @@ function Membership() {
               placeholder="phoneNumber"
             />
             <button
-              className={`membership-button ${isFormValid && "success"}`}
+              className={`membership-button ${isFormValid && "success subBtn"}`}
               style={{ marginTop: "20px" }}
               type="submit"
               disabled={!isFormValid}

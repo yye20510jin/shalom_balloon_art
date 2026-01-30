@@ -120,6 +120,7 @@ function PostList() {
           </ol>
         </main>
         <div className="PL-bt">
+          
           <button style={{ background: "none", marginRight: "0.5rem" }} onClick={() => { setStartPage(prev => prev - 1) }} disabled={startPage <= 0}> <img src={leftArrow} alt="이전" /> </button>
           <div>{startPage + 1} / {endPage}</div>
           <button style={{ background: "none", marginLeft: "0.5rem" }} onClick={() => { setStartPage(prev => prev + 1) }} disabled={endPage <= startPage + 1}> <img src={rightArrow} alt="다음" /></button>
