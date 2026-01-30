@@ -51,7 +51,7 @@ function AdminLogin() {
     return (
         <div className="container adminLogin">
             <div className="adminLogin-box">
-                <img className="adminLogin-logo" src={shalomLogo} alt="shalom" />
+                <img className="adminLogin-logo" src={shalomLogo} alt="shalom" onClick={()=>navigate("/")} />
                 {error ? <div className="adminLogin-err" style={{ color: "red" }}>{error}</div> : <div className="userLogin-err" ></div>}
                 <form onSubmit={handleSubmit}>
                     <div className="adminLogin-form">

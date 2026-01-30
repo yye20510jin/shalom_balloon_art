@@ -1,5 +1,6 @@
 img.membership-logo {
-    width: 300px;
+    width: 200px;
+    margin-top: 20px;
 }
 .membership {
     display: flex;

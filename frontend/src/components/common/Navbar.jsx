@@ -32,7 +32,7 @@ function Navbar() {
     return (
         <nav className="navbar">
             <div className="Nb-box">
-                <img className="logo" src={logo} alt="shalomBalloonArt" />
+                <img className="logo" src={logo} alt="shalomBalloonArt" onClick={()=>navigate("/")} />
                 <div className="Nb-bt">
                     {isLoggedIn ?
                         (

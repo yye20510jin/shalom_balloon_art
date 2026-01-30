@@ -105,7 +105,13 @@ function Membership() {
   return (
     <div className="container membership">
       <div className="membership-box">
-        <img className="membership-logo" src={shalomLogo} art="shalomLogo" />
+        <img className="membership-logo" src={shalomLogo} art="shalomLogo" onClick={()=>{
+          if(admin){
+            navigate("/admin");
+          }else{
+            navigate("/");
+          }
+        }}/>
         <form onSubmit={memberShipSubmit}>
           <div className="membership-form">
             <div className="membership-inputChk">
