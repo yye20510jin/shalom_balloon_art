@@ -77,5 +77,10 @@ button:focus-visible {
 }
 
 .i-btn:hover{
-  background-color:#b5e48c;
+  background-color:#d9ed92;
+}
+
+.i-errMessage{
+  list-style:none;
+  color:red;
 }

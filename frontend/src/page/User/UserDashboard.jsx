@@ -21,7 +21,6 @@ function UserDashboard() {
     //비밀번호 확인
     const fncChkPw = async (e) => {
         e.preventDefault();
-        console.log("비밀번호 체크");
         try {
             const res = await authFetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/chkPw`, {
                 method: "POST",
@@ -79,7 +78,7 @@ function UserDashboard() {
 
     //비밀번호 변경
     const changePw = () => {
-        navigate("/user/changePw");
+        navigate("/user/changePw",{state:{fromUserPage:true}});
     };
 
     return (
