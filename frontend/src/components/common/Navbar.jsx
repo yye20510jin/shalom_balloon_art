@@ -38,7 +38,7 @@ function Navbar() {
                         (
                             <>
                                 <button className="nav-button" onClick={logout}>로그아웃</button>
-                                <button onClick={goUserDashboard}>유저 페이지</button>
+                                <button className="nav-button" onClick={goUserDashboard}>유저 페이지</button>
                                 <button className="nav-button" onClick={GoPostList}>목록보기</button>
                             </>
                         ) : (

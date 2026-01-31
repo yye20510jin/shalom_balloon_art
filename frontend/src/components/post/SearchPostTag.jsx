@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { authFetch } from "../../api/authFetch";
+import "../../styles/public/Arrow.css";
 export function SearchPostTag({finalMode,fnc_postList,searchTags,setSearchTags}) {
 
     //태그 검색 여부 변수
@@ -45,15 +46,15 @@ export function SearchPostTag({finalMode,fnc_postList,searchTags,setSearchTags})
     },[searchTags]);
 
     return (
-        <div>
+        <div className="SearchPostTag">
             {serverOk && (
                 <>
                     <button type="button" onClick={() => setUseTag(prev => !prev)}>
-                        태그 검색{!useTag ? <>v</> : <>^</>}
+                        태그 검색{!useTag ? <div className="arrow-big down"></div> : <div className="arrow-big up"></div>}
                     </button>
 
                     {useTag && (
-                        <div>
+                        <div className="SPT-tagBox">
                             <ul>
                                 {tags.map((tag) => (
                                     <li key={tag.tagIndex}>

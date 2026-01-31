@@ -30,8 +30,7 @@ export function usePostSearch() {
             const data = await res.json();
             setPosts(data.content);
             setStartPage(data.number);
-            setEndPage(Math.ceil(data.totalElements / 6));
-
+            setEndPage(Math.ceil(data.totalElements / data.size));
         } catch (error) {
             console.error(error);
             setError("서버 오류가 발생했습니다.");
@@ -59,7 +58,7 @@ export function usePostSearch() {
             const data = await res.json();
             setPosts(data.content);
             setStartPage(data.number);
-            setEndPage(Math.ceil(data.totalElements / 6));
+            setEndPage(Math.ceil(data.totalElements / data.size));
 
         }catch(err){
             console.error(err);

@@ -22,17 +22,22 @@
 /* 오른쪽 > */
 .arrow-big.right::before {
   transform: translate(-50%, -50%) rotate(45deg);
+  top: 58%;
+  
 }
 .arrow-big.right::after {
   transform: translate(-50%, -50%) rotate(-45deg);
+  top: 38%;
 }
 
 /* 왼쪽 < */
 .arrow-big.left::before {
   transform: translate(-50%, -50%) rotate(-45deg);
+  top: 58%;
 }
 .arrow-big.left::after {
   transform: translate(-50%, -50%) rotate(45deg);
+  top: 38%;
 }
 
 /* 위 ^ */

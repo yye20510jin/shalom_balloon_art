@@ -148,13 +148,54 @@ function PostForm({
     e.target.value = "";
   };
 
+
+ function toYouTubeEmbedUrl(input) {
+  try {
+    const u = new URL(input.trim());
+
+    // youtu.be/<id>
+    if (u.hostname === "youtu.be") {
+      const id = u.pathname.slice(1);
+      return id ? `https://www.youtube-nocookie.com/embed/${id}` : null;
+    }
+
+    // youtube.com / www.youtube.com / m.youtube.com
+    const host = u.hostname.replace("www.", "");
+    if (host === "youtube.com" || host === "m.youtube.com") {
+      // /watch?v=<id>
+      const v = u.searchParams.get("v");
+      if (v) return `https://www.youtube-nocookie.com/embed/${v}`;
+
+      // /shorts/<id>
+      const shorts = u.pathname.match(/^\/shorts\/([^/?]+)/);
+      if (shorts?.[1]) return `https://www.youtube-nocookie.com/embed/${shorts[1]}`;
+
+      // /embed/<id> (이미 embed면 그대로)
+      const embed = u.pathname.match(/^\/embed\/([^/?]+)/);
+      if (embed?.[1]) return `https://www.youtube-nocookie.com/embed/${embed[1]}`;
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+} 
   // 유튜브 삽입
-  const handleInsertYoutube = () => {
-    if (!editor) return;
-    const url = prompt("YouTube URL을 입력하세요");
-    if (!url) return;
-    editor.chain().focus().setYoutubeVideo({ src: url }).run();
-  };
+const handleInsertYoutube = () => {
+  if (!editor) return;
+
+  const input = prompt("YouTube URL을 입력하세요");
+  if (!input) return;
+
+  const embedUrl = toYouTubeEmbedUrl(input);
+
+  if (!embedUrl) {
+    alert("유효한 YouTube 링크가 아니거나, embed 변환이 불가능한 URL입니다.");
+    return;
+  }
+
+  editor.chain().focus().setYoutubeVideo({ src: embedUrl }).run();
+};
 
   //서버 전송
   const onSubmit = async (e) => {
