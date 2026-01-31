@@ -19,6 +19,7 @@ import ResetPassword from "../page/User/ResetPassword";
 import ResetPw from "../page/User/ResetPw";
 import UserDashboard from "../page/User/UserDashboard";
 import UserChangePw from "../page/User/UserChangePw";
+import UserChangePhone from "../page/User/UserChangePhone";
 import { AdminContext_f } from "../components/admin/adminContext";
 
 export const routes = [
@@ -58,6 +59,7 @@ export const routes = [
       { path: "posts/postList/:mode", element: <PostList /> },
       { path: "posts/postDetails/:id", element: <PostDetails /> },
       { path: "userDashboard", element: <UserDashboard/>},
+      { path: "userChangePhone", element: <UserChangePhone/>},
       { path: "changePw", element: <UserChangePw/>}
     ],
   },

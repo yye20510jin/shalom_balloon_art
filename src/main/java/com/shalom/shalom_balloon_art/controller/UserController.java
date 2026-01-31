@@ -49,4 +49,11 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    //전화번호 변경
+    @PostMapping("/changePhone")
+    public ResponseEntity<Void> userChangePhone(@AuthenticationPrincipal CustomUserDetails cud, @RequestBody String newPhone){
+        userService.userChangePhone(cud.getUserIndex(), newPhone);
+        return ResponseEntity.ok().build();
+    }
+
 }

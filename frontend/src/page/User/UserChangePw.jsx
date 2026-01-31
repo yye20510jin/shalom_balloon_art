@@ -32,7 +32,7 @@ function UserChangePw() {
 
     if(!consumedRef.current) consumedRef.current=true;
 
-    }, []);
+    }, [navigate]);
 
     const changePw = async (e) => {
         e.preventDefault();

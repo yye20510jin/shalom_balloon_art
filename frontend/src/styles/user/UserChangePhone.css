@@ -1,0 +1,47 @@
+/* 박스 */
+.UCP-main{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction:column;
+}
+
+.UCP-Phonediv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+    width: 40%;
+    max-width: 800px;
+    border: 4px solid #f7f9f3;
+    border-radius: 12px;
+    padding-top: 30px;
+}
+
+/* form */
+
+.UCP-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+
+.UCP-form input{
+    margin-bottom:10px;
+    width:70%;
+    height:30px;
+    border:3px solid #f7f9f3;
+    border-radius: 4px;
+}
+
+.UCP-form button{
+    width:70%;
+    margin-bottom: 24px;
+}
+
+/* error 메세지 */
+.UCP-main ul{
+    padding-left:0px;
+    text-align: center;
+}

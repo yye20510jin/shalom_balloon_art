@@ -31,6 +31,9 @@ function UserDashboard() {
                 const data = await res.json().catch(() => null);
                 console.log(data.message);
                 setError("비밀번호가 일치하지 않습니다.");
+                setTimeout(()=>{
+                    setError("");
+                },1000);
                 return;
             }
             count.current++;
@@ -41,7 +44,6 @@ function UserDashboard() {
         }finally{
             setChkPw(false);
             setPassword("")
-            setError("");
         }
 
     };
@@ -101,18 +103,18 @@ function UserDashboard() {
                             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호를 입력하세요"/>
                             <button type="submit" className={password && "i-btn" } disabled={!password}>확인</button>
                         </form>
-                        {error && <div className="errorMessage">{error}</div>}
                         </div>
                     )}
                     {open && (
                         <div className="UD-subChangediv">
                             <div className="UD-subChangeflex">
-                            <button type="button">전화번호 변경</button>
+                            <button type="button" onClick={()=>navigate("/user/userChangePhone",{state:{fromUserPage:true}})}>전화번호 변경</button>
                             <button type="button" onClick={changePw}>비밀번호 변경</button>
                             <button type="button" onClick={unregister}>회원탈퇴</button>
                             </div>
                         </div>
                     )}
+                    {error && <div className="i-errMessage">{error}</div>}
                 </div>
             </main>
         </div>

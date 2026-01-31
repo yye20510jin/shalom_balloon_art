@@ -66,4 +66,10 @@ public class UserService {
         u.changePw(signupPw);
     }
 
+    //전화번호 변경
+    public void userChangePhone(Long userIndex, String newPhone){
+        User u = userRepository.findById(userIndex).orElseThrow(()->new BusinessException(USER_NOT_FOUND));
+        u.changePn(newPhone);
+    }
+
 }

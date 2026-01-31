@@ -49,4 +49,6 @@ public class User{
 
     public void changePw(String pw) {this.userPassword = pw;}
 
+    public void changePn(String newPhone) {this.userPhoneNumber = newPhone;}
+
 }
