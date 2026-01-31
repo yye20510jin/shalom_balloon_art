@@ -56,7 +56,7 @@ public class UserService {
 
         if(userId.isBlank()) throw new BusinessException(USER_NOT_FOUND);
 
-        userEncryptService.pwDecrypt(userId, chkPw);
+        boolean chk = userEncryptService.pwDecrypt(userId, chkPw);
     }
 
     //비밀번호 변경

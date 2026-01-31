@@ -1,0 +1,111 @@
+.UserDashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.UserDashboard > main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid #f9f7f3;
+    box-shadow: 1px 3px 12px 0px rgb(0 0 0 / 5%);
+    border-radius: 16px;
+    margin-top: 100px;
+    padding-bottom: 15px;
+}
+
+/* 로고 */
+
+img.UD-user-img {
+    width: 40%;
+    margin-bottom: 30px;
+    margin-top: 50px;
+}
+
+/*메인 버튼*/
+
+.UD-subBox1 {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 30rem;
+}
+
+button.UD-btn {
+    border: 1.5px solid;
+    margin-bottom: 15px;
+}
+
+/* pw 인증*/
+
+.UD-chkPw {
+    margin-top:15px;
+}
+
+.UD-chkPw form {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.UD-chkPw input[type="password"] {
+    height: 25px;
+    width: 50%;
+}
+
+.UD-chkPw button {
+    margin-left:10px;
+    padding: 7px;
+    font-size: 12px;
+}
+
+
+/* 개인정보 버튼 */
+
+button.arrowButton {
+  height: 44.8px;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 텍스트 중앙 */
+  position:relative;
+  margin-bottom : 0px;
+}
+
+.UD-subChangeButton {
+    display: flex;
+    flex-direction: column;
+    margin-bottom:15px;
+}
+
+.UD-subChangeButton > button {
+    background: #f9f7f3;
+    border-radius: 0%;
+}
+
+.UD-arrowDiv{
+  position:absolute;
+  right: 12px;
+}
+
+/* 변경 버튼*/
+
+.UD-subChangediv {
+    display: flex;
+    justify-content: center;
+}
+
+.UD-subChangeflex {
+    display: flex;
+    width: 96%;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.06);
+    background: #f7f9f3;
+}
+
+.UD-subChangeflex > button{
+    width:100%;
+    border-radius:0px;
+    background: none;
+}

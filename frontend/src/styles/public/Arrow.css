@@ -1,0 +1,56 @@
+.arrow-big {
+  width: 30px;
+  height: 40px;
+  position: relative;
+}
+
+/* 공통 선: 중앙 기준 */
+.arrow-big::before,
+.arrow-big::after {
+  content: "";
+  position: absolute;
+  width: 3px;
+  height: 14px;
+  background: black;
+  border-radius: 999px;
+
+  top: 50%;
+  left: 50%;
+  transform-origin: center;
+}
+
+/* 오른쪽 > */
+.arrow-big.right::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.arrow-big.right::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* 왼쪽 < */
+.arrow-big.left::before {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+.arrow-big.left::after {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+/* 위 ^ */
+.arrow-big.up::before {
+  transform: translate(-50%, -50%) rotate(-45deg);
+  left: 62%;
+}
+.arrow-big.up::after {
+  transform: translate(-50%, -50%) rotate(45deg);
+  left: 36%;
+}
+
+/* 아래 v */
+.arrow-big.down::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+  left: 62%;
+}
+.arrow-big.down::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+   left: 36%;
+}

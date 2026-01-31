@@ -75,3 +75,7 @@ button:focus-visible {
   margin-inline:auto;
   padding-inline:1.5rem;
 }
+
+.i-btn:hover{
+  background-color:#b5e48c;
+}

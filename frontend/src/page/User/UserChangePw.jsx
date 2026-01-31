@@ -7,8 +7,6 @@ function UserChangePw() {
 
     const [error, setError] = useState("");
     const [newPassword, setNewPassword] = useState("");
-    const [userChk, setUserChk] = useState(false);
-    const [chkPassword, setChkPassword] = useState("");
 
     const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
     const isPasswordMatch = newPassword === newPasswordConfirm;
@@ -16,31 +14,6 @@ function UserChangePw() {
     const isPasswordValid = passwordRegex.test(newPassword);
 
     const chk = !!newPassword.trim() && !!newPasswordConfirm.trim() && !!isPasswordMatch && !!isPasswordValid;
-
-    const chkUser = async (e) => {
-        e.preventDefault();
-        try {
-            const res = await authFetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/chkPw`, {
-                method: "POST",
-                body: JSON.stringify({ checkPassword: chkPassword })
-            });
-
-            if (!res.ok) {
-                const data = await res.json().catch(() => null);
-                console.log(data.message);
-                navigate("/user/userDashboard");
-                setUserChk(false);
-                alert("비밀번호가 일치하지 않습니다.");
-                return;
-            }
-
-            setUserChk(true);
-
-        } catch (err) {
-            console.error(err);
-        }
-    };
-
 
     const changePw = async (e) => {
         e.preventDefault();
@@ -67,7 +40,7 @@ function UserChangePw() {
 
     return (
         <div>
-            {userChk ?
+        
                 <div>
                     <form onSubmit={changePw}>
                         <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="password" />
@@ -80,15 +53,7 @@ function UserChangePw() {
                         {error && <li>{error}</li>}
                     </ul>
                 </div>
-                :
-                <div>
-                    <form onSubmit={chkUser}>
-                        <input type="password" value={chkPassword} onChange={(e) => setChkPassword(e.target.value)} placeholder="password" />
-                        <button type="submit">확인</button>
-                    </form>
-                </div>
-            }
-
+               
         </div>
     );
 
