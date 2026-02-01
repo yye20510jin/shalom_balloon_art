@@ -2,20 +2,12 @@ import { usePostSubmit } from "../../hooks/post/usePostSubmit";
 import Toolbar from"../../components/post/Toolbar";
 import { useEffect, useRef, useState } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Youtube from "@tiptap/extension-youtube";
-import { TextStyle } from "@tiptap/extension-text-style";
-import { Color } from "@tiptap/extension-color";
-import { FontFamily } from "@tiptap/extension-font-family";
 import { useFirebaseSingleImageUpload } from "../../hooks/firebase/useFirebaseSingleImageUpload";
 import { useFirebaseSingleImageRemove } from "../../hooks/firebase/useFirebaseSingleImageRemove";
 import { CustomImage } from "../../hooks/post/toolbar/useCustomImage";
-import { FontSize } from "../../hooks/post/toolbar/useFontSize";
-import {CustomListItem} from "../../hooks/post/toolbar/useCustomListItem";
-import {CustomTextAlign} from "../../hooks/post/toolbar/useCustomTextAlign";
-import {CustomOrderedList} from "../../hooks/post/toolbar/useCustomOrderedList";
-import { CustomBulletList } from "../../hooks/post/toolbar/useCustomBulletList";
 import { useLocalImageCandidates } from "../../hooks/post/useLocalImageCandidates";
+import { baseExtensions } from "../../components/editor/extensions/baseExtensions";
+import { toYouTubeEmbedUrl } from "../../util/post/ToYouTubeEmbedUrl";
 import PostTag from "../../components/post/PostTag";
 import "../../styles/post/PostForm.css";
 
@@ -59,36 +51,14 @@ function PostForm({
   // ✅ 에디터 생성
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({
-        bulletList:false,
-        orderedList:false,
-        listItem:false
-      }
-      ),
-      CustomListItem,
-      CustomBulletList,
-      CustomOrderedList,
-      TextStyle,
-      Color,
-      FontFamily,
-      FontSize,
-      CustomTextAlign.configure({
-        types:["heading","paragraph"],
-      }),
+      ...baseExtensions,
       CustomImage.configure({
-        inline: true,
-        group:"inline",
-        draggable: true,
-        allowBase64: false,
-        onRemove: (src) => {
-          // removeTiptapImage(src);
-          removeCandidateUrl(src);
-        }
-      }),
-      Youtube.configure({
-        controls: true,
-        nocookie: true,
-      }),
+      inline: true,
+      group:"inline",
+      draggable: true,
+      allowBase64: false,
+      onRemove: removeCandidateUrl,
+    }),
     ],
   });
 
@@ -147,39 +117,7 @@ function PostForm({
 
     e.target.value = "";
   };
-
-
- function toYouTubeEmbedUrl(input) {
-  try {
-    const u = new URL(input.trim());
-
-    // youtu.be/<id>
-    if (u.hostname === "youtu.be") {
-      const id = u.pathname.slice(1);
-      return id ? `https://www.youtube-nocookie.com/embed/${id}` : null;
-    }
-
-    // youtube.com / www.youtube.com / m.youtube.com
-    const host = u.hostname.replace("www.", "");
-    if (host === "youtube.com" || host === "m.youtube.com") {
-      // /watch?v=<id>
-      const v = u.searchParams.get("v");
-      if (v) return `https://www.youtube-nocookie.com/embed/${v}`;
-
-      // /shorts/<id>
-      const shorts = u.pathname.match(/^\/shorts\/([^/?]+)/);
-      if (shorts?.[1]) return `https://www.youtube-nocookie.com/embed/${shorts[1]}`;
-
-      // /embed/<id> (이미 embed면 그대로)
-      const embed = u.pathname.match(/^\/embed\/([^/?]+)/);
-      if (embed?.[1]) return `https://www.youtube-nocookie.com/embed/${embed[1]}`;
-    }
-
-    return null;
-  } catch {
-    return null;
-  }
-} 
+ 
   // 유튜브 삽입
 const handleInsertYoutube = () => {
   if (!editor) return;
@@ -196,7 +134,6 @@ const handleInsertYoutube = () => {
 
   editor.chain().focus().setYoutubeVideo({ src: embedUrl }).run();
 };
-
   //서버 전송
   const onSubmit = async (e) => {
     e.preventDefault();
