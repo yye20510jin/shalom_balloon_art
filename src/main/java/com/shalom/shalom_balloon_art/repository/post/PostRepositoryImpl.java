@@ -3,6 +3,7 @@ package com.shalom.shalom_balloon_art.repository.post;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.shalom.shalom_balloon_art.dto.post.PostSearchCond;
+import com.shalom.shalom_balloon_art.dto.post.PostTagDTO;
 import com.shalom.shalom_balloon_art.entity.post.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -54,4 +55,24 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
         //page 객체를 만들려면 content, pageable, total count가 필요하다.
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     };
+
+    @Override
+    public Page<Post> similarSearch(List<Long> tagIndex, Pageable pageable){
+
+        BooleanBuilder where = new BooleanBuilder();
+
+        if(!tagIndex.isEmpty()){
+            where.and(post.postTag.any().tagIndex.in(tagIndex));
+        }
+
+        var contentQuery =
+                queryFactory.selectFrom(post).where(where).distinct().offset(pageable.getOffset()).limit(pageable.getPageSize());
+
+        List<Post> content = contentQuery.fetch();
+
+        var countQuery = queryFactory.select(post.countDistinct()).from(post).where(where);
+
+        return PageableExecutionUtils.getPage(content,pageable,countQuery::fetchOne);
+    }
+
 }

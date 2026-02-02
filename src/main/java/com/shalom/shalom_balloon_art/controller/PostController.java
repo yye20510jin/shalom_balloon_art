@@ -38,6 +38,13 @@ public class PostController {
         return ResponseEntity.ok(postService.getSearchPosts(page,cond));
     }
 
+    // 비슷한 글 목록 (페이지네이션)
+    @GetMapping("/similarPosts")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Page<PostListResponseDTO>> getSimilarPosts(@RequestParam(defaultValue="0")int page, @RequestParam(defaultValue="")Long postIndex){
+        return ResponseEntity.ok().body(postService.getSimilarPosts(page,postIndex));
+    }
+
     // 글 하나 조회
     @GetMapping("/{index}")
     @PreAuthorize("isAuthenticated()")

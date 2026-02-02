@@ -1,10 +1,7 @@
 package com.shalom.shalom_balloon_art.service;
 
 import com.shalom.shalom_balloon_art.config.ViewLimitProperties;
-import com.shalom.shalom_balloon_art.dto.post.PostCreateRequestDTO;
-import com.shalom.shalom_balloon_art.dto.post.PostListResponseDTO;
-import com.shalom.shalom_balloon_art.dto.post.PostResponseDTO;
-import com.shalom.shalom_balloon_art.dto.post.PostSearchCond;
+import com.shalom.shalom_balloon_art.dto.post.*;
 import com.shalom.shalom_balloon_art.entity.post.Post;
 import com.shalom.shalom_balloon_art.entity.post.PostUserLike;
 import com.shalom.shalom_balloon_art.entity.post.PostViewUser;
@@ -24,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 import static com.shalom.shalom_balloon_art.global.error.ErrorCode.INTERNAL_SERVER_ERROR;
@@ -56,6 +54,7 @@ public class PostService {
     }
 
     // 글 자세히 보기
+    @Transactional(readOnly = true)
     public PostResponseDTO getPost(Long postIndex, Long userIndex) {
         Post post = postRepository.findById(postIndex)
                 .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
@@ -83,11 +82,25 @@ public class PostService {
     }
 
     //전체 목록 조회 (페이지네이션)
+    @Transactional(readOnly = true)
     public Page<PostListResponseDTO> getSearchPosts(int page, PostSearchCond cond){
         Pageable pageable = PageRequest.of(page,6);
 
         return postRepository.search(cond,pageable).map(p-> PostListResponseDTO.from(p,false));
 
+    }
+
+    //비슷한 글 조회 (페이지네이션)
+    @Transactional(readOnly = true)
+    public Page<PostListResponseDTO> getSimilarPosts(int page, Long postIndex){
+        Pageable pageable = PageRequest.of(page,6);
+        // 해당 인덱스에 있는 태그 목록 가져오기
+        List<Tags> tags = postRepository.findPostTagById(postIndex);
+
+        // 해당 인덱스에 있는 태그와 같은 목록 가져오기
+        List<Long> tagIndex = tags.stream().map(Tags::getTagIndex).toList();
+
+        return postRepository.similarSearch(tagIndex, pageable).map(p->PostListResponseDTO.from(p,false));
     }
 
     //글 수정

@@ -2,3 +2,43 @@
     display:inline-block;
     vertical-align: middle;
 }
+
+/*--- 헤더 ---*/
+
+.PD-header {
+    margin: 100px 10px 0px 10px;
+    border-bottom: 1px solid gray;
+}
+
+.PostDetails .PD-title{
+    font-size: 2rem;
+    text-align: center;
+}
+
+.PD-headerSub1 {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 45px;
+}
+
+.PD-tags {
+    width: 70%;
+}
+
+span.PD-tag {
+    background: #dcdada;
+    margin-right: 15px;
+    padding: 7px;
+}
+
+.PostDetails .PD-like{
+    width: 7%;
+    min-width: 88px;
+}
+.PostDetails .PD-like button{
+    background:none;
+}
+.PostDetails .PD-like img{
+    width: 100%;
+}

@@ -1,0 +1,30 @@
+.SPL-list > div {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px;
+    border-bottom: 1px solid gray;
+}
+.SPL-listTitle{
+    border-top: 1px solid black;
+    font-weight: 800;
+}
+
+.SPL-list .even {
+    background: #f7f9f3;
+}
+
+.SPL-bt {
+    display: flex;
+    justify-content: center;
+    margin: 22px 0px;
+}
+
+.SPL-bt button{
+    background: none;
+    color:gray;
+}
+
+.SPL-bt button.chk{
+    color:black;
+}
+

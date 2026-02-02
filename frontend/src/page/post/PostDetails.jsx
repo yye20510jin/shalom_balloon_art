@@ -2,14 +2,22 @@ import { useEffect, useState, useContext } from "react";
 import { authFetch } from "../../api/authFetch";
 import AuthContext from "../../auth/AuthContext";
 import { useParams, useNavigate } from "react-router-dom";
-import { usePostDelete } from "../../hooks/post/usePostDelete"
+import { usePostDelete } from "../../hooks/post/usePostDelete";
+import SimilarPostList from "../../components/post/SimilarPostList";
+import ReadOnlyEditor from "../../components/editor/ReadOnlyEditor";
+import YoutubeFallbackWrapper from "../../components/post/YoutubeFallbackWrapper";
+import Navbar from "../../components/common/Navbar";
+import grayHeart from "../../assets/grayHeart.png";
+import redHeart from "../../assets/redHeart.png";
 import "../../styles/post/PostDetails.css";
+
 
 function PostDetails() {
   const [post, setPost] = useState([]);      // PostResponseDTO[]
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [like, setLike] = useState(false);
+  const [tags, setTags] = useState([]);
 
   const { id } = useParams();
   const { roles } = useContext(AuthContext);
@@ -38,6 +46,7 @@ function PostDetails() {
         const data = await res.json();
         setPost(data);
         setLike(data.postLike);
+        setTags(data.postTags);
       } catch (e) {
         console.error(e);
         setError("서버 오류가 발생했습니다.");
@@ -47,21 +56,28 @@ function PostDetails() {
     };
 
     fetchPosts();
-  }, []);
+  }, [id]);
 
   const handlePostLike = async (chk) => {
     //chk => 0 : 좋아요 취소, 1 : 좋아요
-    const res = await authFetch( `${import.meta.env.VITE_BACKEND_BASE_URL}/api/posts/${id}/${chk}`,{
-      method : "POST",
-    });
+    try {
 
-    if(!res.ok){
-      const data = await res.json();
-      console.log(data.message);
-      return;
-    }
+      const res = await authFetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/posts/${id}/${chk}`, {
+        method: "POST",
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        console.log(data.message);
+        return;
+      }
 
       setLike(prev => !prev);
+
+    } catch (err) {
+      console.error(err);
+    }
+
 
   }
 
@@ -88,62 +104,51 @@ function PostDetails() {
   }
 
   return (
-    <div style={{ padding: 20, maxWidth: 800, margin: "0 auto" }}>
-      <h2>{post.title}</h2>
-      <div
-        style={{
-          border: "1px solid #ccc",
-          borderRadius: 8,
-          padding: 16,
-          marginBottom: 12,
-          display: "flex",
-          gap: 16,
-        }}
-      >
-        {/* 이미지 썸네일 */}
-        {post.thumbnailUrl && 
-          <div key={post.index} style={{ flex: "0 0 120px" }}>
-            <img
-              src={post.thumbnailUrl}
-              alt={post.title}
-              style={{
-                width: "120px",
-                height: "80px",
-                objectFit: "cover",
-                borderRadius: 4,
-              }}
-            />
+    <div className="container PostDetails">
+      <Navbar />
+
+      {/* ---- header --- */}
+
+      <div className="PD-header">
+
+        <h3 className="PD-title">{post.title}</h3>
+
+        <div className="PD-headerSub1">
+          <div className="PD-tags">
+            {tags.map((tag, i) => (
+              <span className="PD-tag" key={tag.tagIndex}>
+                #{tag.tagName}
+              </span>
+            ))}
           </div>
-        }
-        <div>
-          {!like ? <button type="button" onClick={()=>handlePostLike(1)}>좋아요</button> : <button type="button" onClick={()=>handlePostLike(0)}>좋아요 취소</button>}
-        </div>
-
-        {/* 텍스트 영역 */}
-        <div className="post-content ProseMirror" style={{ flex: 1 }}>
-
-          <div
-            style={{
-              fontSize: 12,
-              color: "#666",
-              marginBottom: 8,
-            }}
-          >
+          
+          <div>
             작성일: {formatDateTime(post.createdAt)}
             {post.updatedAt && (
-              <> · 수정일: {formatDateTime(post.updatedAt)}</>
+              <><br /> 수정일: {formatDateTime(post.updatedAt)}</>
             )}
           </div>
-
-          <p
-            style={{
-              margin: "0 0 8px",
-              whiteSpace: "pre-line",
-            }}
-            dangerouslySetInnerHTML={{ __html: post.contentHtml }}
-          />
+          <span className="PD-like">
+            {!like ? <button type="button" onClick={() => handlePostLike(1)}><img src={grayHeart} alt="좋아요 취소" /></button>
+              : <button type="button" onClick={() => handlePostLike(0)}><img src={redHeart} alt="좋야요" /></button>}
+          </span>
         </div>
+
       </div>
+
+
+      {/* ---- main --- */}
+
+      <YoutubeFallbackWrapper key={id}>
+        <ReadOnlyEditor contentHtml={post.contentHtml} />
+      </YoutubeFallbackWrapper>
+
+
+      {/* ---- footer --- */}
+
+      <SimilarPostList id={id}/>
+      
+
       {roles?.includes("ROLE_ADMIN") && (
         <>
           <button onClick={() => navigate(`/admin/posts/editPostPage/${id}`)}>
