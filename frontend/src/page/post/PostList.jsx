@@ -106,7 +106,6 @@ function PostList() {
                 key={post.index}
                 onClick={() => navigate(`/user/posts/postDetails/${post.index}`)}
               >
-
                 {/* 이미지 썸네일 */}
 
                 {post.thumbnailUrl &&
@@ -121,10 +120,10 @@ function PostList() {
 
                 <div className="PL-subBox">
                   <span className="PL-update">
-                    작성일: {formatDateTime(post.createdAt)}
-                    {post.updatedAt && (
-                      <> <br /> 수정일: {formatDateTime(post.updatedAt)}</>
-                    )}
+                    
+                    {post.updatedAt ? (
+                      <>수정일: {formatDateTime(post.updatedAt)}</>
+                    ) : <>작성일: {formatDateTime(post.createdAt)}</>}
                   </span>
 
                   {/* 텍스트 영역 */}
@@ -142,7 +141,7 @@ function PostList() {
                       }}
                     >
                       {post.supplies}
-                      {post.preview.length >= 160 ? `${post.preview}...` : post.preview}
+
                     </p>
                   </div>
                 </div>

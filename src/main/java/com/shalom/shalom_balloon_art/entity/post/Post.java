@@ -77,6 +77,6 @@ public class Post {
     }
 
     public static Post from(PostCreateRequestDTO p){
-        return builder().title(p.getTitle()).contentHtml(p.getContentHtml()).thumbnailUrl(p.getThumbnailUrl()).build();
+        return builder().title(p.getTitle()).contentHtml(p.getContentHtml()).thumbnailUrl(p.getThumbnailUrl()).supplies(p.getSupplies()).build();
     }
 }

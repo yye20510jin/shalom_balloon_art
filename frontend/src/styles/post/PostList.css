@@ -45,12 +45,23 @@
 }
 
 /* 태그 */
+.PL-getTag{
+    margin: 10px 0;
+}
+
 .PL-topTag button{
     background: #f7f9f3;
     display: flex;
     align-items: center;
     padding-right: 9px;
     height: 43px;
+}
+
+.PL-getTag span {
+    background: #f7f9f3;
+    margin-right: 10px;
+    padding: 2px;
+    border-radius: 1px;
 }
 
 .SearchPostTag {
