@@ -20,8 +20,8 @@ export default function Toolbar({ editor, onPickImage, onInsertYoutube }) {
       style={{
         padding: "6px 10px",
         border: "1px solid #ddd",
-        background: active ? "#111" : "#fff",
-        color: active ? "#fff" : "#111",
+        background: active ? "#d9ed92" : "#fff",
+        color: "black",
         borderRadius: 6,
         cursor: "pointer",
       }}

@@ -1,13 +1,20 @@
-import { useState, useEffect, useRef} from "react";
+import { useState, useEffect, useRef } from "react";
 import { authFetch } from "../../api/authFetch";
+import Modal from "../../components/common/Modal";
 
-function PostTag({tagSelected,setTagSelected}) {
+function PostTag({ tagSelected, setTagSelected }) {
 
     const [data, setData] = useState([]);
     const [tagOpen, setTagOpen] = useState(false);
     const [tagName, setTagName] = useState("");
     const [addTagChk, setAddTagChk] = useState(false);
+    const inputRef = useRef(null);
 
+    useEffect(() => {
+        if (!tagOpen) return;
+        if (!addTagChk) return; 
+        setTimeout(() => inputRef.current?.focus(), 0);
+    }, [tagOpen,addTagChk]);
 
     useEffect(() => {
         const tagFetch = async () => {
@@ -41,8 +48,8 @@ function PostTag({tagSelected,setTagSelected}) {
     }
 
     const handleAddTag = async () => {
-        
-        try{
+
+        try {
             const res = await authFetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/posts/addPostTag`, {
                 method: "POST",
                 body: JSON.stringify({
@@ -50,56 +57,65 @@ function PostTag({tagSelected,setTagSelected}) {
                 }),
             });
 
-            if(!res.ok){
+            if (!res.ok) {
                 //에러 처리 예정
             }
-            
+
             const newTag = await res.json();
             toggle(newTag.tagName);
             setTagName("");
             setAddTagChk(false);
-            setData((prev)=>{
-                if(prev === null) return [newTag];
+            setData((prev) => {
+                if (prev === null) return [newTag];
                 let chk = 0;
-                prev.forEach((t)=>{
+                prev.forEach((t) => {
                     t.tagName === newTag.tagName && chk++;
                 });
-                return chk <= 0 ? [...prev,newTag] : [...prev];
+                return chk <= 0 ? [...prev, newTag] : [...prev];
             });
 
-        }catch(err){
+        } catch (err) {
             console.log(err);
         }
 
     }
 
+    const openModal = () =>{
+        setTagOpen(true);
+    };
+
+    const closeModal = () => {
+        setTagName("");
+        setAddTagChk(false);
+        setTagOpen(false);
+    }
+
 
     return (
-        <div className="postTag">
-            <button className="PT_bto" type="button" onClick={() => 
-                setTagOpen(prev => {
-                    if(prev) setAddTagChk(false);
-                    return !prev
-                })}>
-                태그 추가 {tagOpen ? "v" : "^"}
+
+        <div className="PostTag">
+            <button className="PT-bto i-btn" type="button" onClick={openModal}> 태그 선택
             </button>
-            {tagOpen &&
-                <ul>
-                    {data.map((tag) => (
-                        <li key={tag.index}>
-                            <label>
-                                <input type="checkbox" checked={tagSelected.includes(tag.tagName)} onChange={() => toggle(tag.tagName)} />
-                                #{tag.tagName}
-                            </label>
-                        </li>
-                    ))}
-                    <li>
-                        {addTagChk && <input type="text" placeholder="추가할 태그를 입력하세요" value={tagName} onChange={(e) => setTagName(e.target.value)} />}
-                        <button  disabled={addTagChk && !tagName.trim()} type="button" onClick={() => addTagChk ? handleAddTag() : setAddTagChk(true)}> {addTagChk ? "추가" : "태그 추가"}</button>
-                    </li>
-                </ul>
-            }
+            <Modal open={tagOpen} onClose={closeModal} title="">
+                    <>
+                        <div className="PT-taglist">
+                            {data.map((tag) => (
+                                <span key={tag.tagIndex}>
+                                    <label>
+                                        <input type="checkbox" checked={tagSelected.includes(tag.tagName)} onChange={() => toggle(tag.tagName)} />
+                                        #{tag.tagName}
+                                    </label>
+                                </span>
+                            ))}
+                        </div>
+                        <div className="PT-addTag"> 
+                            <input ref={inputRef} style={{display: addTagChk ? "block" : "none"}} id="tagName" name="tagName" type="text" placeholder="추가할 태그를 입력하세요" value={tagName} onChange={(e) => setTagName(e.target.value)} />
+                            <button className="PT-addTagBtn i-btn" disabled={addTagChk && !tagName.trim()} type="button" onClick={() => addTagChk ? handleAddTag() : setAddTagChk(true)}> {addTagChk ? "추가" : "태그 추가"}</button>
+                        </div>
+                    </>
+            </Modal>
         </div>
+
     );
 }
 export default PostTag;

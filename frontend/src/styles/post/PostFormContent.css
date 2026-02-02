@@ -1,0 +1,109 @@
+/* 본문 박스 */
+.editor-wrapper{
+    width: 100%;
+    max-width: 100%;
+}
+
+.ProseMirror{
+    display:block;
+    width: 100%;
+    max-width: none;
+    min-height:100dvh;
+    padding: 16px;
+    outline:none;
+}
+
+/* em */
+.ProseMirror em{
+    display: inline-block;
+    transform: skewX(-12deg);
+    transform-origin: left bottom;
+    letter-spacing: 0.01em;
+}
+
+/* ul+ol 리스트 */
+.ProseMirror ul, .ProseMirror ol {
+  list-style: none;
+  padding-left: 0;  
+  margin-left: 0;
+  display:grid;
+}
+
+.ProseMirror ul > li, .ProseMirror ol > li {
+  display:grid;
+  grid-template-columns: max-content 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 0.6rem;
+}
+
+.ProseMirror ul > li::before {
+  grid-column:1;
+  grid-row:1;
+  text-align:right;
+  content: "•";
+}
+
+.ProseMirror ul > li > p , .ProseMirror ol > li > p{
+  grid-column:2;
+  grid-row:1;
+  margin:0;
+}
+
+.ProseMirror ul > li > ul{
+  grid-column:2;
+  grid-row:2;
+  margin: 0.25rem 0 0 0;
+  padding: 0;
+  display: grid;
+  justify-items: start;
+}
+
+.ProseMirror ul ul > li::before{
+  content: "▫";
+}
+
+/* Ol 리스트 */
+.ProseMirror ol{
+  counter-reset: item;
+}
+
+.ProseMirror ol > li::before {
+  counter-increment: item; /*번호 증가*/
+  content: counter(item) ".";
+  grid-column: 1;
+  grid-row: 1;
+  text-align: right;
+  font-weight: 799;
+}
+
+.ProseMirror ol > li > ol{
+  grid-column:2;
+  grid-row:2;
+  margin: 0.25rem 0 0 0;
+  padding: 0;
+}
+
+.ProseMirror ol ol {
+  counter-reset:sub;
+}
+
+.ProseMirror ol ol > li:before{
+  counter-increment: sub;
+  content: counter(item) "-" counter(sub)
+}
+
+
+/* 리스트 정렬 */
+.ProseMirror ul:not(ul ul)[data-align="left"] { justify-content: flex-start; }
+.ProseMirror ul:not(ul ul)[data-align="center"] { justify-content: center; }
+.ProseMirror ul:not(ul ul)[data-align="right"]  { justify-content: flex-end;  }
+
+.ProseMirror ol:not(ol ol)[data-align="left"]{ justify-content: flex-start;}
+.ProseMirror ol:not(ol ol)[data-align="center"]{justify-content: center;}
+.ProseMirror ol:not(ol ol)[data-align="right"]{ justify-content: flex-end; }
+
+/*글자 자간*/
+.ProseMirror p{
+  margin: 0;
+}
+

@@ -1,0 +1,30 @@
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modalPanel {
+  width: min(520px, 92vw);
+  max-height: 85vh;
+  overflow: auto;
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.modalTitle { margin: 0; font-size: 18px; }
+.modalBody { margin-top: 12px; }
+.modalClose { background: transparent; border: 0; font-size: 18px; cursor: pointer; }

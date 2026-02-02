@@ -1,5 +1,5 @@
 import { usePostSubmit } from "../../hooks/post/usePostSubmit";
-import Toolbar from"../../components/post/Toolbar";
+import Toolbar from "../../components/post/Toolbar";
 import { useEffect, useRef, useState } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { useFirebaseSingleImageUpload } from "../../hooks/firebase/useFirebaseSingleImageUpload";
@@ -9,6 +9,7 @@ import { useLocalImageCandidates } from "../../hooks/post/useLocalImageCandidate
 import { baseExtensions } from "../../components/editor/extensions/baseExtensions";
 import { toYouTubeEmbedUrl } from "../../util/post/ToYouTubeEmbedUrl";
 import PostTag from "../../components/post/PostTag";
+import "../../styles/post/PostFormContent.css";
 import "../../styles/post/PostForm.css";
 
 function PostForm({
@@ -28,10 +29,10 @@ function PostForm({
   } = usePostSubmit();
 
   //이미지 candidates 임시 저장
-  const {addFile,candidates,removeCandidateUrl} = useLocalImageCandidates();
-  
+  const { addFile, candidates, removeCandidateUrl } = useLocalImageCandidates();
+
   //태그
-  const [tagSelected,setTagSelected] = useState([]);
+  const [tagSelected, setTagSelected] = useState([]);
 
   //썸네일 이미지
   const [thumbnailUrl, setThumbnailUrl] = useState("");
@@ -53,12 +54,12 @@ function PostForm({
     extensions: [
       ...baseExtensions,
       CustomImage.configure({
-      inline: true,
-      group:"inline",
-      draggable: true,
-      allowBase64: false,
-      onRemove: removeCandidateUrl,
-    }),
+        inline: true,
+        group: "inline",
+        draggable: true,
+        allowBase64: false,
+        onRemove: removeCandidateUrl,
+      }),
     ],
   });
 
@@ -72,10 +73,10 @@ function PostForm({
     setId(initialValues.id || "");
     setTitle(initialValues.title || "");
     setThumbnailUrl(initialValues.thumbnailUrl || "");
-    setTagSelected((prev)=>{
-      if(!initialValues.postTags) return [];
+    setTagSelected((prev) => {
+      if (!initialValues.postTags) return [];
       const next = [...prev];
-      for(const tag of initialValues.postTags){
+      for (const tag of initialValues.postTags) {
         const name = tag.tagName;
         next.push(name);
       }
@@ -117,23 +118,23 @@ function PostForm({
 
     e.target.value = "";
   };
- 
+
   // 유튜브 삽입
-const handleInsertYoutube = () => {
-  if (!editor) return;
+  const handleInsertYoutube = () => {
+    if (!editor) return;
 
-  const input = prompt("YouTube URL을 입력하세요");
-  if (!input) return;
+    const input = prompt("YouTube URL을 입력하세요");
+    if (!input) return;
 
-  const embedUrl = toYouTubeEmbedUrl(input);
+    const embedUrl = toYouTubeEmbedUrl(input);
 
-  if (!embedUrl) {
-    alert("유효한 YouTube 링크가 아니거나, embed 변환이 불가능한 URL입니다.");
-    return;
-  }
+    if (!embedUrl) {
+      alert("유효한 YouTube 링크가 아니거나, embed 변환이 불가능한 URL입니다.");
+      return;
+    }
 
-  editor.chain().focus().setYoutubeVideo({ src: embedUrl }).run();
-};
+    editor.chain().focus().setYoutubeVideo({ src: embedUrl }).run();
+  };
   //서버 전송
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -141,7 +142,7 @@ const handleInsertYoutube = () => {
 
     const contentHtml = editor.getHTML();
 
-    const {finalContentHtml, finalThumbnailUrl} = await prepareSubmitPayload({
+    const { finalContentHtml, finalThumbnailUrl } = await prepareSubmitPayload({
       contentHtml,
       thumbnailUrl,
       candidates,
@@ -153,205 +154,180 @@ const handleInsertYoutube = () => {
 
 
 
-    // ------------- 이미지 firebase로 전환 -----------------
-  
-    async function buildUrlMapFromCandidates(candidates, uploadOne){
-      //중복 업로드 방지
-      const unique = new Map();
-      for(const c of candidates){
-          if(!c?.previewUrl || !c?.file) continue;
-          if(!unique.has(c.previewUrl))unique.set(c.previewUrl,{file:c.file,id:c.id});
-      }
-  
-      const entries = Array.from(unique.entries());
-      //await Promise.all : 여러 개의 비동기 작업을 동시에 실행하고, 전부 끝날 때까지 가디린다.
-      const results = await Promise.all(
-          entries.map(async ([candidateUrl, { file }]) => {
-          const firebaseUrl = await uploadOne(file);
-          return [candidateUrl, firebaseUrl];
-          })
-      );
-  
-      return new Map(results);
-  
-  };
-  
-  function replaceImgSrcInHtml(contentHtml, urlMap){
-      if(!contentHtml) return contentHtml;
-  
-      const doc = new DOMParser().parseFromString(contentHtml,"text/html");
-      const imgs = doc.querySelectorAll("img");
-  
-      imgs.forEach((img)=>{
-          const src = img.getAttribute("src");
-          if(!src) return;
-          const replaced = urlMap.get(src);
-          if(replaced) img.setAttribute("src",replaced);
-      });
-  
-      return doc.body.innerHTML;
-  };
-  
-  function replaceUrlIfCandidate(url, urlMap){
-      if(!url) return url;
-      return urlMap.get(url) ?? url;
-  };
-  
-  
-  async function prepareSubmitPayload({
-      contentHtml,
-      thumbnailUrl,
-      candidates,
-      uploadOne,
-  }){
-      //업로드 후 맵 생성
-      const urlMap = await buildUrlMapFromCandidates(candidates, uploadOne);
-  
-      //html, thumbnail 치황
-      const finalContentHtml = replaceImgSrcInHtml(contentHtml, urlMap);
-      const finalThumbnailUrl = replaceUrlIfCandidate(thumbnailUrl,urlMap);
-  
-      return {finalContentHtml, finalThumbnailUrl};
-  };
-  
+  // ------------- 이미지 firebase로 전환 -----------------
 
- // --------------------------------------
+  async function buildUrlMapFromCandidates(candidates, uploadOne) {
+    //중복 업로드 방지
+    const unique = new Map();
+    for (const c of candidates) {
+      if (!c?.previewUrl || !c?.file) continue;
+      if (!unique.has(c.previewUrl)) unique.set(c.previewUrl, { file: c.file, id: c.id });
+    }
+
+    const entries = Array.from(unique.entries());
+    //await Promise.all : 여러 개의 비동기 작업을 동시에 실행하고, 전부 끝날 때까지 가디린다.
+    const results = await Promise.all(
+      entries.map(async ([candidateUrl, { file }]) => {
+        const firebaseUrl = await uploadOne(file);
+        return [candidateUrl, firebaseUrl];
+      })
+    );
+
+    return new Map(results);
+
+  };
+
+  function replaceImgSrcInHtml(contentHtml, urlMap) {
+    if (!contentHtml) return contentHtml;
+
+    const doc = new DOMParser().parseFromString(contentHtml, "text/html");
+    const imgs = doc.querySelectorAll("img");
+
+    imgs.forEach((img) => {
+      const src = img.getAttribute("src");
+      if (!src) return;
+      const replaced = urlMap.get(src);
+      if (replaced) img.setAttribute("src", replaced);
+    });
+
+    return doc.body.innerHTML;
+  };
+
+  function replaceUrlIfCandidate(url, urlMap) {
+    if (!url) return url;
+    return urlMap.get(url) ?? url;
+  };
+
+
+  async function prepareSubmitPayload({
+    contentHtml,
+    thumbnailUrl,
+    candidates,
+    uploadOne,
+  }) {
+    //업로드 후 맵 생성
+    const urlMap = await buildUrlMapFromCandidates(candidates, uploadOne);
+
+    //html, thumbnail 치황
+    const finalContentHtml = replaceImgSrcInHtml(contentHtml, urlMap);
+    const finalThumbnailUrl = replaceUrlIfCandidate(thumbnailUrl, urlMap);
+
+    return { finalContentHtml, finalThumbnailUrl };
+  };
+
+
+  // --------------------------------------
 
   return (
-    <div style={{ maxWidth: 800, margin: "0 auto", padding: 20 }}>
-      <h1>{mode === "edit" ? "게시글 수정" : "새 게시글 작성"}</h1>
+    <div className="container PostForm">
+      <h1 className="PF-title">{mode === "edit" ? "게시글 수정" : "새 게시글 작성"}</h1>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p className="i-errMessage">{error}</p>}
       {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
 
-      <form onSubmit={onSubmit}>
+      <form className="PF-form" onSubmit={onSubmit}>
         {/* 제목 */}
-        <div style={{ marginBottom: 16 }}>
+        <div className="PF-titleDiv">
           <label>
             제목
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              style={{ width: "100%", padding: 8, marginTop: 4 }}
               placeholder="제목을 입력하세요"
             />
           </label>
         </div>
 
-        {/* 썸네일 */}
-        <div style={{ marginBottom: 16 }}>
-          <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-            <button
-              type="button"
-              onClick={() => !thumbUploading && thumbInputRef.current?.click()}
-            >
-              썸네일 선택
-            </button>
-            {thumbnailUrl && (
-              <div style={{ position: "relative" }}>
-                <img src={thumbnailUrl} alt="thumbnail"
-                  style={{
-                    width: "120px",
-                    height: "120px",
-                    objectFit: "cover",
-                    borderRadius: "8px",
-                  }}
-                />
-
-                <button
-                  type="button"
-                  onClick={() =>
-                    setThumbnailUrl("")
-                  }
-                  style={{
-                    position: "absolute",
-                    top: "-6px",
-                    right: "-6px",
-                    border: "none",
-                    borderRadius: "50%",
-                    width: 26,
-                    height: 26,
-                    cursor: "pointer",
-                    fontSize: 14,
-                    fontWeight: "bold",
-                    background: "rgba(0,0,0,0.7)",
-                    color: "#fff",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  ✕
-                </button>
-              </div>
-            )}
-
-            {thumbError && <p style={{ color: "red" }}>{thumbError}</p>}
-
-            <input
-              ref={thumbInputRef}
-              type="file"
-              accept="image/*"
-              hidden
-              onChange={handleThumbnailChange}
+        <div className="PF-toolbar">
+          <div className="PF-toolbarTop">
+            {/* 툴바 */}
+            <Toolbar
+              editor={editor}
+              onPickImage={() => !isUploading && fileInputRef.current?.click()}
+              onInsertYoutube={handleInsertYoutube}
             />
-            <PostTag tagSelected={tagSelected} setTagSelected={setTagSelected}/>
+
+            <PostTag tagSelected={tagSelected} setTagSelected={setTagSelected} />
+          </div>
+
+          <div className="PF-toolbarBottom">
+          <input
+            style={{marginLeft:"10px"}}
+            type="color"
+            onChange={(e) =>
+              editor.chain().focus().setColor(e.target.value).run()
+            }
+          />
+
+          <select
+            style={{marginLeft:"10px"}}
+            onChange={(e) =>
+              editor.chain().focus().setFontFamily(e.target.value).run()
+            }
+            defaultValue=""
+          >
+            <option value="" disabled>폰트 선택</option>
+            <option value="Arial">Arial</option>
+            <option value="Pretendard">Pretendard</option>
+            <option value="Noto Sans KR">Noto Sans KR</option>
+          </select>
+
+          <select
+            style={{marginLeft:"10px"}}
+            onChange={(e) =>
+              editor.chain().focus().setFontSize(e.target.value).run()
+            }
+            defaultValue=""
+          >
+            <option value="" disabled>크기</option>
+            <option value="12px">12</option>
+            <option value="14px">14</option>
+            <option value="16px">16</option>
+            <option value="20px">20</option>
+            <option value="24px">24</option>
+          </select>
+        </div>
+        </div>
+
+        <div className="PF-preview">
+          <label id="pt" className="PF-previewText">
+            미리보기
+            <textarea name="pt" value={supplies} onChange={(e) => setSupplies(e.target.value)} />
+          </label>
+
+          {/* 썸네일 */}
+          <div className="PF-previewThumb">
+            <div className="PF-previewImg" style={{ display: "flex", gap: 12, alignItems: "center" }}>
+              {thumbnailUrl ? (
+                <div className="PF-thumbnail" style={{ position: "relative" }}>
+                  <img src={thumbnailUrl} alt="thumbnail" />
+                  <button type="button" onClick={() => setThumbnailUrl("")}> ✕ </button>
+                </div>
+              ):(
+              <button  className="i-btn" type="button" onClick={() => !thumbUploading && thumbInputRef.current?.click()}>
+                썸네일 선택
+              </button>
+              )}
+
+              {thumbError && <p style={{ color: "red" }}>{thumbError}</p>}
+
+              <input
+                ref={thumbInputRef}
+                type="file"
+                accept="image/*"
+                hidden
+                onChange={handleThumbnailChange}
+              />
+
+            </div>
           </div>
         </div>
 
-        {/* 툴바 */}
-        <Toolbar
-          editor={editor}
-          onPickImage={() => !isUploading && fileInputRef.current?.click()}
-          onInsertYoutube={handleInsertYoutube}
-        />
 
-        <input
-          type="color"
-          onChange={(e) =>
-            editor.chain().focus().setColor(e.target.value).run()
-          }
-        />
-
-        <select
-          onChange={(e) =>
-            editor.chain().focus().setFontFamily(e.target.value).run()
-          }
-          defaultValue=""
-        >
-          <option value="" disabled>폰트 선택</option>
-          <option value="Arial">Arial</option>
-          <option value="Pretendard">Pretendard</option>
-          <option value="Noto Sans KR">Noto Sans KR</option>
-        </select>
-
-        <select
-          onChange={(e) =>
-            editor.chain().focus().setFontSize(e.target.value).run()
-          }
-          defaultValue=""
-        >
-          <option value="" disabled>크기</option>
-          <option value="12px">12</option>
-          <option value="14px">14</option>
-          <option value="16px">16</option>
-          <option value="20px">20</option>
-          <option value="24px">24</option>
-        </select>
-
-        <input type="text" value={supplies} onChange={(e)=>setSupplies(e.target.value)} placeholder="준비물을 입력 하세요"/>
 
         {/* 에디터 본문 */}
-        <div
-          className="ed-content"
-          style={{
-            border: "1px solid #ddd",
-            borderRadius: 8,
-            padding: 12,
-            minHeight: 260,
-          }}
-        >
+        <div className="ed-content">
           <EditorContent editor={editor} />
         </div>
 
@@ -369,14 +345,9 @@ const handleInsertYoutube = () => {
         {/* 제출 버튼 */}
         <button
           type="submit"
+          className={`${ title && thumbnailUrl && !isSubmitting ? "i-btn" : ""}`}
           disabled={!title || !thumbnailUrl || isSubmitting}
-          style={{
-            marginTop: 16,
-            padding: "10px 20px",
-            fontSize: 16,
-            cursor: isSubmitting ? "default" : "pointer",
-          }}
-        >
+          style={{cursor: isSubmitting ? "default" : "pointer"}}>
           {isSubmitting ? "저장 중..." : mode === "edit" ? "수정 완료" : "게시글 등록"}
         </button>
       </form>

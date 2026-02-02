@@ -1,101 +1,124 @@
-/* 본문 박스 */
-.editor-wrapper{
-    width: 100%;
-    max-width: 100%;
+/* 제목 */
+h1.PF-title {
+    font-size: 3.2em;
+    line-height: 1.1;
+    text-align: center;
+    margin-top: 70px;
 }
 
-.ProseMirror{
-    display:block;
-    width: 100%;
-    max-width: none;
-    min-height:100dvh;
-    padding: 16px;
-    outline:none;
+/* 폼 */
+.PostForm .PF-form {
+    display: flex;
+    flex-direction: column;
 }
 
-/* ul+ol 리스트 */
-.ProseMirror ul, .ProseMirror ol {
-  list-style: none;
-  padding-left: 0;  
-  margin-left: 0;
-  display:grid;
+.PostForm .PF-titleDiv input[type="text"]{
+    width:100%;
+    padding: 10px 0px;
+    box-sizing: border-box;
 }
 
-.ProseMirror ul > li, .ProseMirror ol > li {
-  display:grid;
-  grid-template-columns: max-content 1fr;
-  grid-template-rows: auto auto;
-  column-gap: 0.6rem;
+.PF-toolbarBottom {
+    margin-top: 10px;
 }
 
-.ProseMirror ul > li::before {
-  grid-column:1;
-  grid-row:1;
-  text-align:right;
-  content: "•";
+/* 미리보기 */
+
+textarea {
+    width:100%;
+    height: 180px;       
+    resize: none;         
+    overflow-y: auto;      
+    box-sizing: border-box;
 }
 
-.ProseMirror ul > li > p , .ProseMirror ol > li > p{
-  grid-column:2;
-  grid-row:1;
-  margin:0;
+.PF-preview {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    margin: 20px 0px;
 }
 
-.ProseMirror ul > li > ul{
-  grid-column:2;
-  grid-row:2;
-  margin: 0.25rem 0 0 0;
-  padding: 0;
-  display: grid;
-  justify-items: start;
+/* -- 썸네일 -- */
+.PF-previewThumb {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
-.ProseMirror ul ul > li::before{
-  content: "▫";
+.PF-previewImg {
+    border: 1px solid black;
+    width: 160px;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Ol 리스트 */
-.ProseMirror ol{
-  counter-reset: item;
+.PF-thumbnail img{
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
 }
 
-.ProseMirror ol > li::before {
-  counter-increment: item; /*번호 증가*/
-  content: counter(item) ".";
-  grid-column: 1;
-  grid-row: 1;
-  text-align: right;
-  font-weight: 799;
+.PF-thumbnail > button{
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    border: none;
+    border-radius: 50%;
+    width: 26px;
+    height: 30px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.ProseMirror ol > li > ol{
-  grid-column:2;
-  grid-row:2;
-  margin: 0.25rem 0 0 0;
-  padding: 0;
-}
+/* 툴바 */
 
-.ProseMirror ol ol {
-  counter-reset:sub;
-}
-
-.ProseMirror ol ol > li:before{
-  counter-increment: sub;
-  content: counter(item) "-" counter(sub)
+.PF-toolbarTop {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
 }
 
 
-/* 리스트 정렬 */
-.ProseMirror ul:not(ul ul)[data-align="left"] { justify-content: flex-start; }
-.ProseMirror ul:not(ul ul)[data-align="center"] { justify-content: center; }
-.ProseMirror ul:not(ul ul)[data-align="right"]  { justify-content: flex-end;  }
-
-.ProseMirror ol:not(ol ol)[data-align="left"]{ justify-content: flex-start;}
-.ProseMirror ol:not(ol ol)[data-align="center"]{justify-content: center;}
-.ProseMirror ol:not(ol ol)[data-align="right"]{ justify-content: flex-end; }
-
-/*글자 자간*/
-.ProseMirror p{
-  margin: 0;
+/* 본문 */
+.ed-content {
+    border: 1px solid black;
 }
 
+/* 태그 */
+
+.PostTag {
+    width: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.PT-addTag {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+}
+
+.PT-addTag input {
+    box-sizing: border-box;
+    padding-left: 2px;
+    width: 70%;
+}
+
+.PostTag label {
+    margin-left: 4px;
+}
+
+/* 전송 버튼 */
+.PostForm button[type="submit"]{
+    margin: 20px 0;
+}

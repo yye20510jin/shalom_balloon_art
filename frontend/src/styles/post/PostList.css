@@ -5,6 +5,12 @@
     margin-top: 2rem;
 }
 
+.PL-noData {
+    height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 /* --- 상단 --- */
 .PL-top {
@@ -53,7 +59,9 @@
 
 .SPT-tagBox {
     position: absolute;
-    left: 10px;
+    background: #ffffffad;
+    width: 100%;
+    padding-left: 10px;
 }
 
 .SPT-tagBox ul{

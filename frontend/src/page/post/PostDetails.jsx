@@ -150,14 +150,14 @@ function PostDetails() {
       
 
       {roles?.includes("ROLE_ADMIN") && (
-        <>
-          <button onClick={() => navigate(`/admin/posts/editPostPage/${id}`)}>
+        <div style={{margin:"20px 10px"}}>
+          <button style={{marginRight:"10px"}} onClick={() => navigate(`/admin/posts/editPostPage/${id}`)}>
             수정
           </button>
           <button onClick={() => { deleteSubmit(post.index, setError, post.contentHtml) }}>
             삭제
           </button>
-        </>
+        </div>
       )}
     </div>
   );
