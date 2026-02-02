@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { authFetch } from "../../api/authFetch";
 import "../../styles/post/SimilarPostList.css";
@@ -28,7 +28,7 @@ export default function SimilarPostList({ id }) {
                     setNoData("게시글이 없습니다.");
                     return;
                 }
-
+                
                 const data = await res.json();
                 setPosts(data.content);
                 setStartPage(data.number);
@@ -40,7 +40,11 @@ export default function SimilarPostList({ id }) {
         };
 
         listFetch();
-    }, [id, startPage]);
+    }, [startPage]);
+
+    useEffect(()=>{
+        setStartPage(0);
+    },[id]);
 
     const formatDateTime = (dateTimeString) => {
         if (!dateTimeString) return "";
@@ -54,7 +58,7 @@ export default function SimilarPostList({ id }) {
             <div className="SPL-list">
             <div className="SPL-listTitle">비슷한 태그 글 더보기</div>
             {posts.map((post, i) => (
-                <div className={`${i % 2 == 0 ? "even" : ""}`} key={post.index} onClick={()=>navigate(`/user/posts/postDetails/${post.index}`)}>
+                <div style={{cursor:"pointer"}} className={`${i % 2 == 0 ? "even" : ""}`} key={post.index} onClick={()=>navigate(`/user/posts/postDetails/${post.index}`)}>
                     <div>{post.title}</div>
                     <div>{formatDateTime(post.createdAt)}</div>
                 </div>

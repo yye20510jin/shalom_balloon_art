@@ -12,6 +12,10 @@
     justify-content: center;
 }
 
+.postViewer {
+    height: 100dvh;
+}
+
 /* --- 상단 --- */
 .PL-top {
     padding-inline: 40px;

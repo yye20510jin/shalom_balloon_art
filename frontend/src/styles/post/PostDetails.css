@@ -3,6 +3,11 @@
     vertical-align: middle;
 }
 
+.postViewer {
+    height: 100dvh;
+    padding: 20px;
+}
+
 /*--- 헤더 ---*/
 
 .PD-header {

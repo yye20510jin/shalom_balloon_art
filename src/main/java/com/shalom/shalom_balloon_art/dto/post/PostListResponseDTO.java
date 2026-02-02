@@ -33,8 +33,6 @@ public class PostListResponseDTO {
                 text = text.replaceAll("\\s+"," ").trim();
                 makePreview = text.length() <= maxLen ? text : text.substring(0,maxLen);
             }
-            System.out.println("postDTO"+post.getTitle());
-            System.out.println("postDTO"+post.getSupplies());
 
             return PostListResponseDTO.builder()
                     .index(post.getIndex())

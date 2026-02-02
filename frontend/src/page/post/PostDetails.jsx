@@ -139,9 +139,7 @@ function PostDetails() {
 
       {/* ---- main --- */}
 
-      <YoutubeFallbackWrapper key={id}>
-        <ReadOnlyEditor contentHtml={post.contentHtml} />
-      </YoutubeFallbackWrapper>
+      <YoutubeFallbackWrapper id={id} contentHtml={post.contentHtml} />
 
 
       {/* ---- footer --- */}

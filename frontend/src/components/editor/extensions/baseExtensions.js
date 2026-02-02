@@ -9,6 +9,7 @@ import {CustomTextAlign} from "../../../hooks/post/toolbar/useCustomTextAlign";
 import {CustomOrderedList} from "../../../hooks/post/toolbar/useCustomOrderedList";
 import { CustomBulletList } from "../../../hooks/post/toolbar/useCustomBulletList";
 import { CustomImage } from "../../../hooks/post/toolbar/useCustomImage";
+import { ViewerCustomImage } from "../../post/tiptap/ViewerCustomImage";
 
 export const baseExtensions = [
   StarterKit.configure({
@@ -31,4 +32,15 @@ export const baseExtensions = [
     controls: true,
     nocookie: true,
   }),
+];
+
+export const viewerExtensions = [
+  StarterKit,
+  TextStyle,
+  Color,
+  FontFamily,
+  FontSize,
+  CustomTextAlign,
+  Youtube,
+  ViewerCustomImage,
 ];
