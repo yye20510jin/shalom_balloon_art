@@ -32,7 +32,7 @@ public class PostListResponseDTO {
                 String text = Jsoup.parse(html).text();
                 text = text.replaceAll("\\s+"," ").trim();
                 makePreview = text.length() <= maxLen ? text : text.substring(0,maxLen);
-            }
+            } 
 
             return PostListResponseDTO.builder()
                     .index(post.getIndex())

@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { authFetch } from "../../api/authFetch";
 import AuthContext from "../../auth/AuthContext";
 import logo from "../../assets/ShalomBalloonArt.png";
 import "../../styles/public/Navbar.css";
@@ -9,9 +8,6 @@ function Navbar() {
 
     const navigate = useNavigate();
     const { logout, isLoggedIn, roles } = useContext(AuthContext);
-    const goAdmin = async () => {
-        navigate("/admin/adminLogin");
-    };
 
     const goUser = () => {
         navigate("/userLogin");
@@ -44,7 +40,6 @@ function Navbar() {
                         ) : (
                             <>
                                 <button className="nav-button" onClick={goUser}>로그인</button>
-                                <button className="nav-button" onClick={goAdmin}>관리자 로그인</button>
                                 <button className="nav-button" onClick={goMembership}>회원가입</button>
                             </>
                         )}

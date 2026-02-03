@@ -8,6 +8,22 @@
     flex-direction: column;
 }
 
+.homeImg {
+    position: relative;
+}
+
+.homeImg > img {
+    width: 100%;
+}
+
+.homeImg > button.adminButton{
+    position: absolute;
+    left: 34%;
+    bottom: 40%;
+    opacity:0;
+    cursor: auto;
+}
+
 /* 홈 카드*/
 
 .HM-cardSection {

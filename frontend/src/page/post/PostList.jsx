@@ -84,8 +84,8 @@ function PostList() {
     <div className="container PostList">
       <Navbar />
       <div className="PL-top">
-        <h2 style={{ textAlign: "center", margin: "0" }}>게시글 목록</h2>
-        <div className="PL-top-flex">
+        <h2 style={{ textAlign: "center", margin: "0" }}>{finalMode === "like" ? "좋아요한 게시글" : "게시글 목록"}</h2>
+        <div style={{display: finalMode === "like" ? "none" : ""}} className="PL-top-flex">
           <div className="PL-topInput">
             <input type="text" value={searchText} onChange={(e) => { setSearchText(e.target.value) }} placeholder="제목을 입력해 주세요" />
             <button className="i-btn" type="button" onClick={(e) => {
