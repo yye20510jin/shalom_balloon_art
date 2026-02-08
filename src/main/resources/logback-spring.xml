@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+
+    <!-- 콘솔 로그 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- 날짜별 파일 로그 -->
+    <appender name="SECURITY_FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <file>logs/security.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 핵심: 날짜별 파일 분리 -->
+            <fileNamePattern>
+                logs/security-%d{yyyy-MM-dd}.log
+            </fileNamePattern>
+
+            <!-- 최대 보관 기간 (30일) -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- 보안 로그만 파일에 남기기 -->
+    <logger name="com.shalom.shalom_balloon_art.auth.jwt" level="INFO">
+        <appender-ref ref="SECURITY_FILE"/>
+    </logger>
+
+    <!-- 나머지 로그는 콘솔 -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>

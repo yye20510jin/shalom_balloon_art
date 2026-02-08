@@ -1,7 +1,5 @@
 package com.shalom.shalom_balloon_art.config;
 
-import org.springframework.boot.ApplicationRunner;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
