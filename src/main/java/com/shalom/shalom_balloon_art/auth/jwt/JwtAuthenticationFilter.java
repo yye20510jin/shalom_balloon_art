@@ -25,13 +25,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        return "OPTIONS".equalsIgnoreCase(request.getMethod());
+    }
+
+    @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
         String token = resolveToken(request);
 
+        //토큰이 없으면 그냥 다음 필터로
+        if (token == null || token.isBlank()){
+            filterChain.doFilter(request,response);
+            return;
+        }
+
         // 토큰이 있는데 유효하지 않으면 -> 401로 끊기
-        if (token != null && !jwtTokenProvider.validateToken(token)) {
+        if (!jwtTokenProvider.validateToken(token)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json;charset=UTF-8");
             //response.getWriter().write("{\"message\":\"TOKEN_INVALID_OR_EXPIRED\"}");
@@ -39,16 +51,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         // 유효하면 인증 세팅
-        if (token != null) {
-            String userId = jwtTokenProvider.getUserId(token);
-            UserDetails userDetails = customUserDetailsService.loadUserByUsername(userId);
-            UsernamePasswordAuthenticationToken auth =
-                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(auth);
-        }
+        String userId = jwtTokenProvider.getUserId(token);
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(userId);
+        UsernamePasswordAuthenticationToken auth =
+                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(auth);
 
         filterChain.doFilter(request, response);
     }
+
 
     private String resolveToken(HttpServletRequest request){
         String header = request.getHeader("Authorization");

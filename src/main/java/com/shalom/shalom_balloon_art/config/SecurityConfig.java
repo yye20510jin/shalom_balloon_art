@@ -19,10 +19,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+    private final CorsConfig corsConfig;
     private final JwtTokenProvider jwtTokenProvider;
     private final CoustomUserDetailsService customUserDetailsService;
 
-    public SecurityConfig(JwtTokenProvider jwtTokenProvider,CoustomUserDetailsService customUserDetailsService){
+    public SecurityConfig(CorsConfig corsConfig,JwtTokenProvider jwtTokenProvider,CoustomUserDetailsService customUserDetailsService){
+        this.corsConfig = corsConfig;
         this.jwtTokenProvider = jwtTokenProvider;
         this.customUserDetailsService = customUserDetailsService;
     }
@@ -37,12 +39,13 @@ public class SecurityConfig {
         http
                 // REST API에서 기본적으로 사용
                 .csrf(csrf -> csrf.disable())
-                .cors(Customizer.withDefaults())
+                .cors(cors->cors.configurationSource(corsConfig.configurationSource()))
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
 
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                         // 로그인 API는 누구나 접근 가능
                         .requestMatchers("/api/auth/**").permitAll()
                         //authenticated() => admin만 탈 수 있게 조건 변경

@@ -14,7 +14,7 @@ export async function authFetch(url, options = {}){
         "Content-Type" : "application/json",
     };
 
-    if(token){
+    if(token && token.trim()){
         headers["Authorization"]=`Bearer ${token}`;
     }
 

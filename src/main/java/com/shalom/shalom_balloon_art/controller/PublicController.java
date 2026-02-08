@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@CrossOrigin(origins="http://localhost:5173")
 @RequestMapping("/api/home")
 @RequiredArgsConstructor
 public class PublicController {
