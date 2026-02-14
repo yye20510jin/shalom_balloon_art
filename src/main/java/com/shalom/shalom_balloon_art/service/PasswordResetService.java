@@ -1,6 +1,6 @@
 package com.shalom.shalom_balloon_art.service;
 
-import com.shalom.shalom_balloon_art.auth.jwt.ResetTokenUtil;
+import com.shalom.shalom_balloon_art.auth.resetToken.ResetTokenUtil;
 import com.shalom.shalom_balloon_art.entity.PasswordResetToken;
 import com.shalom.shalom_balloon_art.entity.User;
 import com.shalom.shalom_balloon_art.global.error.BusinessException;

@@ -1,40 +1,59 @@
 package com.shalom.shalom_balloon_art.controller;
 
-import com.shalom.shalom_balloon_art.auth.jwt.CustomUserDetails;
+import com.shalom.shalom_balloon_art.auth.resetToken.ResetTokenCookieUtil;
 import com.shalom.shalom_balloon_art.dto.login.*;
 import com.shalom.shalom_balloon_art.service.AuthService;
 import com.shalom.shalom_balloon_art.service.PasswordResetService;
-import lombok.RequiredArgsConstructor;
+import com.shalom.shalom_balloon_art.service.auth.RefreshService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
-@RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
     private final PasswordResetService passwordResetService;
+    private final RefreshService refreshService;
+    private final ResetTokenCookieUtil resetTokenCookieUtil;
+
+
+    private final Duration REFRESH_TTL;
+
+    public AuthController(AuthService authService, PasswordResetService passwordResetService, RefreshService refreshService, ResetTokenCookieUtil resetTokenCookieUtil, @Value("${jwt.refresh-ttl}")Duration refreshTtl) {
+        this.authService = authService;
+        this.passwordResetService = passwordResetService;
+        this.refreshService = refreshService;
+        this.resetTokenCookieUtil = resetTokenCookieUtil;
+        REFRESH_TTL = refreshTtl;
+    }
+
 
     //관리자 로그인
     @PostMapping("/adminLogin")
-    public ResponseEntity<?> adminLogin(@RequestBody LoginRequestDTO l) {
+    public ResponseEntity<?> adminLogin(@RequestBody LoginRequestDTO l, HttpServletResponse res) {
         Map<String, Object> result;
         result = authService.adminLogin(l);
         List<String> roles = ((List<?>) result.get("roles")).stream().map(String::valueOf).toList();
-        return ResponseEntity.ok(new LoginResponseDTO((String) result.get("token"), (String) result.get("userId"), roles));
+        String refresh = refreshService.newRefreshToken((String)result.get("userId"));
+        resetTokenCookieUtil.setRefreshCookie(res,refresh,REFRESH_TTL);
+        return ResponseEntity.ok(new LoginResponseDTO((String) result.get("token"),(String) result.get("userId"), roles));
     }
 
     //유저 로그인
     @PostMapping("/userLogin")
-    public ResponseEntity<?> userLogin(@RequestBody LoginRequestDTO l) {
+    public ResponseEntity<?> userLogin(@RequestBody LoginRequestDTO l, HttpServletResponse res) {
         Map<String, Object> result;
         result = authService.userLogin(l);
         List<String> roles = ((List<?>) result.get("roles")).stream().map(String::valueOf).toList();
+        String refresh = refreshService.newRefreshToken((String)result.get("userId"));
+        resetTokenCookieUtil.setRefreshCookie(res,refresh,REFRESH_TTL);
         return ResponseEntity.ok(new LoginResponseDTO((String) result.get("token"), (String) result.get("userId"), roles));
     }
 
@@ -60,7 +79,7 @@ public class AuthController {
         return ResponseEntity.ok(authService.findId(f));
     }
 
-    //----비밀번호 수정 토큰----
+    // ----비밀번호 수정 토큰---- //
     @PostMapping("/resetPw")
     public ResponseEntity<ResetTokenResponseDTO> resetPw(@RequestBody ResetRequestDTO r){
         String token = passwordResetService.requestReset(r.getUserId(), r.getUserPhoneNumber());
@@ -78,5 +97,26 @@ public class AuthController {
         passwordResetService.confirmReset(r.getToken(), r.getNewPassword());
         return ResponseEntity.ok().build();
     }
-    // -----------------------
+
+    // ----- refresh ------ //
+
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refresh(HttpServletRequest req, HttpServletResponse res) {
+        String refresh = resetTokenCookieUtil.readCookie(req);
+        if (refresh == null || refresh.isBlank()) {
+            return ResponseEntity.status(401).body("NO_REFRESH");
+        }
+
+        try {
+            var pair = refreshService.rotate(refresh);
+            resetTokenCookieUtil.setRefreshCookie(res, pair.refreshToken(), pair.refreshTtl());
+            return ResponseEntity.ok(new ResetTokenCookieUtil.AccessTokenResponse(pair.accessToken()));
+        } catch (RuntimeException e) {
+            resetTokenCookieUtil.deleteRefreshCookie(res);
+            return ResponseEntity.status(401).body("UNAUTHORIZED");
+        }
+    }
+
+
+
 }

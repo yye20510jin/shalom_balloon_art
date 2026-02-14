@@ -20,6 +20,7 @@ function UserLogin() {
                 `${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/userLogin`,
                 {
                     method: "POST",
+                    credentials: "include",
                     headers: {
                         "Content-Type": "application/json"
                     },

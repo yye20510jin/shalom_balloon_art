@@ -1,9 +1,6 @@
 package com.shalom.shalom_balloon_art.auth.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -47,12 +44,24 @@ public class JwtTokenProvider {
     }
 
     //토큰 유효성 검사
-    public boolean validateToken(String token){
-        try{
+    public TokenStatus validateToken(String token){
+        return validateDetailed(token);
+    }
+
+    public TokenStatus validateDetailed(String token) {
+        try {
             parseClaims(token);
-            return true;
-        }catch(JwtException | IllegalArgumentException e){
-            return false;
+            return TokenStatus.VALID;
+        } catch (ExpiredJwtException e) {
+            return TokenStatus.EXPIRED;
+        } catch (SecurityException | SignatureException e) { // SignatureException은 jjwt 패키지
+            return TokenStatus.INVALID_SIGNATURE;
+        } catch (MalformedJwtException e) {
+            return TokenStatus.MALFORMED;
+        } catch (UnsupportedJwtException e) {
+            return TokenStatus.UNSUPPORTED;
+        } catch (IllegalArgumentException e) {
+            return TokenStatus.EMPTY_OR_ILLEGAL;
         }
     }
 }

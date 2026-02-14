@@ -1,6 +1,4 @@
-package com.shalom.shalom_balloon_art.auth.jwt;
-
-import com.shalom.shalom_balloon_art.global.error.BusinessException;
+package com.shalom.shalom_balloon_art.auth.resetToken;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;

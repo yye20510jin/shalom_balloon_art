@@ -73,11 +73,11 @@ public class AuthService {
 
             userEncryptService.pwDecrypt(u.getUserId(),l.getPassword());
 
-            UserDetails userdetails=coustomUserDetailsService.loadUserByUsername(l.getUserId());
-            //User(user.getUserId(), user.getUserPassword(), authorities);
+            UserDetails userdetails= coustomUserDetailsService.loadUserByUsername(l.getUserId());
 
             List<String> listRoles = userdetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
             for(String role : listRoles){
+                //수정) 권한 없음 403 로그 출력
                 if(role.contains("USER")) throw new BusinessException(ACCESS_DENIED);
             }
 

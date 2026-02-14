@@ -1,9 +1,12 @@
 package com.shalom.shalom_balloon_art.auth.jwt;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails {
 
@@ -18,6 +21,15 @@ public class CustomUserDetails implements UserDetails {
         this.userId = userId;
         this.password = password;
         this.authorities = authorities;
+    }
+
+    public static CustomUserDetails fromJwt(Long userIndex, String userId, List<String> roles){
+        List<GrantedAuthority> authorities =
+                roles.stream()
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
+
+        return new CustomUserDetails(userIndex, userId, "", authorities);
     }
 
     public Long getUserIndex() {

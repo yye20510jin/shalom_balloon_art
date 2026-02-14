@@ -24,7 +24,12 @@ public class LoggingAccessDeniedHandler implements AccessDeniedHandler {
                        AccessDeniedException accessDeniedException) throws IOException, ServletException {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        secLog.warn("AUTH_403", request, auth, accessDeniedException.getClass().getSimpleName());
+        secLog.warn("AUTH_403", request, auth,
+                String.format(
+                        "type=%s, reason=%s",
+                        accessDeniedException.getClass().getSimpleName(),
+                        accessDeniedException.getMessage()
+                ));
 
         response.sendError(HttpServletResponse.SC_FORBIDDEN);
     }

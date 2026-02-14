@@ -27,6 +27,7 @@ public class SecurityConfig {
     private final CoustomUserDetailsService customUserDetailsService;
     private final LoggingAccessDeniedHandler deniedHandler;
     private final LoggingAuthenticationEntryPoint entryPoint;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -59,7 +60,7 @@ public class SecurityConfig {
 
                 // UsernamePasswordAuthenticationFilter 앞에 JWT 필터 추가
                 .addFilterBefore(
-                        new JwtAuthenticationFilter(jwtTokenProvider,customUserDetailsService),
+                        jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class
                 );
 
