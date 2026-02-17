@@ -1,44 +1,66 @@
 import { createContext,useMemo,useState,useCallback,useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { setOnUnauthorized } from "../api/authFetch"
- 
+import { setOnUnauthorized, fncSetAccessToken } from "../api/authFetch"
+
 //통로 생성 : 후에 다른 컴포넌트에서 값 가져갈 때 사용
 const AuthContext = createContext();
 
 // App.jsx에서 가져다 쓸 함수
 export function AuthProvider({ children }) {
-  const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("accessToken"));
-  const [roles, setRoles] = useState(() => {
-    try { return JSON.parse(localStorage.getItem("roles") || "[]"); }
-    catch { return []; }
-  });
+  const [accessToken, setAccessToken] = useState("");
+  const [userId, setUserId] = useState("");
+  const isLoggedIn = !!accessToken;
+  const [roles, setRoles] = useState([]);
+
+  useEffect(() => {
+  (async () => {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/refresh`, { 
+      method : "POST",
+      credentials: "include" });
+    if (res.status === 401 || !res.ok){
+      return;
+    }
+    if (res.ok) {
+      const data = await res.json(); // { accessToken, roles, userId }
+      setAccessToken(data.accessToken);
+      setRoles(data.roles);
+      setUserId(data.userId);
+    }
+  })();
+}, []);
 
   const login = useCallback((accessToken, userId, roles)=>{
-    localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("userId", userId);
-    localStorage.setItem("roles", JSON.stringify(roles));
-
-    setIsLoggedIn(true);
+    setAccessToken(accessToken);
+    setUserId(userId);
     setRoles(roles);
   },[]);
 
-  const logout = useCallback(() => {
-    localStorage.clear();
-    setIsLoggedIn(false);
-    setRoles([]);
-    navigate("/"); // Home
-  },[navigate]);
+  const logout = useCallback(async() => {
+
+      await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/refresh/logout`,{
+        method:"POST",
+        credentials:"include"
+      });
+
+
+      setAccessToken("");
+      setRoles([]);
+      setUserId("");
+      //href => 리로드, 히스토리 남음
+      //replace => 리로드, 히스트로 안남음
+      window.location.replace("/");
+
+  },[]);
 
   const navHome = useCallback(() => {
-    navigate("/");
-  }, [navigate]);
+    window.location.replace("/");
+  }, []);
 
   useEffect(() => {
     setOnUnauthorized(logout,navHome);
-  }, [logout,navHome]); 
+    fncSetAccessToken(accessToken);
+  }, [logout,navHome,accessToken]); 
 
-  const value = useMemo(() => ({ login ,logout, isLoggedIn, roles }), [login,logout,isLoggedIn, roles]);
+  const value = useMemo(() => ({ login ,logout, isLoggedIn, roles, accessToken, userId }), [login,logout,isLoggedIn, roles, accessToken, userId]);
   
   return (
     <AuthContext.Provider value={ value }>

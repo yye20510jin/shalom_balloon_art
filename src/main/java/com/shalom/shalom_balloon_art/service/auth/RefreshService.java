@@ -2,6 +2,7 @@ package com.shalom.shalom_balloon_art.service.auth;
 
 import com.shalom.shalom_balloon_art.auth.jwt.CustomUserDetails;
 import com.shalom.shalom_balloon_art.auth.jwt.JwtTokenProvider;
+import com.shalom.shalom_balloon_art.dto.login.AccessTokenWithRoles;
 import com.shalom.shalom_balloon_art.service.CoustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,8 +20,6 @@ public class RefreshService {
     //자동 Bean 등록 안 됨.
     private final SecureRandom secureRandom = new SecureRandom();
     private final CoustomUserDetailsService customUserDetailsService;
-
-   @Value("${jwt.refresh-ttl}")
     private final Duration REFRESH_TTL;
 
     public RefreshService(JwtTokenProvider jwt, RedisRefreshTokenStore store, CoustomUserDetailsService customUserDetailsService, @Value("${jwt.refresh-ttl}")Duration refreshTtl) {
@@ -41,11 +40,11 @@ public class RefreshService {
             store.saveUsedToken(userId, refreshRaw);
 
             UserDetails ud = customUserDetailsService.loadUserByUsername(userId);
-            String newAccess = jwt.generateToken(ud);
+            AccessTokenWithRoles at = jwt.generateToken(ud);
 
             String newRefresh = createRefreshToken();
             store.save(userId, newRefresh, REFRESH_TTL);
-            return new TokenPair(newAccess, newRefresh, REFRESH_TTL);
+            return new TokenPair(at, newRefresh, REFRESH_TTL);
         }
 
         String reusedUserId = store.findReusedUserId(refreshRaw);
@@ -58,6 +57,13 @@ public class RefreshService {
 
         //완전 위조
         throw new RuntimeException("REFRESH_INVALID");
+    }
+
+    public void logout(String refreshRaw){
+        String userId = store.findUserIdByRefresh(refreshRaw);
+        if(userId == null || userId.isBlank())return;
+        store.revokeOne(userId,refreshRaw);
+        store.saveUsedToken(userId, refreshRaw);
     }
 
     public String newRefreshToken(String userId){
@@ -75,6 +81,6 @@ public class RefreshService {
     }
 
     //중첩 record
-    public record TokenPair(String accessToken, String refreshToken, Duration refreshTtl) {}
+    public record TokenPair(AccessTokenWithRoles at, String refreshToken, Duration refreshTtl) {}
 }
 

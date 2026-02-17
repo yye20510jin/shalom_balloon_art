@@ -1,6 +1,6 @@
 let onUnauthorized = null;
 let onForbidden = null;
-
+let accessToken = "";
 let refreshPromise = null;
 
 async function tryRefresh(){
@@ -12,7 +12,7 @@ async function tryRefresh(){
             if(!res.ok) throw new Error();
             return res.json();
         }).then(data => {
-            localStorage.setItem("accessToken", data.accessToken);
+            accessToken = data.accessToken;
             return true;
         }).catch(()=>false)
         .finally(()=>{
@@ -23,6 +23,10 @@ async function tryRefresh(){
     return refreshPromise;
 }
 
+export function fncSetAccessToken(t){
+    accessToken = t;
+}
+
 export function setOnUnauthorized(handler,navHome) {
     //logout
   onUnauthorized = handler;
@@ -30,7 +34,7 @@ export function setOnUnauthorized(handler,navHome) {
 }
 
 export async function authFetch(url, options = {}){
-    const token = localStorage.getItem("accessToken");
+    const token = accessToken;
 
     const headers = {
         ...(options.headers||{}),
@@ -45,14 +49,12 @@ export async function authFetch(url, options = {}){
         ...options,
         headers,
         credentials: "include"});
-    
-    console.log("response.status : " + response.status);
 
     if(response.status === 401){
         const refreshed = await tryRefresh();
 
         if(refreshed){
-            const newToken = localStorage.getItem("accessToken");
+            const newToken = accessToken;
             headers["Authorization"] = `Bearer ${newToken}`;
 
             response = await fetch(url,{

@@ -1,5 +1,6 @@
 package com.shalom.shalom_balloon_art.auth.jwt;
 
+import com.shalom.shalom_balloon_art.dto.login.AccessTokenWithRoles;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,15 +24,15 @@ public class JwtTokenProvider {
 
     //토큰생성
     //User(user.getUserId(), user.getUserPassword(), authorities);
-    public String generateToken(UserDetails userdetails){
+    public AccessTokenWithRoles generateToken(UserDetails userdetails){
         Date now = new Date();
         Date expiry = new Date(now.getTime() + expirationMs);
 
         //Role 추가
         //getAuthority() -> SimpleGrantedAuthority 안에 있는 권한 문자열을 꺼내는 메서드
         List<String> roles = userdetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
-
-        return Jwts.builder().setSubject(userdetails.getUsername()).claim("roles",roles).setIssuedAt(now).setExpiration(expiry).signWith(key).compact();
+        String token = Jwts.builder().setSubject(userdetails.getUsername()).claim("roles",roles).setIssuedAt(now).setExpiration(expiry).signWith(key).compact();
+        return new AccessTokenWithRoles(token,userdetails.getUsername(),roles);
     }
 
     //토큰에서 userId 추출

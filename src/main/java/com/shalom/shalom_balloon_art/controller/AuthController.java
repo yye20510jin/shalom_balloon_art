@@ -8,6 +8,7 @@ import com.shalom.shalom_balloon_art.service.auth.RefreshService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,23 +39,19 @@ public class AuthController {
     //관리자 로그인
     @PostMapping("/adminLogin")
     public ResponseEntity<?> adminLogin(@RequestBody LoginRequestDTO l, HttpServletResponse res) {
-        Map<String, Object> result;
-        result = authService.adminLogin(l);
-        List<String> roles = ((List<?>) result.get("roles")).stream().map(String::valueOf).toList();
-        String refresh = refreshService.newRefreshToken((String)result.get("userId"));
+        AccessTokenWithRoles result = authService.adminLogin(l);
+        String refresh = refreshService.newRefreshToken(result.userId());
         resetTokenCookieUtil.setRefreshCookie(res,refresh,REFRESH_TTL);
-        return ResponseEntity.ok(new LoginResponseDTO((String) result.get("token"),(String) result.get("userId"), roles));
+        return ResponseEntity.ok(new LoginResponseDTO(result.accessToken(),result.userId(),result.roles()));
     }
 
     //유저 로그인
     @PostMapping("/userLogin")
     public ResponseEntity<?> userLogin(@RequestBody LoginRequestDTO l, HttpServletResponse res) {
-        Map<String, Object> result;
-        result = authService.userLogin(l);
-        List<String> roles = ((List<?>) result.get("roles")).stream().map(String::valueOf).toList();
-        String refresh = refreshService.newRefreshToken((String)result.get("userId"));
+        AccessTokenWithRoles result = authService.userLogin(l);
+        String refresh = refreshService.newRefreshToken(result.userId());
         resetTokenCookieUtil.setRefreshCookie(res,refresh,REFRESH_TTL);
-        return ResponseEntity.ok(new LoginResponseDTO((String) result.get("token"), (String) result.get("userId"), roles));
+        return ResponseEntity.ok(new LoginResponseDTO(result.accessToken(),result.userId(), result.roles()));
     }
 
     //회원 가입
@@ -104,17 +101,27 @@ public class AuthController {
     public ResponseEntity<?> refresh(HttpServletRequest req, HttpServletResponse res) {
         String refresh = resetTokenCookieUtil.readCookie(req);
         if (refresh == null || refresh.isBlank()) {
-            return ResponseEntity.status(401).body("NO_REFRESH");
+            return ResponseEntity.status(401).contentType(MediaType.APPLICATION_JSON).body(Map.of("code","NO_REFRESH"));
         }
 
         try {
             var pair = refreshService.rotate(refresh);
-            resetTokenCookieUtil.setRefreshCookie(res, pair.refreshToken(), pair.refreshTtl());
-            return ResponseEntity.ok(new ResetTokenCookieUtil.AccessTokenResponse(pair.accessToken()));
+            resetTokenCookieUtil.setRefreshCookie(res, pair .refreshToken(), pair.refreshTtl());
+            return ResponseEntity.ok(new ResetTokenCookieUtil.AccessTokenResponse(pair.at().accessToken(),pair.at().userId(),pair.at().roles()));
         } catch (RuntimeException e) {
             resetTokenCookieUtil.deleteRefreshCookie(res);
-            return ResponseEntity.status(401).body("UNAUTHORIZED");
+            return ResponseEntity.status(401).contentType(MediaType.APPLICATION_JSON).body(Map.of("code","UNAUTHORIZED"));
         }
+    }
+
+    // 로그아웃 refresh 제거
+    @PostMapping("/refresh/logout")
+    public ResponseEntity<Void> logout(@CookieValue(value="refreshToken", required=false) String refresh, HttpServletResponse res){
+        if (refresh != null) {
+            refreshService.logout(refresh); // Redis revokeOne or revokeAll
+        }
+        resetTokenCookieUtil.deleteRefreshCookie(res);
+        return ResponseEntity.ok().build();
     }
 
 

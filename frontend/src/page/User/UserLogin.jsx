@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AuthContext from "../../auth/AuthContext"
+import AuthContext from "../../auth/AuthContext";
 import shalomLogo from "../../assets/shalomBalloonArt.png";
 import "../../styles/user/UserLogin.css";
 

@@ -1,6 +1,7 @@
 package com.shalom.shalom_balloon_art.service;
 
 import com.shalom.shalom_balloon_art.auth.jwt.JwtTokenProvider;
+import com.shalom.shalom_balloon_art.dto.login.AccessTokenWithRoles;
 import com.shalom.shalom_balloon_art.dto.login.LoginRequestDTO;
 import com.shalom.shalom_balloon_art.dto.login.MembershipRequestDTO;
 import com.shalom.shalom_balloon_art.dto.login.FindIdDTO;
@@ -66,7 +67,7 @@ public class AuthService {
     }
 
     //admin 로그인
-    public Map<String,Object> adminLogin(LoginRequestDTO l){
+    public AccessTokenWithRoles adminLogin(LoginRequestDTO l){
             //id 조회
             User u;
             u = userRepository.findByUserId(l.getUserId()).orElseThrow(()->new BusinessException(USER_NOT_FOUND));
@@ -81,15 +82,11 @@ public class AuthService {
                 if(role.contains("USER")) throw new BusinessException(ACCESS_DENIED);
             }
 
-            Map<String,Object> result = new HashMap<>();
-            result.put("token",jwtTokenProvider.generateToken(userdetails));
-            result.put("userId",userdetails.getUsername());
-            result.put("roles",listRoles);
-            return result;
+            return jwtTokenProvider.generateToken(userdetails);
     }
 
     //user 로그인
-    public Map<String,Object> userLogin(LoginRequestDTO l){
+    public AccessTokenWithRoles userLogin(LoginRequestDTO l){
         //id 조회
         User u;
         u = userRepository.findByUserId(l.getUserId()).orElseThrow(()->new BusinessException(USER_NOT_FOUND));
@@ -102,12 +99,7 @@ public class AuthService {
             if(role.contains("ADMIN")) throw new BusinessException(ACCESS_DENIED);
         }
 
-        Map<String,Object> result = new HashMap<>();
-        result.put("token",jwtTokenProvider.generateToken(userdetails));
-        result.put("userId",userdetails.getUsername());
-        result.put("roles",listRoles);
-
-        return result;
+        return jwtTokenProvider.generateToken(userdetails);
     }
 
     //아이디 중복 체크
