@@ -13,10 +13,9 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,"C002", "접근 권한이 없습니다."),
     RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "C003", "리소스를 찾을 수 없음"),
 
-    //===Auth===
-    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "A001","인증이 필요합니다."),
-    ACCESS_DENIED(HttpStatus.FORBIDDEN, "A002", "접근 권한이 없습니다."),
-    AUTH_NOT_FOUND(HttpStatus.NOT_FOUND, "A006", "해당 권한 없음"),
+    //===Auth *===
+    AUTH_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "AUTH_UNAUTHORIZED","로그인이 필요합니다."),
+    AUTH_FORBIDDEN(HttpStatus.FORBIDDEN, "AUTH_FORBIDDEN", "접근 권한이 없습니다."),
 
     //===User===
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "U001", "사용자를 찾을 수 없습니다."),

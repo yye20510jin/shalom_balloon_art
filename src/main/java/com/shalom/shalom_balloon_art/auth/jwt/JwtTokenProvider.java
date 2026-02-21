@@ -55,7 +55,7 @@ public class JwtTokenProvider {
             return TokenStatus.VALID;
         } catch (ExpiredJwtException e) {
             return TokenStatus.EXPIRED;
-        } catch (SecurityException | SignatureException e) { // SignatureException은 jjwt 패키지
+        } catch (SecurityException | SignatureException e) {
             return TokenStatus.INVALID_SIGNATURE;
         } catch (MalformedJwtException e) {
             return TokenStatus.MALFORMED;

@@ -17,9 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.shalom.shalom_balloon_art.global.error.ErrorCode.*;
 
@@ -55,9 +53,9 @@ public class AuthService {
         Role r;
 
             if(s.equals("admin")) {
-                r = roleRepository.findByRoleName("ADMIN").orElseThrow(() -> new BusinessException(AUTH_NOT_FOUND));
+                r = roleRepository.findByRoleName("ADMIN").orElseThrow(() -> new BusinessException(USER_NOT_FOUND));
             }else{
-                r = roleRepository.findByRoleName("USER").orElseThrow(() -> new BusinessException(AUTH_NOT_FOUND));
+                r = roleRepository.findByRoleName("USER").orElseThrow(() -> new BusinessException(USER_NOT_FOUND));
             }
             u.addRole(r);
 
@@ -79,7 +77,7 @@ public class AuthService {
             List<String> listRoles = userdetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
             for(String role : listRoles){
                 //수정) 권한 없음 403 로그 출력
-                if(role.contains("USER")) throw new BusinessException(ACCESS_DENIED);
+                if(role.contains("USER")) throw new BusinessException(AUTH_FORBIDDEN);
             }
 
             return jwtTokenProvider.generateToken(userdetails);
@@ -96,7 +94,7 @@ public class AuthService {
         List<String> listRoles = userdetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
 
         for(String role : listRoles){
-            if(role.contains("ADMIN")) throw new BusinessException(ACCESS_DENIED);
+            if(role.contains("ADMIN")) throw new BusinessException(AUTH_FORBIDDEN);
         }
 
         return jwtTokenProvider.generateToken(userdetails);

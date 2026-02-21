@@ -17,7 +17,7 @@ public class SecurityEventLogger {
                 RequestFingerprint.ip(req),
                 trim(RequestFingerprint.ua(req), 160),
                 RequestFingerprint.path(req),
-                trim(msg, 200)
+                trim(msg, 300)
         );
     }
 
@@ -29,7 +29,7 @@ public class SecurityEventLogger {
                 RequestFingerprint.ip(req),
                 trim(RequestFingerprint.ua(req), 160),
                 RequestFingerprint.path(req),
-                trim(msg, 200)
+                msg
         );
     }
 

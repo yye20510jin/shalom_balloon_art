@@ -1,6 +1,7 @@
 package com.shalom.shalom_balloon_art.auth.jwt;
 
 import com.shalom.shalom_balloon_art.auth.resetToken.ResetTokenCookieUtil;
+import com.shalom.shalom_balloon_art.global.error.BusinessException;
 import com.shalom.shalom_balloon_art.service.CoustomUserDetailsService;
 import com.shalom.shalom_balloon_art.service.auth.RefreshService;
 import jakarta.servlet.FilterChain;
@@ -9,16 +10,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -50,21 +50,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         //토큰 검증
         try{
-                //프론트 : 메인 페이지로 이동 + 로그아웃
-                //서버 : refresh 로그아웃, 로그
             TokenStatus status = jwtTokenProvider.validateDetailed(token);
             switch(status){
                 case VALID ->{
-                    // 유효하면 인증 세팅
                     newAuthCreate(token);
                 }
                 case EXPIRED -> {
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    response.setContentType("application/json; charset=UTF-8");
-                    response.getWriter().write("{\"error\":\"TOKEN_EXPIRED\"}");
-                    return;
+                    request.setAttribute("AUTH_DETAIL","TOKEN_EXPIRED");
+                    throw new InsufficientAuthenticationException("TOKEN_EXPIRED");
                 }
                 default -> {
+                    request.setAttribute("AUTH_DETAIL","TOKEN_INVALID");
                     throw new BadCredentialsException("TOKEN_INVALID: " + status);
                 }
             }

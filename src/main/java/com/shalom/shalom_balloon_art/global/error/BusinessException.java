@@ -2,9 +2,14 @@ package com.shalom.shalom_balloon_art.global.error;
 
 import lombok.Getter;
 
+import jakarta.servlet.http.HttpServletRequest;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+
 @Getter
 public class BusinessException extends RuntimeException {
     private final ErrorCode errorCode;
+
 
     public BusinessException(ErrorCode errorCode){
         super(errorCode.getMessage());
