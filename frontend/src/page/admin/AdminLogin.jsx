@@ -32,7 +32,7 @@ function AdminLogin() {
 
             if (!response.ok) {
                 const err = await response.json();
-                setError(err.error);
+                setError(err.message||"");
                 return;
             }
 

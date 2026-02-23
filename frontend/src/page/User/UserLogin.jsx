@@ -30,7 +30,7 @@ function UserLogin() {
 
             if (!response.ok) {
                 const err = await response.json();
-                setError(err.error);
+                setError(err.message);
                 return;
             }
 
@@ -40,8 +40,7 @@ function UserLogin() {
             navigate("/", { replace: true });
 
         } catch (err) {
-            console.error(err);
-            setError("알 수 없는 에러 발생...");
+            navigate("/error/ServerErrorPage");
         }
     };
 

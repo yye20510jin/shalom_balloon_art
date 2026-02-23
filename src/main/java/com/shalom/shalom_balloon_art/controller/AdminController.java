@@ -104,11 +104,7 @@ public class AdminController {
     @PostMapping("/homeCard")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> homeCardEdit(@RequestBody HomeCardRequestDTO h){
-        try{
             adminService.homeCardEdit(h);
-        }catch(IllegalArgumentException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
         return ResponseEntity.ok("homeCard 업데이트 성공");
     }
 }

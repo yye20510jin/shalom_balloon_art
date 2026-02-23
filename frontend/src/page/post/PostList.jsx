@@ -47,21 +47,13 @@ function PostList() {
     return <div style={{ padding: 20 }}>불러오는 중...</div>;
   }
 
-  if (error) {
-    return (
-      <div style={{ padding: 20, color: "red" }}>
-        에러: {error}
-      </div>
-    );
-  }
-
   if (!posts || posts.length === 0) {
     return (
       <div className="container PostList">
         <Navbar />
         <div className="PL-top">
-          <h2 style={{ textAlign: "center", margin: "0" }}>게시글 목록</h2>
-          <div className="PL-top-flex">
+          <h2 style={{ textAlign: "center", margin: "0" }}>{finalMode === "like" ? "좋아요한 게시글" : "게시글 목록"}</h2>
+          <div style={{display: finalMode === "like" ? "none" : ""}} className="PL-top-flex">
             <div className="PL-topInput">
               <input type="text" value={searchText} onChange={(e) => { setSearchText(e.target.value) }} placeholder="제목을 입력해 주세요" />
               <button className="i-btn" type="button" onClick={(e) => {
@@ -73,7 +65,8 @@ function PostList() {
               <SearchPostTag finalMode={finalMode} fnc_postList={fnc_postList} searchTags={searchTags} setSearchTags={setSearchTags} />
             </div>
           </div>
-          <div className="PL-noData" style={{ padding: 20 }}>등록된 게시글이 없습니다.</div>
+          {error ? <div className="i-errorMessage PL-noData">{error}</div> : 
+          <div className="PL-noData" style={{ padding: 20 }}>{finalMode === "like" ? "게시글이 존재하지 않습니다." : "등록된 게시글이 없습니다."}</div>}
         </div>
       </div>
     );

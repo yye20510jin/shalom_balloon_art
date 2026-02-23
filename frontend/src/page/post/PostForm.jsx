@@ -25,7 +25,7 @@ function PostForm({
     error,
     successMessage,
     isSubmitting,
-    handleSubmit,
+    handleSubmit
   } = usePostSubmit();
 
   //이미지 candidates 임시 저장

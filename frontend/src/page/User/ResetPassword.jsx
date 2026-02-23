@@ -20,19 +20,16 @@ function ResetPassword() {
             });
 
             if (!res.ok) {
-                console.log(res.message);
-                setError("입력하신 회원 정보를 다시 확인해 주세요.");
+                const err = await res.json();
+                setError(err.message || "");
             }
 
-            
             const data = await res.json();
             const token = data.resetToken;
             navigate("/user/ResetPw",{state:{token}});
         } catch (err) {
             console.error(err);
         }
-
-
     }
 
     return (

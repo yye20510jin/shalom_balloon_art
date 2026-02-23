@@ -60,7 +60,7 @@ export async function authFetch(url, options = {}) {
     }
 
     // ---- 에러 처리 ----
-    if (response.status === 403) {
+    if (response.status === 403 && response?.code === "AUTH_FORBIDDEN") {
         if (typeof onForbidden === "function") onForbidden();
         return response;
     }
@@ -98,6 +98,5 @@ export async function authFetch(url, options = {}) {
         return retryResponse;
     }
 
-    if (typeof onUnauthorized === "function") onUnauthorized();
     return response;
 }

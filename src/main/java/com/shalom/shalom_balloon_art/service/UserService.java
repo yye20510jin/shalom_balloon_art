@@ -31,7 +31,7 @@ public class UserService {
 
     //회원탈퇴
     public void unregister(Long userIndex){
-        User u = userRepository.findById(userIndex).orElseThrow(() -> new BusinessException(USER_NOT_FOUND));
+        User u = userRepository.findById(userIndex).orElseThrow(() -> new BusinessException(USER_NOT_FOUND,""));
         // User => 조회수, 태그, 좋아요 DB쪽 ON DELETE CASCADE 완료
         userRepository.delete(u);
     }
@@ -44,7 +44,7 @@ public class UserService {
         List<Long> p = postUserLikeRepository.findLikedPostIds(userIndex);
 
         if(p.isEmpty()){
-            throw new BusinessException(POST_NOT_FOUND);
+            throw new BusinessException(POST_NOT_FOUND,"");
         }
 
         return postRepository.findByIds(p,pageable).map(r -> PostListResponseDTO.from(r,true));
@@ -54,21 +54,21 @@ public class UserService {
     public void chkPw(Long userIndex, String chkPw){
         String userId = userRepository.findUserIdByUserIndex(userIndex);
 
-        if(userId.isBlank()) throw new BusinessException(USER_NOT_FOUND);
+        if(userId.isBlank()) throw new BusinessException(USER_NOT_FOUND,"");
 
         boolean chk = userEncryptService.pwDecrypt(userId, chkPw);
     }
 
     //비밀번호 변경
     public void userChangePw(Long userIndex, String newPw){
-        User u = userRepository.findById(userIndex).orElseThrow(()->new BusinessException(USER_NOT_FOUND));
+        User u = userRepository.findById(userIndex).orElseThrow(()->new BusinessException(USER_NOT_FOUND,""));
         String signupPw = userEncryptService.signup(newPw);
         u.changePw(signupPw);
     }
 
     //전화번호 변경
     public void userChangePhone(Long userIndex, String newPhone){
-        User u = userRepository.findById(userIndex).orElseThrow(()->new BusinessException(USER_NOT_FOUND));
+        User u = userRepository.findById(userIndex).orElseThrow(()->new BusinessException(USER_NOT_FOUND,""));
         u.changePn(newPhone);
     }
 

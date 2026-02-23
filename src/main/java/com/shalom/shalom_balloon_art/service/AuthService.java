@@ -53,9 +53,11 @@ public class AuthService {
         Role r;
 
             if(s.equals("admin")) {
-                r = roleRepository.findByRoleName("ADMIN").orElseThrow(() -> new BusinessException(USER_NOT_FOUND));
+                r = roleRepository.findByRoleName("ADMIN").orElseThrow(() -> new BusinessException(ROLE_NOT_CONFIGURED,""));
+                // 수정) 500 로그 추가
             }else{
-                r = roleRepository.findByRoleName("USER").orElseThrow(() -> new BusinessException(USER_NOT_FOUND));
+                r = roleRepository.findByRoleName("USER").orElseThrow(() -> new BusinessException(ROLE_NOT_CONFIGURED,""));
+                // 수정) 500 로그 추가
             }
             u.addRole(r);
 
@@ -68,7 +70,7 @@ public class AuthService {
     public AccessTokenWithRoles adminLogin(LoginRequestDTO l){
             //id 조회
             User u;
-            u = userRepository.findByUserId(l.getUserId()).orElseThrow(()->new BusinessException(USER_NOT_FOUND));
+            u = userRepository.findByUserId(l.getUserId()).orElseThrow(()->new BusinessException(CREDENTIALS_INVALID,""));
 
             userEncryptService.pwDecrypt(u.getUserId(),l.getPassword());
 
@@ -76,8 +78,7 @@ public class AuthService {
 
             List<String> listRoles = userdetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
             for(String role : listRoles){
-                //수정) 권한 없음 403 로그 출력
-                if(role.contains("USER")) throw new BusinessException(AUTH_FORBIDDEN);
+                if(role.contains("USER")) throw new BusinessException(CREDENTIALS_INVALID,"");
             }
 
             return jwtTokenProvider.generateToken(userdetails);
@@ -87,14 +88,14 @@ public class AuthService {
     public AccessTokenWithRoles userLogin(LoginRequestDTO l){
         //id 조회
         User u;
-        u = userRepository.findByUserId(l.getUserId()).orElseThrow(()->new BusinessException(USER_NOT_FOUND));
+        u = userRepository.findByUserId(l.getUserId()).orElseThrow(()->new BusinessException(CREDENTIALS_INVALID,""));
         userEncryptService.pwDecrypt(u.getUserId(),l.getPassword());
         UserDetails userdetails = coustomUserDetailsService.loadUserByUsername(l.getUserId());
 
         List<String> listRoles = userdetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
 
         for(String role : listRoles){
-            if(role.contains("ADMIN")) throw new BusinessException(AUTH_FORBIDDEN);
+            if(role.contains("ADMIN")) throw new BusinessException(CREDENTIALS_INVALID,"");
         }
 
         return jwtTokenProvider.generateToken(userdetails);
@@ -106,14 +107,14 @@ public class AuthService {
         boolean existsInSignupRequest = signupRequestRepository.existsByUserId(id);
 
         if(existsInUser || existsInSignupRequest){
-            throw new BusinessException(DUPLICATE_ID);}
+            throw new BusinessException(USER_ALREADY_EXISTS,"");}
     }
 
     //유저 등록 (ADMIN service로 이전)
     public void approveUser(Long userIndex) {
 
         SignupRequest req = signupRequestRepository.findById(userIndex)
-                .orElseThrow(() -> new BusinessException(RESOURCE_NOT_FOUND));
+                .orElseThrow(() -> new BusinessException(RESOURCE_NOT_FOUND,""));
 
         User user = User.builder()
                 .userId(req.getUserId())
@@ -125,12 +126,12 @@ public class AuthService {
         membership(user,"USER");
 
         if(signupRequestRepository.deleteByUserIndex(userIndex) == 0){
-            throw new BusinessException(USER_SAVE_FALSE);
+            throw new BusinessException(RESOURCE_NOT_FOUND,"");
         }
     }
     //유저 등록 (ADMIN service로 이전)
     public void rejectUser(Long userIndex){
-        SignupRequest req = signupRequestRepository.findById(userIndex).orElseThrow(() -> new BusinessException(USER_NOT_FOUND));
+        SignupRequest req = signupRequestRepository.findById(userIndex).orElseThrow(() -> new BusinessException(RESOURCE_NOT_FOUND,""));
 
             req.setAuthStatus(2);   // 변경
 
@@ -139,7 +140,7 @@ public class AuthService {
     //아이디 찾기
     public String findId(FindIdDTO f){
         boolean chk = userRepository.existsByUsernameAndUserPhoneNumber(f.getUserName(), f.getUserPhoneNumber());
-        if(!chk) throw new BusinessException(USER_NOT_FOUND);
+        if(!chk) throw new BusinessException(FIND_ID_NO_MATCH,"");
         return userRepository.findUserIdByUsernameAndUserPhoneNumber(f.getUserName(), f.getUserPhoneNumber());
     }
 

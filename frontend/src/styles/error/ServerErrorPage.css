@@ -1,0 +1,48 @@
+.error-wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f8fff4;
+}
+
+.error-card {
+  text-align: center;
+  padding: 3rem;
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+}
+
+.error-card h1 {
+  font-size: 6rem;
+  color: #99d98c;
+  margin-bottom: 1rem;
+}
+
+.error-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.error-card p {
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.btn-group button {
+  margin: 0 0.5rem;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-group button:first-child {
+  background: #99d98c;
+  color: white;
+}
+
+.btn-group button:last-child {
+  background: #e9f5db;
+}

@@ -8,6 +8,7 @@ function PostTag({ tagSelected, setTagSelected }) {
     const [tagOpen, setTagOpen] = useState(false);
     const [tagName, setTagName] = useState("");
     const [addTagChk, setAddTagChk] = useState(false);
+    const [error, setError] = useState("");
     const inputRef = useRef(null);
 
     useEffect(() => {
@@ -25,7 +26,8 @@ function PostTag({ tagSelected, setTagSelected }) {
                 });
 
                 if (!res.ok) {
-                    //에러 처리 예정
+                    const err = await res.json();
+                    setError(err.message || "태그를 가져올 수 없습니다.");
                 }
 
                 const d = await res.json();
@@ -58,7 +60,8 @@ function PostTag({ tagSelected, setTagSelected }) {
             });
 
             if (!res.ok) {
-                //에러 처리 예정
+                const err = await res.json();
+                setError(err.message || "태그 저장에 실패했습니다.");
             }
 
             const newTag = await res.json();
@@ -96,7 +99,7 @@ function PostTag({ tagSelected, setTagSelected }) {
         <div className="PostTag">
             <button className="PT-bto i-btn" type="button" onClick={openModal}> 태그 선택
             </button>
-            <Modal open={tagOpen} onClose={closeModal} title="">
+            <Modal open={tagOpen} onClose={closeModal} title="" error={error}>
                     <>
                         <div className="PT-taglist">
                             {data.map((tag) => (

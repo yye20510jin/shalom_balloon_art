@@ -1,10 +1,7 @@
 import { useEffect, useRef } from "react";
 import "../../styles/public/Modal.css";
 
-export default function Modal({ open, title, onClose, children }) {
-
-
-
+export default function Modal({ open, title, onClose, children, error }) {
     useEffect(() => {
         if (!open) return;
 
@@ -51,7 +48,7 @@ export default function Modal({ open, title, onClose, children }) {
                         ✕
                     </button>
                 </div>
-
+                {error && <div className="i-errMessage">{error}</div>}
                 <div className="modalBody">{children}</div>
             </div>
         </div>

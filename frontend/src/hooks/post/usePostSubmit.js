@@ -72,6 +72,6 @@ export function usePostSubmit() {
     error,
     successMessage,
     isSubmitting,
-    handleSubmit,
+    handleSubmit
   };
 }

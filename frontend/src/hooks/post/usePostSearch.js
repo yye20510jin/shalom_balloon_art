@@ -48,8 +48,6 @@ export function usePostSearch() {
             });
 
             if(!res.ok){
-                const data = await res.json();
-                console.log(data.message);
                 setPosts([]);
                 setLoading(false);
                 return;

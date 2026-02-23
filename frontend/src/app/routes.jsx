@@ -20,6 +20,7 @@ import ResetPw from "../page/User/ResetPw";
 import UserDashboard from "../page/User/UserDashboard";
 import UserChangePw from "../page/User/UserChangePw";
 import UserChangePhone from "../page/User/UserChangePhone";
+import ServerErrorPage from "../page/error/ServerErrorPage";
 import { AdminContext_f } from "../components/admin/adminContext";
 
 export const routes = [
@@ -61,6 +62,12 @@ export const routes = [
       { path: "userDashboard", element: <UserDashboard/>},
       { path: "userChangePhone", element: <UserChangePhone/>},
       { path: "changePw", element: <UserChangePw/>}
+    ],
+  },
+  {
+    path:"error",
+    children:[
+      {path:"ServerErrorPage", element: <ServerErrorPage/>},
     ],
   },
 

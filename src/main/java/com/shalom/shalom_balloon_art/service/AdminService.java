@@ -52,12 +52,12 @@ public class AdminService {
     public void homeCardEdit(HomeCardRequestDTO h){
 
         if (h.getImgUrl().size() < 2 || h.getText().size() < 2){
-            throw new IllegalArgumentException("홈 카드 데이터는 2개가 필요합니다.");
+            throw new BusinessException(HOME_CARD_LIMIT_EXCEEDED,"");
         }
 
         for (int i = 0; i < 2; i++){
             int id = i + 1;
-            HomeCard card = homeCardRepository.findById(id).orElseThrow(()->new IllegalArgumentException("홈카드("+id+")가 존재하지 않습니다."));
+            HomeCard card = homeCardRepository.findById(id).orElseThrow(()->new BusinessException(HOME_CARD_NOT_FOUND,""));
             if(!(card.getImgUrl().isBlank()) && !(card.getImgUrl().equals(h.getImgUrl().get(i)))){
                 firebaseStorageService.delete(card.getImgUrl());
             }
@@ -75,14 +75,14 @@ public class AdminService {
 
     public PostTagDTO createOrGet(String tagName){
         String norm = tagName == null ? null : tagName.trim();
-        if(norm == null || norm.isBlank()) throw new BusinessException(TAG_NAME_REQUIRED);
+        if(norm == null || norm.isBlank()) throw new BusinessException(TAG_INVALID,"");
 
         return tagRepository.findByTagName(norm).map(PostTagDTO::from).orElseGet(()->{
             try{
                 Tags saved = tagRepository.save(new Tags(norm));
                 return PostTagDTO.from(saved);
             }catch(DataIntegrityViolationException e){
-                Tags existing = tagRepository.findByTagName(norm).orElseThrow(()->new BusinessException(TAG_NOT_SAVE));
+                Tags existing = tagRepository.findByTagName(norm).orElseThrow(()->new BusinessException(INTERNAL_ERROR,""));
                 return PostTagDTO.from(existing);
             }
         });

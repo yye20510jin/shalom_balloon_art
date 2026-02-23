@@ -22,7 +22,8 @@ function AdminHomeCard() {
             });
 
             if (!response.ok) {
-                setError("홈 카드 정보를 불러오지 못했습니다.");
+                const err = await response.json();
+                setError(err.message);
                 return;
             }
 
@@ -90,8 +91,8 @@ function AdminHomeCard() {
             });
 
             if (!res.ok) {
-                const err = res ? await res.text() : "홈 카드 업데이트 실패";
-                setError(err);
+                const err = await res.json();
+                setError(err.message);
                 return;
             }
             firstImgUrl.current = [...finalImgUrl];

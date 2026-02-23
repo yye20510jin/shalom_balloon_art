@@ -21,7 +21,6 @@ function ResetPw() {
     useEffect(() => {
         if (!token) {
             navigate("/user/ResetPassword", { replace: true });
-            alert("!token 에러");
             return;
         }
 
@@ -36,12 +35,10 @@ function ResetPw() {
 
                 if (!res.ok) { 
                     navigate("/user/ResetPassword", { replace: true }); 
-                    alert("!res.ok 에러");
                     return;
                 }
 
             } catch (err) {
-                alert("catch 에러");
                 navigate("/user/ResetPassword", { replace: true });
             }
         })();
@@ -59,9 +56,7 @@ function ResetPw() {
             });
 
             if (!res.ok) {
-                const data = await res.json().catch(() => null);
-                console.log(data?.message ?? "");
-                setError("비밀번호 변경 오류. 다시 시도해 주세요");
+                setError("비밀번호 변경에 실패했습니다.");
                 return;
             }
 

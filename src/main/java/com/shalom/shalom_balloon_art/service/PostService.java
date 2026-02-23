@@ -24,8 +24,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
-import static com.shalom.shalom_balloon_art.global.error.ErrorCode.INTERNAL_SERVER_ERROR;
-import static com.shalom.shalom_balloon_art.global.error.ErrorCode.POST_NOT_FOUND;
+import static com.shalom.shalom_balloon_art.global.error.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +45,7 @@ public class PostService {
         Post p = Post.from(req);
 
         for(String tagName : req.getPostTag()){
-            Tags t = tagRepository.findByTagName(tagName).orElseThrow(() -> new BusinessException(INTERNAL_SERVER_ERROR));
+            Tags t = tagRepository.findByTagName(tagName).orElseThrow(() -> new BusinessException(INTERNAL_ERROR,""));
             p.getPostTag().add(t);
         }
 
@@ -57,7 +56,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public PostResponseDTO getPost(Long postIndex, Long userIndex) {
         Post post = postRepository.findById(postIndex)
-                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
+                .orElseThrow(() -> new BusinessException(POST_NOT_FOUND,""));
 
         boolean likedPost = postUserLikeRepository.existsByIdPostIndexAndIdUserIndex(post.getIndex(),userIndex);
 
@@ -107,7 +106,7 @@ public class PostService {
     public PostResponseDTO editPost(Long index,PostCreateRequestDTO dto, Long userIndex) {
 
         Post post = postRepository.findById(index)
-                .orElseThrow(() -> new BusinessException(POST_NOT_FOUND));
+                .orElseThrow(() -> new BusinessException(POST_NOT_FOUND,""));
 
         //새로 들어온 썸네일 여부
         boolean hasNewThumb = dto.getThumbnailUrl() != null && !dto.getThumbnailUrl().isBlank();
@@ -131,7 +130,7 @@ public class PostService {
 
     //글 삭제
     public void deletePost(Long index, List<String> imagePaths){
-        Post post = postRepository.findById(index).orElseThrow(() -> new RuntimeException("id 없음"));
+        Post post = postRepository.findById(index).orElseThrow(() -> new BusinessException(POST_NOT_FOUND,""));
         postRepository.delete(post);
         postRepository.flush();
         // Firebase 이미지 삭제 로직

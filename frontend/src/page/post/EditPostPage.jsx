@@ -18,8 +18,8 @@ function EditPostPage() {
         });
 
         if (!res||!res.ok) {
-          const msg = await res.text();
-          throw new Error(msg || "게시글을 불러오지 못했습니다.");
+          const err = await res.json();
+          setError(err.message || "게시글을 불러오지 못했습니다.");
         }
 
         const data = await res.json();
@@ -49,7 +49,7 @@ function EditPostPage() {
 
   if (error) {
     return (
-      <div style={{ padding: 20, color: "red" }}>
+      <div className="i-errMessage">
         {error}
       </div>
     );

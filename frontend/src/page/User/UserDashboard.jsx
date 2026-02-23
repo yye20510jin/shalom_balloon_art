@@ -62,7 +62,7 @@ function UserDashboard() {
 
             if (!res.ok) {
                 const err = await res.json();
-                console.log("err : ", err.message);
+                setError(err.message || "회원 탈퇴에 실패했습니다.");
                 return;
             }
 

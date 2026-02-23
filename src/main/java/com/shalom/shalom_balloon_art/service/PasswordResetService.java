@@ -27,7 +27,7 @@ public class PasswordResetService {
 
     //토큰 발급
     public String requestReset(String userId, String phone){
-        Long userIndex = userRepository.findUserIndexByUserIdAndUserPhoneNumber(userId, phone).orElseThrow(() -> new BusinessException(USER_NOT_FOUND));
+        Long userIndex = userRepository.findUserIndexByUserIdAndUserPhoneNumber(userId, phone).orElseThrow(() -> new BusinessException(USER_NOT_FOUND,""));
 
         String token = ResetTokenUtil.generateToken();
         String tokenHash = ResetTokenUtil.sha256Hex(token);
@@ -47,10 +47,10 @@ public class PasswordResetService {
 
         PasswordResetToken t = tokenRepository
                 .findTopByTokenHashOrderByCreatedAtDesc(hash)
-                .orElseThrow(() -> new BusinessException(INVALID_RESET_TOKEN));
+                .orElseThrow(() -> new BusinessException(INVALID_RESET_TOKEN,""));
 
-        if (t.isUsed()) throw new BusinessException(INVALID_RESET_TOKEN);
-        if (t.isExpired(now)) throw new BusinessException(EXPIRED_RESET_TOKEN);
+        if (t.isUsed()) throw new BusinessException(EXPIRED_RESET_TOKEN,"");
+        if (t.isExpired(now)) throw new BusinessException(EXPIRED_RESET_TOKEN,"");
 
         return t;
     }
@@ -62,9 +62,9 @@ public class PasswordResetService {
         PasswordResetToken t = getValidToken(token, now);
 
         int update = tokenRepository.markUsedIfValid(t.getPwResetIndex(),now);
-        if(update == 0){throw new BusinessException(INVALID_RESET_TOKEN);}
+        if(update == 0){throw new BusinessException(INVALID_RESET_TOKEN,"");}
 
-        User u = userRepository.findById(t.getUserIndex()).orElseThrow(()->new BusinessException(USER_NOT_FOUND));
+        User u = userRepository.findById(t.getUserIndex()).orElseThrow(()->new BusinessException(USER_NOT_FOUND,""));
         String encoded = userEncryptService.signup(newPassword);
         u.changePw(encoded);
 
