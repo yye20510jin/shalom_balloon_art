@@ -48,3 +48,6 @@ src/main/resources/firebase/*.json
 *.env.local
 *.env.production
 *.env.development
+
+
+*.log
