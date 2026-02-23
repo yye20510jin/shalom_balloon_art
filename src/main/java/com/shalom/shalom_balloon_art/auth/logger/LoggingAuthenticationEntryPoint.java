@@ -1,4 +1,4 @@
-package com.shalom.shalom_balloon_art.auth.jwt;
+package com.shalom.shalom_balloon_art.auth.logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shalom.shalom_balloon_art.global.error.ErrorResponse;

@@ -1,4 +1,4 @@
-package com.shalom.shalom_balloon_art.auth.jwt;
+package com.shalom.shalom_balloon_art.auth.logger;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

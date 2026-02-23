@@ -1,13 +1,17 @@
-package com.shalom.shalom_balloon_art.auth.jwt;
+package com.shalom.shalom_balloon_art.auth.logger;
 
+import com.shalom.shalom_balloon_art.auth.jwt.RequestFingerprint;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-@Slf4j
 @Component
 public class SecurityEventLogger {
+
+    private static final Logger log =
+            LoggerFactory.getLogger("SECURITY_LOG");
 
     public void info(String eventType, HttpServletRequest req, Authentication auth, String msg){
         String user = (auth == null) ? "anonymous" : safeName(auth);

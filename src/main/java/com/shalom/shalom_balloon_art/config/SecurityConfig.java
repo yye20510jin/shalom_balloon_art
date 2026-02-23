@@ -2,8 +2,8 @@ package com.shalom.shalom_balloon_art.config;
 
 import com.shalom.shalom_balloon_art.auth.jwt.JwtAuthenticationFilter;
 import com.shalom.shalom_balloon_art.auth.jwt.JwtTokenProvider;
-import com.shalom.shalom_balloon_art.auth.jwt.LoggingAccessDeniedHandler;
-import com.shalom.shalom_balloon_art.auth.jwt.LoggingAuthenticationEntryPoint;
+import com.shalom.shalom_balloon_art.auth.logger.LoggingAccessDeniedHandler;
+import com.shalom.shalom_balloon_art.auth.logger.LoggingAuthenticationEntryPoint;
 import com.shalom.shalom_balloon_art.service.CoustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -60,7 +60,7 @@ public class SecurityConfig {
 
                 // UsernamePasswordAuthenticationFilter 앞에 JWT 필터 추가
                 .addFilterBefore(
-                        jwtAuthenticationFilter,
+                       jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class
                 );
 

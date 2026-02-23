@@ -1,5 +1,6 @@
 package com.shalom.shalom_balloon_art.global.error;
 
+import com.shalom.shalom_balloon_art.config.RequestIdFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,6 +18,7 @@ public class ErrorResponse {
     private HttpStatus status;
     private String timestamp;
     private String path;
+    private String reqeustId;
     private String detail;
     public static ErrorResponse from(ErrorCode errorCode, HttpServletRequest req, String detail){
         return new ErrorResponse(
@@ -25,6 +27,7 @@ public class ErrorResponse {
                 errorCode.getStatus(),
                 OffsetDateTime.now(ZoneId.of("Asia/Seoul")).toString(),
                 req.getRequestURI(),
+                (String)req.getAttribute(RequestIdFilter.ATTR),
                 detail
         );
     }
