@@ -1,18 +1,33 @@
 import{BrowserRouter, Routes, Route} from"react-router-dom"
 import{routes} from"../app/routes";
 import{AuthProvider} from "../auth/AuthContext";
+import AuthContext from "../auth/AuthContext";
+import { useContext } from "react";
 import ScrollToTop from "../components/common/ScrollToTop";
 
 function App(){
   return(
     <BrowserRouter>
       <AuthProvider>
-        <ScrollToTop/>
-          <Routes>
-            {routes.map((route) => renderRoute(route))}
-          </Routes>
+        <AppContent />
         </AuthProvider>
     </BrowserRouter>
+  );
+}
+
+function AppContent() {
+  const {bootstrapping} = useContext(AuthContext);
+  if (bootstrapping) {
+    return null;
+  }
+
+  return (
+    <>
+      <ScrollToTop />
+      <Routes>
+        {routes.map((route) => renderRoute(route))}
+      </Routes>
+    </>
   );
 }
 

@@ -87,7 +87,7 @@ export async function authFetch(url, options = {}) {
         try {
             retryResponse = await fetch(url, { ...options, headers, credentials: "include" });
         } catch (e) {
-            if (typeof onUnauthorized === "function") onUnauthorized();
+            if (typeof onUnauthorized === "function")onUnauthorized();
             throw e;
         }
 
@@ -97,6 +97,5 @@ export async function authFetch(url, options = {}) {
         }
         return retryResponse;
     }
-
     return response;
 }

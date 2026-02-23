@@ -50,9 +50,7 @@ public class AdminController {
 
         String pw = userEncryptService.signup(m.getUserPassword());
         User u = User.builder().userId(m.getUserId()).userPassword(pw).userPhoneNumber(m.getUserPhoneNumber()).username(m.getUserName()).build();
-        if(!authService.membership(u,"admin")){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error","회원가입 실패"));
-        }
+        authService.membership(u,"admin");
         return ResponseEntity.ok("success");
     }
 
@@ -66,12 +64,7 @@ public class AdminController {
     @PatchMapping("/rejectUser/{userIndex}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> rejectUser(@PathVariable Long userIndex ){
-
-        try{
-            authService.rejectUser(userIndex);
-        }catch(RuntimeException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("사용자 인증 거부 실패");
-        }
+        authService.rejectUser(userIndex);
         return ResponseEntity.ok("사용자 인증 거부 성공");
     }
 
@@ -79,11 +72,7 @@ public class AdminController {
     @PostMapping("/approveUser/{userIndex}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> approveUser(@PathVariable Long userIndex){
-        try{
-            authService.approveUser(userIndex);
-        }catch(RuntimeException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("사용자 인증 요청 실패");
-        }
+        authService.approveUser(userIndex);
         return ResponseEntity.ok("사용자 인증 요청 성공");
     }
 
@@ -104,7 +93,7 @@ public class AdminController {
     @PostMapping("/homeCard")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> homeCardEdit(@RequestBody HomeCardRequestDTO h){
-            adminService.homeCardEdit(h);
+        adminService.homeCardEdit(h);
         return ResponseEntity.ok("homeCard 업데이트 성공");
     }
 }

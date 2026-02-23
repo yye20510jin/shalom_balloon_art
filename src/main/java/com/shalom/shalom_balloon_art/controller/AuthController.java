@@ -41,6 +41,7 @@ public class AuthController {
     public ResponseEntity<?> adminLogin(@RequestBody LoginRequestDTO l, HttpServletResponse res) {
         AccessTokenWithRoles result = authService.adminLogin(l);
         String refresh = refreshService.newRefreshToken(result.userId());
+        System.out.println("admin Login refresh : "+refresh);
         resetTokenCookieUtil.setRefreshCookie(res,refresh,REFRESH_TTL);
         return ResponseEntity.ok(new LoginResponseDTO(result.accessToken(),result.userId(),result.roles()));
     }
@@ -98,8 +99,9 @@ public class AuthController {
     // ----- refresh ------ //
 
     @PostMapping("/refresh")
-    public ResponseEntity<?> refresh(HttpServletRequest req, HttpServletResponse res) {
+    public ResponseEntity<?> refresh(HttpServletRequest req, HttpServletResponse res) {;
         String refresh = resetTokenCookieUtil.readCookie(req);
+        System.out.println("refresh : " + refresh);
         if (refresh == null || refresh.isBlank()) {
             return ResponseEntity.status(401).contentType(MediaType.APPLICATION_JSON).body(Map.of("code","NO_REFRESH"));
         }
