@@ -208,7 +208,7 @@ function PostForm({
     //업로드 후 맵 생성
     const urlMap = await buildUrlMapFromCandidates(candidates, uploadOne);
 
-    //html, thumbnail 치황
+    //html, thumbnail 치환
     const finalContentHtml = replaceImgSrcInHtml(contentHtml, urlMap);
     const finalThumbnailUrl = replaceUrlIfCandidate(thumbnailUrl, urlMap);
 

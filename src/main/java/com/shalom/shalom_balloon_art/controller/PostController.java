@@ -18,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostController {
 
+
     private final PostService postService;
     private final AdminService adminService;
 
@@ -25,7 +26,6 @@ public class PostController {
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> createPost(@RequestBody PostCreateRequestDTO dto) {
-        System.out.println(dto.getSupplies());
         postService.createPost(dto);
         return ResponseEntity.ok("success");
     }

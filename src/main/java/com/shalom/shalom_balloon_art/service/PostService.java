@@ -1,5 +1,6 @@
 package com.shalom.shalom_balloon_art.service;
 
+import com.shalom.shalom_balloon_art.auth.sanitizer.HtmlSanitizer;
 import com.shalom.shalom_balloon_art.config.ViewLimitProperties;
 import com.shalom.shalom_balloon_art.dto.post.*;
 import com.shalom.shalom_balloon_art.entity.post.Post;
@@ -30,7 +31,7 @@ import static com.shalom.shalom_balloon_art.global.error.ErrorCode.*;
 @RequiredArgsConstructor
 @Transactional
 public class PostService {
-
+    private final HtmlSanitizer htmlSanitizer;
     private final PostRepository postRepository;
     private final FirebaseStorageService fire;
     private final ViewLimitProperties viewLimitProperties;
@@ -42,7 +43,10 @@ public class PostService {
 
     // 글 저장
     public void createPost(PostCreateRequestDTO req){
-        Post p = Post.from(req);
+
+        String safeHtml = htmlSanitizer.sanitizePostHtml(req.getContentHtml());
+        Post p = Post.builder().title(req.getTitle()).contentHtml(safeHtml)
+                .thumbnailUrl(req.getThumbnailUrl()).supplies(req.getSupplies()).build();
 
         for(String tagName : req.getPostTag()){
             Tags t = tagRepository.findByTagName(tagName).orElseThrow(() -> new BusinessException(INTERNAL_ERROR,""));
@@ -121,7 +125,10 @@ public class PostService {
         post.getPostTag().clear();
         List<Tags> newTags = dto.getPostTag().stream().map(name -> tagRepository.findByTagName(name).orElseGet(() -> tagRepository.save(new Tags(name)))).toList();
         post.getPostTag().addAll(newTags);
-        post.update(dto.getTitle(), dto.getContentHtml(), dto.getSupplies());
+
+        String safeHtml = htmlSanitizer.sanitizePostHtml(dto.getContentHtml());
+
+        post.update(dto.getTitle(), safeHtml, dto.getSupplies());
 
         boolean likedPost = postUserLikeRepository.existsByIdPostIndexAndIdUserIndex(post.getIndex(),userIndex);
 
