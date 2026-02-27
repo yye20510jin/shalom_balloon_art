@@ -1,10 +1,12 @@
 import { authFetch } from "../../api/authFetch";
+import {waitAuthReady} from "../../auth/authGate";
 import { useEffect, useState, useContext } from "react";
 import "../../styles/admin/userList.css";
 import UserIcon from "../../assets/UserIcon.png";
 import AdminContext from "../../components/admin/adminContext";
 import leftArrow from "../../assets/leftArrow.png";
 import rightArrow from "../../assets/rightArrow.png";
+import AuthContext from "../../auth/AuthContext";
 
 function UserList() {
     const [error, setError] = useState("");
@@ -13,6 +15,7 @@ function UserList() {
     const [startPage, setStartPage] = useState(0);
     const [endPage, setEndPage] = useState(0);
     const { authChange } = useContext(AdminContext);
+
     useEffect(() => {
         const fetchUserList = async () => {
             try {
@@ -38,7 +41,6 @@ function UserList() {
                 setError("서버 응답 없음");
             } finally {
                 setLoading(false);
-                console.log("authChange: " + authChange);
             }
         }
 

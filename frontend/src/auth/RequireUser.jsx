@@ -4,9 +4,9 @@ import AuthContext from "../auth/AuthContext";
 
 export default function RequireUser({children}){
     const{isLoggedIn, roles, bootstrapping} = useContext(AuthContext);
-
-    if (!bootstrapping && !isLoggedIn) return <Navigate to="/" replace />;
-    if (!bootstrapping && !roles.includes("ROLE_ADMIN") && !roles.includes("ROLE_USER")) return <Navigate to="/" replace />;
+    if(bootstrapping) return null;
+    if (!isLoggedIn) return <Navigate to="/" replace />;
+    if (!roles.includes("ROLE_ADMIN") && !roles.includes("ROLE_USER")) return <Navigate to="/" replace />;
 
     return children;
 }

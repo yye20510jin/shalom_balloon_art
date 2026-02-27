@@ -28,7 +28,7 @@
         </encoder>
     </appender>
     <!-- 보안 로그만 파일에 남기기 -->
-    <logger name="SECURITY_LOG" level="INFO">
+    <logger name="SECURITY_LOG" level="WARN">
         <appender-ref ref="SECURITY_FILE"/>
     </logger>
 

@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { authFetch } from "../../api/authFetch";
 import AuthContext from "../../auth/AuthContext";
 import shalomLogo from "../../assets/shalomBalloonArt.png";
 import "../../styles/user/UserLogin.css";
@@ -16,14 +17,10 @@ function UserLogin() {
         e.preventDefault();
 
         try {
-            const response = await fetch(
+            const response = await authFetch(
                 `${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/userLogin`,
                 {
                     method: "POST",
-                    credentials: "include",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
                     body: JSON.stringify({ userId, password }),
                 }
             );

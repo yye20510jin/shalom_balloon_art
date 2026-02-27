@@ -4,7 +4,6 @@ import AuthContext from "../../auth/AuthContext";
 import { useParams, useNavigate } from "react-router-dom";
 import { usePostDelete } from "../../hooks/post/usePostDelete";
 import SimilarPostList from "../../components/post/SimilarPostList";
-import ReadOnlyEditor from "../../components/editor/ReadOnlyEditor";
 import YoutubeFallbackWrapper from "../../components/post/YoutubeFallbackWrapper";
 import Navbar from "../../components/common/Navbar";
 import grayHeart from "../../assets/grayHeart.png";
@@ -20,7 +19,7 @@ function PostDetails() {
   const [tags, setTags] = useState([]);
 
   const { id } = useParams();
-  const { roles } = useContext(AuthContext);
+  const { roles, bootstrapping} = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -28,6 +27,8 @@ function PostDetails() {
 
   useEffect(() => {
     const fetchPosts = async () => {
+      if (bootstrapping) return;
+      
       try {
         const res = await authFetch(
           `${import.meta.env.VITE_BACKEND_BASE_URL}/api/posts/${id}`,
@@ -36,17 +37,22 @@ function PostDetails() {
           }
         );
 
-        if (!res || !res.ok) {
-          const err = await res.json();
-          setError(err.message || "게시글을 불러오지 못했습니다.");
-          setLoading(false);
+        let data;
+        try {
+          data = await res.json(); 
+        } catch {
+          data = null;
+        }
+
+        if (!res.ok) {
+          setError(data?.message || "게시글을 불러오지 못했습니다.");
           return;
         }
 
-        const data = await res.json();
         setPost(data);
         setLike(data.postLike);
         setTags(data.postTags);
+
       } catch (e) {
         console.error(e);
         setError("서버 오류가 발생했습니다.");
@@ -56,7 +62,7 @@ function PostDetails() {
     };
 
     fetchPosts();
-  }, [id]);
+  }, [id,bootstrapping]);
 
   const handlePostLike = async (chk) => {
     //chk => 0 : 좋아요 취소, 1 : 좋아요

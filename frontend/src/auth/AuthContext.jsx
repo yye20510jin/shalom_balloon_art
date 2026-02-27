@@ -1,5 +1,6 @@
 import { createContext, useMemo, useState, useCallback, useEffect } from "react";
-import { setOnUnauthorized, fncSetAccessToken } from "../api/authFetch"
+import { setOnUnauthorized, fncSetAccessToken} from "../api/authFetch"
+import { startBootstrapping, setBootstrappingDone, setBootstrappingFailed } from "../auth/authGate";
 
 //통로 생성 : 후에 다른 컴포넌트에서 값 가져갈 때 사용
 const AuthContext = createContext();
@@ -12,41 +13,54 @@ export function AuthProvider({ children }) {
   const [roles, setRoles] = useState([]);
   const [bootstrapping, setBootstrapping] = useState(true);
 
-  useEffect(() => {
-    let alive = true;
-    //fetch 취소 스위치
-    const controller = new AbortController();
+useEffect(() => {
+  let alive = true;
+  const controller = new AbortController();
 
-    (async () => {
-      try {
-        const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/refresh`, {
-          method: "POST",
-          credentials: "include",
-          signal: controller.signal,
-        });
+  startBootstrapping();
 
-        if (alive && res.ok) {
-          const data = await res.json();
-          setAccessToken(data.accessToken);
-          setRoles(data.roles);
-          setUserId(data.userId);
-        }
-      } catch (e) {
-        if (e.name !== "AbortError") {
-          console.error(e);
-        }
-      } finally {
-        if (alive) setBootstrapping(false);
+  (async () => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/refresh`, {
+        method: "POST",
+        credentials: "include",
+        signal: controller.signal,
+      });
+
+      if (!alive) return;
+
+      if (res.ok) {
+        const data = await res.json();
+        fncSetAccessToken(data.accessToken);
+        setAccessToken(data.accessToken);
+        setRoles(data.roles ?? []);
+        setUserId(data.userId ?? null);
+      }else{
+        fncSetAccessToken("");
+        setAccessToken("");
+        setRoles([]);
+        setUserId(null);
       }
-    })();
 
-    return () => {
-      alive = false;
-      controller.abort();
-    };
-  }, []);
+      setBootstrappingDone();
+
+    } catch (e) {
+      if (e.name !== "AbortError") console.error(e);
+      setBootstrappingFailed(e);
+
+    } finally {
+      if (alive) setBootstrapping(false);
+    }
+  })();
+
+  return () => {
+    alive = false;
+    controller.abort();
+  };
+}, []);
 
   const login = useCallback((accessToken, userId, roles) => {
+    fncSetAccessToken(accessToken);
     setAccessToken(accessToken);
     setUserId(userId);
     setRoles(roles);
@@ -57,6 +71,7 @@ export function AuthProvider({ children }) {
       method: "POST",
       credentials: "include"
     });
+    fncSetAccessToken("");
     setAccessToken("");
     setRoles([]);
     setUserId("");
@@ -69,11 +84,14 @@ export function AuthProvider({ children }) {
   const navHome = useCallback(() => {
     window.location.replace("/");
   }, []);
+  
+  const onAccessTokenChanged = useCallback((t) => {
+    setAccessToken(t);
+  }, []);
 
   useEffect(() => {
-    setOnUnauthorized(logout, navHome);
-    fncSetAccessToken(accessToken);
-  }, [logout, navHome, accessToken]);
+    setOnUnauthorized(logout, navHome, onAccessTokenChanged);
+  }, [logout, navHome, onAccessTokenChanged]);
 
 
   const value = useMemo(() => ({ bootstrapping, login, logout, isLoggedIn, roles, accessToken, userId }), [bootstrapping, login, logout, isLoggedIn, roles, accessToken, userId]);

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { authFetch } from "../../api/authFetch";
 import { useNavigate } from "react-router-dom";
 import UserList from "./UserList";
@@ -14,7 +14,6 @@ function Admin() {
 
     useEffect(() => {
         const fetchAdminData = async () => {
-
             try {
                 const res = await authFetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/admin`, { method: "GET", });
                 if (!res.ok) {

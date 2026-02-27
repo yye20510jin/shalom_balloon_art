@@ -18,7 +18,7 @@ public class ErrorResponse {
     private HttpStatus status;
     private String timestamp;
     private String path;
-    private String reqeustId;
+    private String requestId;
     private String detail;
     public static ErrorResponse from(ErrorCode errorCode, HttpServletRequest req, String detail){
         return new ErrorResponse(
