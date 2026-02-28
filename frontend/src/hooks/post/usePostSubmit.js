@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authFetch } from "../../api/authFetch";
+import { useContentTransform } from "../../hooks/post/useContentTransform";
 
 export function usePostSubmit() {
   const [id, setId] = useState("");
@@ -9,6 +10,7 @@ export function usePostSubmit() {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { replaceYouTubeIframesWithMarkers } = useContentTransform();
 
   const navigate = useNavigate();
 
@@ -24,9 +26,11 @@ export function usePostSubmit() {
       return;
     }
 
+    const finallycontentHtml = replaceYouTubeIframesWithMarkers(contentHtml);
+    
     const payload = {
       title: title.trim(),
-      contentHtml,
+      contentHtml: finallycontentHtml,
       thumbnailUrl,
       postTag: tagSelected,
       supplies

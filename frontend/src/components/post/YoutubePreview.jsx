@@ -1,4 +1,3 @@
-// src/components/PostEditor/YoutubePreview.jsx
 import { useState, useEffect } from "react";
 
 function YoutubePreview({ youtubeUrl, setYoutubeUrl }) {

@@ -17,6 +17,8 @@ public class HtmlSanitizer {
             .allowElements("img")
             .allowAttributes("src","alt","title").onElements("img")
             .allowUrlProtocols("https")
+            .allowAttributes("data-youtube-fallback").onElements("span")
+            .allowAttributes("data-align").onElements("ul","ol","li")
             .toFactory();
 
     public String sanitizePostHtml(String dirty){
