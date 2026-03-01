@@ -1,5 +1,4 @@
 import { Extension } from "@tiptap/core"; 
-//Extension.create : 새 확장 정의/기존에 무엇을 상속받지 않는다.
 export const FontSize = Extension.create({
     name: "fontSize",
 
@@ -11,7 +10,7 @@ export const FontSize = Extension.create({
                     fontSize: {
                         default: null,
                         parseHTML: element => element.style.fontSize?.replace(/['"]/g, "") || null,
-                        renderHTML: attributes => { // attributes : { fontSize: "18px", color: "#ff0000", ... }
+                        renderHTML: attributes => { 
                             if (!attributes.fontSize) return {};
                             return { style: `font-size: ${attributes.fontSize}` };
                         },
