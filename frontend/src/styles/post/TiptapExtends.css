@@ -1,0 +1,11 @@
+/* fontSize(data-font-size) */
+.ed-content span[data-font-size="12px"] { font-size: 12px; }
+.ed-content span[data-font-size="14px"] { font-size: 14px; }
+.ed-content span[data-font-size="16px"] { font-size: 16px; }
+.ed-content span[data-font-size="20px"] { font-size: 20px; }
+.ed-content span[data-font-size="24px"] { font-size: 24px; }
+
+/* DataFontFamily(data-font-family) */
+.ed-content span[data-font-family="Arial"] {font-family: Arial, Helvetica, sans-serif;}
+.ed-content span[data-font-family="Pretendard"] {font-family: "Pretendard", sans-serif;}
+.ed-content span[data-font-family="Noto Sans KR"] {font-family: "Noto Sans KR", sans-serif;}

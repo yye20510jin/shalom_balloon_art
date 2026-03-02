@@ -5,14 +5,14 @@ export const FontSize = Extension.create({
     addGlobalAttributes() {
         return [
             {
-                types: ["textStyle"], // 기존 마크(TextStyle)에 속성을 “얹는”다.
+                types: ["textStyle"], 
                 attributes: {
                     fontSize: {
                         default: null,
-                        parseHTML: element => element.style.fontSize?.replace(/['"]/g, "") || null,
+                        parseHTML: element => element.getAttribute("data-font-size") || null,
                         renderHTML: attributes => { 
                             if (!attributes.fontSize) return {};
-                            return { style: `font-size: ${attributes.fontSize}` };
+                            return { "data-font-size": attributes.fontSize, };
                         },
                     },
                 },

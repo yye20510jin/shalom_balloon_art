@@ -18,4 +18,20 @@ export const CustomTextAlign = TextAlign.extend({
                 },
         };
     },
+
+    addGlobalAttributes(){
+        return[{
+            types: this.options.types ?? ["heading", "paragraph"],
+            attributes:{
+                textAlign:{
+                    default:null,
+                    parseHTML: (element) => element.getAttribute("data-align") || null,
+                    renderHTML: (attributes) => {
+                        if(!attributes.textAlign) return {};
+                        return{"data-align" : attributes.textAlign};
+                    },
+                },
+            },
+        }];
+    },
 });

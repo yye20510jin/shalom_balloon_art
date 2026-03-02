@@ -1,5 +1,6 @@
 import DOMPurify from "dompurify";
 import { useEffect, useRef } from "react";
+import {applyDataTextStyle} from "../../util/post/applyDataTextStyle";
 
 const sanitize = (dirtyHtml) =>
   DOMPurify.sanitize(dirtyHtml || "", {
@@ -11,10 +12,10 @@ const sanitize = (dirtyHtml) =>
     ALLOWED_ATTR: [
       "href","src","alt","title",
       "data-youtube-fallback",
-      "class"
+      "class",
+      "data-color","data-font-family", "data-font-size",
     ],
   });
-
 
 export default function YoutubeFallbackWrapper({ id, contentHtml }) {
   const rootRef = useRef(null);
@@ -29,6 +30,8 @@ export default function YoutubeFallbackWrapper({ id, contentHtml }) {
     
     const temp = document.createElement("div");
     temp.innerHTML = safeHtml;
+
+    applyDataTextStyle(temp);
 
     temp.querySelectorAll("[data-youtube-fallback]").forEach((el) => {
       const raw = el.getAttribute("data-youtube-fallback") || el.textContent || "";
@@ -67,5 +70,5 @@ export default function YoutubeFallbackWrapper({ id, contentHtml }) {
     };
   }, [id, contentHtml]);
 
-  return <div ref={rootRef} className="postViewer" />;
+  return <div ref={rootRef} className="ProseMirror" />;
 }

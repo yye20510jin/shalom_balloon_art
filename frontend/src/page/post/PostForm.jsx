@@ -4,13 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { useFirebaseSingleImageUpload } from "../../hooks/firebase/useFirebaseSingleImageUpload";
 import { useFirebaseSingleImageRemove } from "../../hooks/firebase/useFirebaseSingleImageRemove";
-import { CustomImage } from "../../hooks/post/toolbar/useCustomImage";
+import {CustomImage} from "../../editor/extensions/CustomImage";
 import { useLocalImageCandidates } from "../../hooks/post/useLocalImageCandidates";
-import { baseExtensions } from "../../components/editor/extensions/baseExtensions";
+import { baseExtensions } from "../../editor/baseExtensions";
 import { toYouTubeEmbedUrl } from "../../util/post/ToYouTubeEmbedUrl";
 import PostTag from "../../components/post/PostTag";
 import "../../styles/post/PostFormContent.css";
 import "../../styles/post/PostForm.css";
+import "../../styles/post/TiptapExtends.css"
 
 function PostForm({
   mode = "create",

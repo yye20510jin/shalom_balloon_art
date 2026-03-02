@@ -6,8 +6,6 @@
 
 .ProseMirror{
     display:block;
-    width: 100%;
-    max-width: none;
     min-height:100dvh;
     padding: 16px;
     outline:none;
@@ -101,6 +99,15 @@
 .ProseMirror ol:not(ol ol)[data-align="left"]{ justify-content: flex-start;}
 .ProseMirror ol:not(ol ol)[data-align="center"]{justify-content: center;}
 .ProseMirror ol:not(ol ol)[data-align="right"]{ justify-content: flex-end; }
+
+/* 글자 정렬 */
+.ProseMirror p[data-align="center"] { text-align: center; }
+.ProseMirror p[data-align="right"]  { text-align: right; }
+.ProseMirror p[data-align="justify"] { text-align: justify; }
+
+.ProseMirror h1[data-align="center"],.ProseMirror h2[data-align="center"],.ProseMirror h3[data-align="center"] {text-align: center;}
+.ProseMirror h1[data-align="right"],.ProseMirror h2[data-align="right"],.ProseMirror h3[data-align="right"] {text-align: right;}
+.ProseMirror h1[data-align="justify"],.ProseMirror h2[data-align="justify"],.ProseMirror h3[data-align="justify"] {text-align: justify;}
 
 /*글자 자간*/
 .ProseMirror p{
