@@ -6,7 +6,7 @@ let onAccessTokenChanged = null;
 let accessToken = "";
 let refreshPromise = null;
 
-async function tryRefreshToken() {
+export async function tryRefreshToken() {
     if (!refreshPromise) {
         refreshPromise = fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/refresh`, {
             method: "POST",
@@ -20,7 +20,7 @@ async function tryRefreshToken() {
                 if (typeof onAccessTokenChanged === "function") {
                     onAccessTokenChanged(token);
                 }
-                return token;
+                return data;
             }
             return null;
         }).finally(() => {
@@ -78,7 +78,7 @@ export async function authFetch(url, options = {}) {
         return response;
     }
     //refresh 성공 -> 새 토큰으로 1회 재요청
-    const newToken = await tryRefreshToken();
+    const newToken = (await tryRefreshToken())?.accessToken || null;
     if (!newToken) {
         if (typeof onUnauthorized === "function") onUnauthorized();
         return response;
