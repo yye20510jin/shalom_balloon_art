@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/common/Navbar"
 import { authFetch } from "../../api/authFetch";
-import "../../styles/Home.css";
+import "../../styles/home/Home.css";
 import home from "../../assets/home.svg";
 import Reveal from "../../components/animations/Reveal";
 import "../../styles/animations/index.css";
@@ -79,8 +79,6 @@ function Home() {
                     Eun-kyung Park
                 </div>
             </footer>
-
         </div>
-
     );
 } export default Home;

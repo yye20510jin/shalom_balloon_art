@@ -1,0 +1,159 @@
+#root {
+  min-height: 100vh;
+  width: 100%;
+}
+
+.home {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.homeImg {
+  position: relative;
+}
+
+.homeImg>img {
+  width: 100%;
+  
+}
+
+.homeImg>button.adminButton {
+  position: absolute;
+  left: 34%;
+  bottom: 40%;
+  opacity: 0;
+  cursor: auto;
+}
+
+/* -------------------- 홈 카드 -------------------*/
+
+/* -- 기본(모바일): grid -- */
+@media (max-width: 1023px){
+  .HM-cardSection{
+    display: grid;
+    gap: 30px;               
+    padding: 24px 16px;
+  }
+
+  .HM-card{
+    width: min(520px, 100%);
+    margin-inline: auto;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 18px 40px rgba(0,0,0,.12);
+    position: relative;   /* ✅ z-index 먹이기 */
+    background: rgba(247,249,243,.72);
+  }
+
+  .HM-card.one{
+    transform: rotate(-1deg);
+  }
+
+  .HM-card.two{              
+    transform: translateX(20px) rotate(1deg);
+  }
+
+  .HM-card .cardImg{
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+  .HM-card .cardImg img{
+    width:100%;
+    height:100%;
+    object-fit: cover;
+    display:block;
+  }
+
+  .cardText{
+    padding: 14px 16px;
+    background: rgb(231 231 231 / 50%);
+  }
+}
+
+
+/* -- 데스크탑 absolute -- */
+@media (min-width: 1024px) {
+  .HM-cardSection {
+    width: 100%;
+    background: #f7f9f3;
+    position: relative;
+    min-height: clamp(920px, 80vh, 1280px);
+    padding: 0;
+  }
+
+  .HM-card {
+    position: absolute;
+    width: clamp(260px, 28vw, 420px);
+    border-radius: 10px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, .18);
+    overflow: hidden;
+    /* ✅ 프레임 깔끔 */
+  }
+
+  .HM-card.one {
+    top: clamp(10px, 10vw, 163px);
+    left: clamp(10px, 9vw, 140px);
+    z-index: 2;
+  }
+
+  .HM-card.two {
+    right: clamp(10px, 9vw, 140px);
+    bottom: clamp(10px, 10vw, 163px);
+    z-index: 1;
+  }
+
+  .cardText {
+    background-color: rgb(231 231 231 / 50%);
+    height: 200px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+  }
+
+  .HM-card .cardImg {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    /* ✅ 추가 */
+    min-height: 260px;
+    overflow: hidden;
+    background: beige;
+  }
+
+  .HM-card .cardImg>img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+}
+
+
+
+/* ----------------- footer -------------------- */
+
+.HM-ft {
+  width: 100%;
+  height: 150px;
+  background: #f7f9f3;
+}
+
+footer.HM-ft {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.HM-ft-text {
+  margin-left: 3rem;
+}
+
+.home-container button:hover {
+  color: #015500;
+}
+
+.HM-subImg {
+  width: 100%;
+  max-height: calc((142px - 2px) * 1.618 - 10px);
+}
