@@ -27,7 +27,7 @@ public class PasswordResetService {
 
     //토큰 발급
     public String requestReset(String userId, String phone){
-        Long userIndex = userRepository.findUserIndexByUserIdAndUserPhoneNumber(userId, phone).orElseThrow(() -> new BusinessException(USER_NOT_FOUND,""));
+        Long userIndex = userRepository.findUserIndexByUserIdAndUserPhoneNumber(userId, phone).orElseThrow(() -> new BusinessException(FIND_ID_NO_MATCH,""));
 
         String token = ResetTokenUtil.generateToken();
         String tokenHash = ResetTokenUtil.sha256Hex(token);

@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authFetch } from "../../api/authFetch";
 import { useFormatPhoneNumber } from "../../hooks/user/UseformatPhoneNumber";
+import { getJson } from "../../api/getJson";
+import shalomLogo from "../../assets/shalomBalloonArt.png";
+import "../../styles/user/UserMembershipFind.css";
 
 function ResetPassword() {
     const [userId, setUserId] = useState("");
@@ -19,29 +22,48 @@ function ResetPassword() {
                 body: JSON.stringify({ userId, userPhoneNumber: formatPn })
             });
 
+            const data = await getJson(res);
+
             if (!res.ok) {
-                const err = await res.json();
-                setError(err.message || "");
+                console.log("data : ", data.message);
+                setError(data.message || "입력하신 정보와 일치하는 계정이 없습니다.");
+                setTimeout();
+                return;
             }
 
-            const data = await res.json();
             const token = data.resetToken;
-            navigate("/user/ResetPw",{state:{token}});
+            navigate("/user/ResetPw", { state: { token } });
         } catch (err) {
             console.error(err);
         }
     }
 
+    useEffect(() => {
+        if (error) {
+            setTimeout(() => {
+                setError("");
+            }, 2000);
+        }
+    }, [error]);
+
     return (
-        <div>
-            <form onSubmit={findPwFetch}>
-                <input type="text" value={userId} onChange={(e) => setUserId(e.target.value)} placeholder="아이디를 입력하세요" />
-                <input type="text" value={userPhoneNumber} onChange={(e) =>
-                    setUserPhoneNumber(prev =>
-                        prev = formatPhoneNumber(e.target.value))} placeholder="전화번호를 입력하세요" />
-                <button type="submit" disabled={!chk}>찾기</button>
-            </form>
-            {error && <div>{error}</div>}
+        <div className="Login">
+            <img className="Login-logo" alt="shalom" onClick={() => navigate("/")} src={shalomLogo} />
+            <div className="Login-box">
+                <section className="Login-main">
+                    <div className="Login-title">비밀번호 찾기</div>
+                    <form className="Login-form UMF-form" onSubmit={findPwFetch}>
+                        <input className="Login-input" type="text" value={userId} onChange={(e) => setUserId(e.target.value)} placeholder="아이디를 입력하세요" />
+                        <input className="Login-input" type="text" value={userPhoneNumber} onChange={(e) =>
+                            setUserPhoneNumber(prev =>
+                                prev = formatPhoneNumber(e.target.value))} placeholder="전화번호를 입력하세요" />
+                        <button className="i-btn" type="submit" disabled={!chk}>찾기</button>
+                    </form>
+                </section>
+                <section className="UMF-box">
+                    {error && <div className="i-errMessage">{error}</div>}
+                </section>
+            </div>
         </div>
     );
 } export default ResetPassword;
