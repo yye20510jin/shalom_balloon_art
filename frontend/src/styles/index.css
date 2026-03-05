@@ -1,4 +1,5 @@
 :root {
+  font-size: clamp(10px, 1.3vw, 0.95rem);
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -15,11 +16,11 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: #000;
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: #015500;
 }
 
 body {
@@ -61,7 +62,7 @@ button:focus-visible {
     background-color: #ffffff;
   }
   a:hover {
-    color: #747bff;
+    color: #015500;
   }
   button {
     background-color: #f9f9f9;
@@ -91,4 +92,13 @@ button:focus-visible {
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+input::placeholder{
+  font-size: clamp(10px, 1.3vw, 0.95rem);
+}
+
+input:focus {
+    outline: none;
+    border-color: #d9ed92;
 }

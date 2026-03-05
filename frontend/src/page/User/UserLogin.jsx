@@ -50,19 +50,21 @@ function UserLogin() {
     }, [error]);
 
     return (
-        <div className="container userLogin">
-            <div className="userLogin-box">
-                <img className="userLogin-logo" src={shalomLogo} alt="shalom" onClick={()=>navigate("/")}/>
-                {error ? <div className="userLogin-err" style={{ color: "red" }}>{error}</div> : <div className="userLogin-err" ></div>}
-                <form onSubmit={handleSubmit}>
-                    <div className="userLogin-form">
-                        <input className="userLogin-input" type="text" value={userId} onChange={(e) => setUserId(e.target.value)} placeholder="아이디" />
-                        <input className="userLogin-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호" />
-                        <button type="submit">로그인</button>
-                    </div>
+        <div className="Login">
+            <img className="Login-logo" alt="shalom" onClick={()=>navigate("/")} src={shalomLogo}/>
+            <div className="Login-box">
+                <section className="Login-main">
+                <div className="Login-title">LOGIN</div>
+                {error ? <div className="Login-err" style={{ color: "red" }}>{error}</div> : <div className="Login-err" ></div>}
+                <form className="Login-form" onSubmit={handleSubmit}>
+                        <input className="Login-input" type="text" value={userId} onChange={(e) => setUserId(e.target.value)} placeholder="아이디" />
+                        <input className="Login-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호" />
+                        <button className="i-btn" type="submit">로그인</button>
                 </form>
-                <div className=" uL-find ">
-                    <a href="/user/FindId" style={{marginRight:"20px"}}>아이디 찾기</a>
+                </section>
+                <div className="Login-find ">
+                    <a href="/user/FindId">아이디 찾기</a>
+                    /
                     <a href="/user/ResetPassword">비밀번호 찾기</a>
                 </div>
             </div>
