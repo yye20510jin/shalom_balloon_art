@@ -34,5 +34,5 @@ public interface UserRepository extends JpaRepository<User,Long>{
             """)
     String findUserIdByUserIndex(@Param("userIndex")Long userIndex);
 
-    boolean existsByUserIdAndUserPhoneNumber(String userId, String userPhoneNumber);
+    // boolean existsByUserIdAndUserPhoneNumber(String userId, String userPhoneNumber);
 }

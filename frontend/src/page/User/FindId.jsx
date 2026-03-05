@@ -33,7 +33,7 @@ function FindId() {
                 return;
             }
 
-            const id = data.text();
+            const id = data.id;
             setUserId(id);
 
         } catch (err) {
@@ -68,7 +68,7 @@ function FindId() {
                 </section>
                 <section className="UMF-box">
                     {error && <div className="i-errMessage">{error}</div>}
-                    {userId && <div>{userId}</div>}
+                    {userId && <div className="UMF-find">아이디 : {userId}</div>}
                 </section>
             </div>
         </div>

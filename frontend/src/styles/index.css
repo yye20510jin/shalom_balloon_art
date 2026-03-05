@@ -86,6 +86,7 @@ button:focus-visible {
 .i-errMessage{
   list-style:none;
   color:red;
+  margin-bottom: 5px;
 }
 
 *,

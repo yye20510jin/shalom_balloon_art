@@ -35,7 +35,7 @@ function UserChangePhone() {
         try {
             const res = await authFetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/changePhone`, {
                 method: "POST",
-                body: JSON.stringify(formatPn),
+                body: JSON.stringify({newPhone:formatPn}),
             });
 
             if (!res.ok) {

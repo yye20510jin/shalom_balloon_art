@@ -4,6 +4,7 @@ import com.google.monitoring.v3.Service;
 import com.shalom.shalom_balloon_art.auth.jwt.CustomUserDetails;
 import com.shalom.shalom_balloon_art.dto.login.ResetConfirmDTO;
 import com.shalom.shalom_balloon_art.dto.post.PostListResponseDTO;
+import com.shalom.shalom_balloon_art.dto.user.ChangePhoneDTO;
 import com.shalom.shalom_balloon_art.dto.user.CheckPasswordDTO;
 import com.shalom.shalom_balloon_art.service.PostService;
 import com.shalom.shalom_balloon_art.service.UserService;
@@ -49,9 +50,9 @@ public class UserController {
     }
 
     //전화번호 변경
-    @PostMapping("/changePhone")
-    public ResponseEntity<Void> userChangePhone(@AuthenticationPrincipal CustomUserDetails cud, @RequestBody String newPhone){
-        userService.userChangePhone(cud.getUserIndex(), newPhone);
+    @PostMapping(value = "/changePhone")
+    public ResponseEntity<Void> userChangePhone(@AuthenticationPrincipal CustomUserDetails cud, @RequestBody ChangePhoneDTO c){
+        userService.userChangePhone(cud.getUserIndex(), c.getNewPhone());
         return ResponseEntity.ok().build();
     }
 

@@ -72,8 +72,9 @@ public class AuthController {
 
     //아이디 찾기
     @PostMapping("/findId")
-    public ResponseEntity<String> findId(@RequestBody FindIdDTO f){
-        return ResponseEntity.ok(authService.findId(f));
+    public ResponseEntity<Map<String,String>> findId(@RequestBody FindIdDTO f){
+        String id = authService.findId(f);
+        return ResponseEntity.ok(Map.of("id",id));
     }
 
     // ----비밀번호 수정 토큰---- //

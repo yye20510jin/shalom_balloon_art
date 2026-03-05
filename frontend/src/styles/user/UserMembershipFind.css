@@ -1,7 +1,20 @@
-.UMF-form{
+.UMF-form {
     margin-top: max(35px, 5vw);
 }
 
-.UMF-box{
-    margin-top:10px;
+.UMF-box {
+    margin-top: 10px;
+}
+
+.UMF-find {
+    background: #e7e7e7;
+    width: 100%;
+    box-shadow: 1px 0px 4px 0px rgb(0 0 0 / 24%);
+    border: 1px solid #e7e7e7;
+}
+
+.UMF-box ul {
+    list-style: none;
+    padding: 0;
+    text-align: center;
 }
