@@ -1,3 +1,7 @@
+.AdminDashboard{
+    padding:10px;
+}
+
 .AdminLayout-m {
     width: 100%;
     max-width: 80rem;
@@ -60,4 +64,26 @@
     margin: 0.3rem;
 }
 
-/*차트*/
+@media(max-width:1023.99px) {
+.AdminDashboard-box1 {
+    grid-template-columns: repeat(auto-fill, minmax(60vw, 1fr));
+}
+.AdminDashboard-box1 section {
+    margin: 16px 0 0 0;
+}
+.AdminLayout {
+    flex-direction: column;
+    min-height: unset;
+}
+.AdminLayout-aside {
+    min-height: unset;
+    width: 100%;
+    min-width: unset;
+    max-width: unset;
+}
+.AdminLayout-logo {
+    width: 35%;
+    margin-top: unset;
+}
+
+}

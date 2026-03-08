@@ -32,12 +32,13 @@ function Navbar() {
             <div className="Nb-box">
                 <img className="logo" src={logo} alt="shalomBalloonArt" onClick={() => navigate("/")} />
                 <div className="Nb-bt">
+                    {roles?.includes("ROLE_ADMIN") && <button className="nav-button" onClick={() => { navigate("/admin"); }}>관리자 페이지</button>}
                     {isLoggedIn ?
                         (
                             <>
-                                <button className="nav-button" onClick={logout}>로그아웃</button>
                                 <button className="nav-button" onClick={goUserDashboard}>유저 페이지</button>
                                 <button className="nav-button" onClick={GoPostList}>목록보기</button>
+                                <button className="nav-button" onClick={logout}>로그아웃</button>
                             </>
                         ) : (
                             <>
@@ -45,16 +46,17 @@ function Navbar() {
                                 <button className="nav-button" onClick={goMembership}>회원가입</button>
                             </>
                         )}
-                    {roles?.includes("ROLE_ADMIN") && <button className="nav-button" onClick={() => { navigate("/admin"); }}>관리자 페이지</button>}
+                    
                 </div>
                 <div className="Nb-mobile">
                     <img className="Nb-inventory" src={inventoryImg} alt="inventory" onClick={() => setInventory(prev => !prev)} />
                     <span className="Nb-mobile-bt">
+                        {inventory && roles?.includes("ROLE_ADMIN") && <button className="nav-button" onClick={() => { navigate("/admin"); }}>관리자 페이지</button>}
                         {inventory && isLoggedIn && (
                             <>
-                                <button className="nav-button" onClick={logout}>로그아웃</button>
                                 <button className="nav-button" onClick={goUserDashboard}>유저 페이지</button>
                                 <button className="nav-button" onClick={GoPostList}>목록보기</button>
+                                <button className="nav-button" onClick={logout}>로그아웃</button>
                             </>
                         )
                         }

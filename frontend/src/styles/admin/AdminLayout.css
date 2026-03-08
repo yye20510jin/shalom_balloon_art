@@ -4,16 +4,50 @@
     min-width: 100px;
     max-width: 246px;
     background-color: #f7f9f3;
-    padding-left:10px;
+    padding-left: 10px;
 }
 
-.AdminLayout-aside nav{
-    margin-top:40px;
+.AdminLayout-logo {
+    width: 90%;
+    margin-top: 1rem;
 }
 
-.AdminLayout-aside a{
-    color : #000;
-    display:block;
-    margin-bottom:5px;
+.AdminLayout-aside nav {
+    margin-top: 3rem;
+    margin-left: 1rem;
 }
 
+.AdminLayout-aside a {
+    color: #000;
+    display: block;
+    margin-bottom: 5px;
+}
+
+@media (max-width: 1023.99px) {
+    .AdminLayout-aside {
+        min-height: unset;
+        width: 100%;
+        min-width: unset;
+        max-width: unset;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+    }
+
+    .AdminLayout-logo {
+        width: min(179px,25%);
+        margin-bottom:1rem;
+    }
+
+    .AdminLayout-aside nav {
+        margin-top: unset;
+        margin-left: unset;
+        display: flex;
+
+    }
+
+    .AdminLayout-aside a {
+        margin-right: 1rem;
+        margin-bottom: 1rem;
+    }
+}

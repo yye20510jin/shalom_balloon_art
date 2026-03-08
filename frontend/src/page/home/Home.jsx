@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/common/Navbar"
 import { authFetch } from "../../api/authFetch";
 import "../../styles/home/Home.css";
 import home from "../../assets/home.svg";
 import Reveal from "../../components/animations/Reveal";
+import AuthContext from "../../auth/AuthContext";
 import "../../styles/animations/index.css";
 function Home() {
     const [imgUrl, setImgUrl] = useState([null, null]);
     const [text, setText] = useState(["", ""]);
+    const {isLoggedIn} = useContext(AuthContext);
     const navigate = useNavigate();
 
     const goAdmin = async () => {
@@ -59,7 +61,7 @@ function Home() {
             <main className="home">
                 <div className="homeImg">
                 <img  src={home}/>
-                    <button className="adminButton" onClick={goAdmin}>관리자 로그인</button>
+                    {!isLoggedIn && <button className="adminButton" onClick={goAdmin}>관리자 로그인</button>}
                 </div>
                 <section className="HM-cardSection">
                     <Reveal useThreshold="0.48" extras="anim--slow" className="HM-card one">

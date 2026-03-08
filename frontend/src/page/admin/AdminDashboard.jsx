@@ -33,7 +33,7 @@ function Admin() {
     }, []);
 
     return (
-        <div className="container" style={{ padding: 20 }}>
+        <div className="AdminDashboard container">
             <section className="Ad-top5-section">
                 {data && <PostViewLineChart data={data}/>}
             </section>

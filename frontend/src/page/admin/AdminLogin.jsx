@@ -45,7 +45,6 @@ function AdminLogin() {
     }
 
     useEffect(() => {
-        console.log("AdminLogin : ", accessToken);
         if (accessToken) navigate("/admin", { replace: true });
     }, [accessToken]);
 
