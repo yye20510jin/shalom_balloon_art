@@ -37,14 +37,14 @@ span.PD-tag {
     padding: 7px;
 }
 
-.PostDetails .PD-like{
+.PostDetails .Post-like{
     width: 7%;
     min-width: 88px;
 }
-.PostDetails .PD-like button{
+.PostDetails .Post-like button{
     background:none;
 }
-.PostDetails .PD-like img{
+.PostDetails .Post-like img{
     width: 100%;
 }
 

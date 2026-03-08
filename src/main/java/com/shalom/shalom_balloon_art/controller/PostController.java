@@ -33,9 +33,9 @@ public class PostController {
     // 전체 글 목록 (페이지네이션)
     @GetMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Page<PostListResponseDTO>> getAllPosts(@RequestParam(defaultValue="0")int page, @RequestParam(defaultValue="") String searchTitle, @RequestParam List<Long> searchTags) {
+    public ResponseEntity<Page<PostListResponseDTO>> getAllPosts(@AuthenticationPrincipal CustomUserDetails cud,@RequestParam(defaultValue="0")int page, @RequestParam(defaultValue="") String searchTitle, @RequestParam List<Long> searchTags) {
         PostSearchCond cond = new PostSearchCond(searchTitle, searchTags);
-        return ResponseEntity.ok(postService.getSearchPosts(page,cond));
+        return ResponseEntity.ok(postService.getSearchPosts(cud ,page,cond));
     }
 
     // 비슷한 글 목록 (페이지네이션)

@@ -1,5 +1,6 @@
 package com.shalom.shalom_balloon_art.service;
 
+import com.shalom.shalom_balloon_art.auth.jwt.CustomUserDetails;
 import com.shalom.shalom_balloon_art.auth.sanitizer.HtmlSanitizer;
 import com.shalom.shalom_balloon_art.config.ViewLimitProperties;
 import com.shalom.shalom_balloon_art.dto.post.*;
@@ -86,10 +87,11 @@ public class PostService {
 
     //전체 목록 조회 (페이지네이션)
     @Transactional(readOnly = true)
-    public Page<PostListResponseDTO> getSearchPosts(int page, PostSearchCond cond){
+    public Page<PostListResponseDTO> getSearchPosts(CustomUserDetails cud , int page, PostSearchCond cond){
+        Long userIndex = cud.getUserIndex();
         Pageable pageable = PageRequest.of(page,6);
-
-        return postRepository.search(cond,pageable).map(p-> PostListResponseDTO.from(p,false));
+        return postRepository.search(cond,pageable).map(p-> PostListResponseDTO.from(p,
+                postUserLikeRepository.existsByIdPostIndexAndIdUserIndex(p.getIndex(),userIndex)));
 
     }
 

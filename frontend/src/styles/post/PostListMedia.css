@@ -1,0 +1,56 @@
+@media(max-width:1023.99px) {
+    .PL-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-shadow: none;
+    }
+
+    .PL-post {
+        flex-direction: column;
+        justify-content: center;
+        width: 60vw;
+        overflow: hidden;
+    }
+
+    .PL-imgBox {
+        position: relative;
+    }
+
+    .PL-img {
+        width: 40vw;
+        aspect-ratio: 1 / 0.7;
+    }
+
+    .PL-text {
+        padding: unset;
+        height: unset;
+        min-height: 100px;
+    }
+
+    .PL-post.even .PL-subBox,
+    .PL-post.odd .PL-subBox {
+        bottom: 0px;
+        padding: 1rem;
+    }
+
+    .PL-imgBox .Post-like {
+        width: 8%;
+    }
+
+    .PL-post.odd .PL-imgBox .Post-like {
+        right: 7px;
+    }
+
+    .PL-post.even .PL-imgBox .Post-like {
+        left: unset;
+        right: 7px;
+    }
+
+    .PL-update {
+        display: none;
+    }
+
+
+
+}

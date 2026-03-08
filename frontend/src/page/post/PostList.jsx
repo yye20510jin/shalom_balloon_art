@@ -5,10 +5,12 @@ import "../../styles/public/Arrow.css";
 import Navbar from "../../components/common/Navbar";
 import { SearchPostTag } from "../../components/post/SearchPostTag";
 import "../../styles/post/postList.css";
+import "../../styles/post/postListMedia.css";
+import PostLike from "../../components/post/PostLike";
 
-function PostList() {
+function PostList({mode=""}) {
 
-  const { mode } = useParams();
+  // const { mode } = useParams();
   const finalMode = mode ?? "";
 
   const navigate = useNavigate();
@@ -49,8 +51,9 @@ function PostList() {
 
   if (!posts || posts.length === 0) {
     return (
-      <div className="container PostList">
-        <Navbar />
+      <div className="PostList">
+      {finalMode !== "like" && <Navbar />}
+      <div className="container">
         <div className="PL-top">
           <h2 style={{ textAlign: "center", margin: "0" }}>{finalMode === "like" ? "좋아요한 게시글" : "게시글 목록"}</h2>
           <div style={{display: finalMode === "like" ? "none" : ""}} className="PL-top-flex">
@@ -69,13 +72,14 @@ function PostList() {
           <div className="PL-noData" style={{ padding: 20 }}>{finalMode === "like" ? "게시글이 존재하지 않습니다." : "등록된 게시글이 없습니다."}</div>}
         </div>
       </div>
+      </div>
     );
   }
 
-
   return (
-    <div className="container PostList">
-      <Navbar />
+    <div className="PostList">
+    {finalMode !== "like" && <Navbar />}
+    <div className="container">
       <div className="PL-top">
         <h2 style={{ textAlign: "center", margin: "0" }}>{finalMode === "like" ? "좋아요한 게시글" : "게시글 목록"}</h2>
         <div style={{display: finalMode === "like" ? "none" : ""}} className="PL-top-flex">
@@ -91,7 +95,6 @@ function PostList() {
           </div>
         </div>
       </div>
-      <div className="container PostList">
         <main>
           <ol className="PL-content">
             {posts.map((post, index) => (
@@ -103,6 +106,7 @@ function PostList() {
 
                 {post.thumbnailUrl &&
                   <div key={post.index} className="PL-imgBox">
+                    <PostLike id={post.index} like={post.postLike}/>
                     <img
                       className="PL-img"
                       src={post.thumbnailUrl}

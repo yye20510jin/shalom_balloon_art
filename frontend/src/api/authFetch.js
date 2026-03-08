@@ -61,6 +61,7 @@ export async function authFetch(url, options = {}) {
     } catch (e) {
         //네트워크 에러
         // *정책 1) 서버 에러가 발생하면 로그아웃 처리한다.
+        // 수정) 
         if (typeof onUnauthorized === "function") onUnauthorized();
         throw e;
     }

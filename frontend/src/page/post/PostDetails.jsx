@@ -6,8 +6,7 @@ import { usePostDelete } from "../../hooks/post/usePostDelete";
 import SimilarPostList from "../../components/post/SimilarPostList";
 import YoutubeFallbackWrapper from "../../components/post/YoutubeFallbackWrapper";
 import Navbar from "../../components/common/Navbar";
-import grayHeart from "../../assets/grayHeart.png";
-import redHeart from "../../assets/redHeart.png";
+import PostLike from "../../components/post/PostLike";
 import "../../styles/post/PostDetails.css";
 
 
@@ -64,29 +63,6 @@ function PostDetails() {
     fetchPosts();
   }, [id,bootstrapping]);
 
-  const handlePostLike = async (chk) => {
-    //chk => 0 : 좋아요 취소, 1 : 좋아요
-    try {
-
-      const res = await authFetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/posts/${id}/${chk}`, {
-        method: "POST",
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        console.log(data.message);
-        return;
-      }
-
-      setLike(prev => !prev);
-
-    } catch (err) {
-      console.error(err);
-    }
-
-
-  }
-
   const formatDateTime = (dateTimeString) => {
     if (!dateTimeString) return "";
     const date = new Date(dateTimeString);
@@ -134,10 +110,7 @@ function PostDetails() {
               <><br /> 수정일: {formatDateTime(post.updatedAt)}</>
             )}
           </div>
-          <span className="PD-like">
-            {!like ? <button type="button" onClick={() => handlePostLike(1)}><img src={grayHeart} alt="좋아요 취소" /></button>
-              : <button type="button" onClick={() => handlePostLike(0)}><img src={redHeart} alt="좋야요" /></button>}
-          </span>
+          <PostLike id={id} like={like}/>
         </div>
 
       </div>

@@ -1,6 +1,13 @@
+/* [ 공통 ] */
+
 /* --- 메인 박스 --- */
 
-.PostList main{
+.PL-content {
+    margin-top: 3rem;
+    padding-left: 0;
+}
+
+.PostList main {
     padding: 0 3rem;
     margin-top: 2rem;
 }
@@ -12,15 +19,18 @@
     justify-content: center;
 }
 
-.postViewer {
-    height: 100dvh;
-}
 
 /* --- 상단 --- */
+
+.PostList .logo {
+    max-width: 200px;
+}
+
 .PL-top {
     padding-inline: 40px;
     padding: 2rem 1rem 1rem 1rem;
     margin-top: 2rem;
+    border-bottom: 1px solid #9bb43f;
 }
 
 .PL-top-flex {
@@ -29,31 +39,42 @@
     margin-top: 5rem;
 }
 
+.postViewer {
+    /* 어디에 있는 속성인지 확인 필요*/
+    height: 100dvh;
+}
+
 /* 제목 검색 */
 .PL-topInput {
     width: 55%;
     text-align: end;
     display: flex;
     justify-content: flex-start;
+    align-items: center;
 }
 
-.PL-topInput input{
-    width:50%;
+.PL-topInput input {
+    width: 50%;
     height: 38px;
     margin-left: 10px;
+    border: 1px solid #9bb43f;
+    border-radius: 5px;
+    background: #f7f9f3;
+    padding: 10px;
 }
 
-.PL-topInput button{
+.PL-topInput button {
     margin-left: 10px;
     height: 43px;
+    padding: 0 10px;
 }
 
 /* 태그 */
-.PL-getTag{
+.PL-getTag {
     margin: 10px 0;
 }
 
-.PL-topTag button{
+.PL-topTag button {
     background: #f7f9f3;
     display: flex;
     align-items: center;
@@ -62,10 +83,11 @@
 }
 
 .PL-getTag span {
-    background: #f7f9f3;
+    background: #e7e7e7b5;
     margin-right: 10px;
-    padding: 2px;
-    border-radius: 1px;
+    padding: 4px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px 0px rgb(156 156 156 / 55%);
 }
 
 .SearchPostTag {
@@ -77,37 +99,38 @@
     background: #ffffffad;
     width: 100%;
     padding-left: 10px;
+    z-index: 999;
 }
 
-.SPT-tagBox ul{
+.SPT-tagBox ul {
     list-style: none;
-    padding-left:0px;
+    padding-left: 0px;
 }
 
 /* 화살표 수정 */
 
 .PL-topTag button .arrow-big::before,
-.PL-topTag button .arrow-big::after{
-    width:3px;
+.PL-topTag button .arrow-big::after {
+    width: 3px;
     height: 11px;
 }
 
-.PL-topTag button .arrow-big.down::before{
-  transform: translate(-50%, -50%) rotate(45deg);
-  left: 60%;
+.PL-topTag button .arrow-big.down::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+    left: 60%;
 }
 
-.PL-topTag button .arrow-big.down::after{
+.PL-topTag button .arrow-big.down::after {
     transform: translate(-50%, -50%) rotate(-45deg);
     left: 41%;
 }
 
-.PL-topTag button .arrow-big.up::before{
-  transform: translate(-50%, -50%) rotate(-45deg);
-  left: 60%;
+.PL-topTag button .arrow-big.up::before {
+    transform: translate(-50%, -50%) rotate(-45deg);
+    left: 60%;
 }
 
-.PL-topTag button .arrow-big.up::after{
+.PL-topTag button .arrow-big.up::after {
     transform: translate(-50%, -50%) rotate(45deg);
     left: 41%;
 }
@@ -115,116 +138,76 @@
 
 /* --- 글 --- */
 
-.PL-post.odd .PL-subBox{
-    position:relative;
-}
-
-.PL-post.odd .PL-text{
-    margin-left:1rem;
-}
-
-
-.PL-post.even .PL-subBox{
-    display: flex;
-}
-
-.PL-post.odd .PL-imgBox{
-    order: 1;
-} 
-
-.PostList{
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-}
-
-ol.PL-content {
-    margin-top: 3rem;
-    padding-left: 0;
-}
-
 .PL-post {
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
     margin-top: 3rem;
     padding: 1rem;
-    border: 2px solid #f7f9f3;
-    max-height: 210px;
     box-shadow: 1px 1px 4px 0 rgb(0 0 0 / 29%);
     border-radius: 16px;
 }
 
+.PL-post.odd .PL-subBox,
+.PL-post.even .PL-subBox {
+    position: relative;
+    width: 100%;
+}
+
+.PL-post.odd .PL-text {
+    padding-left: 1rem;
+}
+
+.PostList {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 .PL-imgBox {
-    width: 285px;
+    position: relative;
     display: flex;
     justify-content: center;
     padding: 0.3rem;
     overflow: hidden;
     box-shadow: 2px 2px 9px rgba(0, 0, 0, 0.08);
     border-radius: 16px;
+
 }
 
-
-img.PL-img {
-    max-height: calc((142px - 2px) * 1.618 - 10px);
-    width:100%;
-    object-fit:cover;
-    border-radius:16px;
+.PL-img {
+    object-fit: cover;
+    border-radius: 16px;
 }
-
 
 .PL-text {
-    margin-left: 2rem;
-    padding-top: 2rem;
-    width: 729px;
-    max-width: 729px;
-    height:200px;
+    padding-left: 2rem;
 }
 
 .PL-bt {
     display: flex;
     justify-content: center;
     margin: 1.5rem;
-    
+
 }
 
-.PL-bt img{
-    width:0.8rem;
+.PL-bt img {
+    width: 0.8rem;
 }
 
-/* 업데이트 날짜 */
-.PL-post.even .PL-update{
-    order: 3;
-} 
-
-.PL-post.odd .PL-update{
-    position:absolute;
-    left:1rem;
-    order: 3;
-} 
-
-.PL-update{
-    font-size: 12px;
-    color: rgb(102 102 102 / 52%);
-    margin-bottom: 8px;
-    width:15%;
-}
 
 
 /* --- 하단 --- */
 
-.PL-bt button{
-    margin-left:10px;
+.PL-bt button {
+    margin-left: 10px;
 }
 
-.PL-bt .PL-page{
-    background:none;
-    color:gray;
+.PL-bt .PL-page {
+    background: none;
+    color: gray;
 }
 
-.PL-bt .PL-page.chk{
-    color:black;
+.PL-bt .PL-page.chk {
+    color: black;
 }
 
 .PL-bt .PL-pageArrow {
@@ -233,7 +216,92 @@ img.PL-img {
 }
 
 .PL-pageArrow.color .arrow-big::before,
-.PL-pageArrow.color .arrow-big::after
- {
-    background:gray;
+.PL-pageArrow.color .arrow-big::after {
+    background: gray;
+}
+
+/* --- 좋아요 ---*/
+.PL-imgBox .Post-like {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+}
+
+.PL-imgBox .Post-like-button {
+    width: 100%;
+    padding: 0;
+    background: rgb(255 255 255 / 69%);
+    display: flex;
+}
+
+.PL-imgBox .Post-like-img {
+    width: 100%;
+    object-fit: cover;
+}
+
+.PL-post.odd .PL-imgBox .Post-like {
+    left: unset;
+}
+
+
+
+@media(min-width:1024px) {
+
+    .PL-post {
+        flex-direction: row;
+        justify-content: space-around;
+        border: 2px solid #f7f9f3;
+        max-height: 210px;
+        width: 90%;
+    }
+
+    /* 게시글 홀수 */
+    .PL-post.odd .PL-imgBox {
+        order: 1;
+    }
+
+    .PL-imgBox {
+        max-width: 225px;
+        min-width: 225px;
+    }
+
+    .PL-img {
+        max-height: calc((142px - 2px) * 1.618 - 10px);
+        width: 100%;
+    }
+
+    .PL-text {
+        padding-top: 2rem;
+        height: 200px;
+    }
+
+    .PL-imgBox .Post-like {
+        width: 15%;
+    }
+
+    .PL-post.odd .PL-imgBox .Post-like {
+        right: 10px;
+    }
+
+    /* 업데이트 날짜 */
+    .PL-post.even .PL-update {
+        position: absolute;
+        right: 1rem;
+        width: 120px;
+    }
+
+    .PL-post.odd .PL-update {
+        position: absolute;
+        left: 1rem;
+        width: 120px;
+    }
+
+    .PL-update {
+        font-size: 12px;
+        color: rgb(102 102 102 / 52%);
+        margin-bottom: 8px;
+        width: 15%;
+    }
+
+
 }
