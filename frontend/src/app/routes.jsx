@@ -57,7 +57,7 @@ export const routes = [
       </RequireUser>
     ),
     children: [
-      { path: "posts/postList/:mode", element: <PostList /> },
+      { path: "posts/postList", element: <PostList /> },
       { path: "posts/postDetails/:id", element: <PostDetails /> },
       { path: "userDashboard", element: <UserDashboard/>},
       { path: "userChangePhone", element: <UserChangePhone/>},

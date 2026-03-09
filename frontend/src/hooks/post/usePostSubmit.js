@@ -51,7 +51,7 @@ export function usePostSubmit() {
       if(mode === "create"){
       setSuccessMessage("게시글이 작성되었습니다.");
       setTimeout(() => {
-        navigate("/user/posts/postList/list");
+        navigate("/user/posts/postList");
       }, 800);
       }else{
       setSuccessMessage("게시글이 수정되었습니다.");

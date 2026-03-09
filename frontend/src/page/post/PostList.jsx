@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { usePostSearch } from "../../hooks/post/usePostSearch";
 import "../../styles/public/Arrow.css";
 import Navbar from "../../components/common/Navbar";
@@ -10,13 +10,13 @@ import PostLike from "../../components/post/PostLike";
 
 function PostList({mode=""}) {
 
-  // const { mode } = useParams();
   const finalMode = mode ?? "";
 
   const navigate = useNavigate();
   const { fnc_userLikePost, searchText, setSearchText, posts, error,
     fnc_postList, startPage, setStartPage, endPage, loading, searchTags, setSearchTags } = usePostSearch();
 
+  const [likeCount, setLikeCount] = useState(0);
   // 페이지네이션
 
   const [arrowPage, setArrowPage] = useState(0);
@@ -33,7 +33,7 @@ function PostList({mode=""}) {
       fnc_postList();
     }
 
-  }, [startPage, mode]);
+  }, [startPage, mode, likeCount]);
 
   const formatDateTime = (dateTimeString) => {
     if (!dateTimeString) return "";
@@ -106,7 +106,7 @@ function PostList({mode=""}) {
 
                 {post.thumbnailUrl &&
                   <div key={post.index} className="PL-imgBox">
-                    <PostLike id={post.index} like={post.postLike}/>
+                    <PostLike id={post.index} like={post.postLike} setLikeCount={setLikeCount} />
                     <img
                       className="PL-img"
                       src={post.thumbnailUrl}

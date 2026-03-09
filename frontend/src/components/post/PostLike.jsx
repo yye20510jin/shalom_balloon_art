@@ -3,7 +3,7 @@ import { authFetch } from "../../api/authFetch";
 import grayHeart from "../../assets/grayHeart.png";
 import redHeart from "../../assets/redHeart.png";
 
-function PostLike({id, like}) {
+function PostLike({id, like, setLikeCount}) {
 
     const[postLike, setPostLike] = useState(false);
 
@@ -27,6 +27,7 @@ function PostLike({id, like}) {
 
             //let !postLike로 변경하는 경우는 useEffect에 안 잡히는 지 gpt한테 물어보기
             setPostLike(prev => !prev);
+            setLikeCount(prev => prev+1);
 
         } catch (err) {
             console.error(err);
