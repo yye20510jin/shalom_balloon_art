@@ -142,7 +142,9 @@ function AdminHomeCard() {
                     type="file" accept="image/*" hidden onChange={(e) => handleHomeImage(e, i)} />
             ))}
 
+            <footer>
             <button type="button" onClick={AdminHomeSubmit} disabled={!isSubmit}>수정</button>
+            </footer>
         </div>
     );
 

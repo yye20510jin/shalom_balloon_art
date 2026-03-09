@@ -88,7 +88,6 @@
     border-radius: 10px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, .18);
     overflow: hidden;
-    /* ✅ 프레임 깔끔 */
   }
 
   .HM-card.one {
@@ -114,7 +113,6 @@
   .HM-card .cardImg {
     width: 100%;
     aspect-ratio: 4 / 3;
-    /* ✅ 추가 */
     min-height: 260px;
     overflow: hidden;
     background: beige;
