@@ -1,5 +1,5 @@
-.post-content img{
-    display:inline-block;
+.post-content img {
+    display: inline-block;
     vertical-align: middle;
 }
 
@@ -15,20 +15,27 @@
     border-bottom: 1px solid gray;
 }
 
-.PostDetails .PD-title{
+.PostDetails .PD-title {
     font-size: 2rem;
     text-align: center;
 }
 
 .PD-headerSub1 {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    justify-content: space-around;
     margin-top: 45px;
 }
 
+.PD-date {
+    display: flex;
+    align-items: center;
+    flex: 1 0 auto;
+    justify-content: flex-end;
+}
+
 .PD-tags {
-    width: 70%;
+    flex: 0 0 600px;
 }
 
 span.PD-tag {
@@ -37,14 +44,25 @@ span.PD-tag {
     padding: 7px;
 }
 
-.PostDetails .Post-like{
-    width: 7%;
-    min-width: 88px;
-}
-.PostDetails .Post-like button{
-    background:none;
-}
-.PostDetails .Post-like img{
-    width: 100%;
+.PostDetails .Post-like {
+    min-width: 35px;
+    overflow: hidden;
 }
 
+.PostDetails .Post-like button {
+    background: none;
+}
+
+.PostDetails .Post-like img {
+    width: clamp(25px, 5vw, 35px);
+}
+
+.ProseMirror img{
+  max-width: 100%;
+  height: auto;
+}
+
+.PostDetails footer{
+    display:flex;
+    justify-content: center;
+}

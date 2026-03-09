@@ -104,13 +104,14 @@ function PostDetails() {
             ))}
           </div>
           
-          <div>
+          <div className="PD-date">
             작성일: {formatDateTime(post.createdAt)}
             {post.updatedAt && (
               <><br /> 수정일: {formatDateTime(post.updatedAt)}</>
             )}
-          </div>
+          
           <PostLike id={id} like={like}/>
+          </div>
         </div>
 
       </div>
@@ -127,14 +128,14 @@ function PostDetails() {
       
 
       {roles?.includes("ROLE_ADMIN") && (
-        <div style={{margin:"20px 10px"}}>
+        <footer style={{margin:"20px 10px"}}>
           <button style={{marginRight:"10px"}} onClick={() => navigate(`/admin/posts/editPostPage/${id}`)}>
             수정
           </button>
           <button onClick={() => { deleteSubmit(post.index, setError, post.contentHtml) }}>
             삭제
           </button>
-        </div>
+        </footer>
       )}
     </div>
   );
