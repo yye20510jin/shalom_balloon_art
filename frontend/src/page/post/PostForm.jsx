@@ -3,8 +3,7 @@ import Toolbar from "../../components/post/Toolbar";
 import { useEffect, useRef, useState } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { useFirebaseSingleImageUpload } from "../../hooks/firebase/useFirebaseSingleImageUpload";
-import { useFirebaseSingleImageRemove } from "../../hooks/firebase/useFirebaseSingleImageRemove";
-import {CustomImage} from "../../editor/extensions/CustomImage";
+import { CustomImage } from "../../editor/extensions/CustomImage";
 import { useLocalImageCandidates } from "../../hooks/post/useLocalImageCandidates";
 import { baseExtensions } from "../../editor/baseExtensions";
 import { toYouTubeEmbedUrl } from "../../util/post/ToYouTubeEmbedUrl";
@@ -48,7 +47,6 @@ function PostForm({
   const fileInputRef = useRef(null);
 
   const { uploadOne, isUploading, error: uploadError, setError: setUploadError } = useFirebaseSingleImageUpload({ folder: "posts" });
-  const { removeOne, removeTiptapImage } = useFirebaseSingleImageRemove();
 
   // ✅ 에디터 생성
   const editor = useEditor({
@@ -248,84 +246,82 @@ function PostForm({
               onPickImage={() => !isUploading && fileInputRef.current?.click()}
               onInsertYoutube={handleInsertYoutube}
             />
+          </div>
 
-            <PostTag tagSelected={tagSelected} setTagSelected={setTagSelected} />
+          <div className="PF-preview">
+            <label id="pt" className="PF-previewText">
+              미리보기
+              <textarea name="pt" value={supplies} onChange={(e) => setSupplies(e.target.value)} />
+            </label>
+
+            {/* 썸네일 */}
+            <div className="PF-previewThumb">
+              <div className="PF-previewImg" style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                {thumbnailUrl ? (
+                  <div className="PF-thumbnail" style={{ position: "relative" }}>
+                    <img src={thumbnailUrl} alt="thumbnail" />
+                    <button type="button" onClick={() => setThumbnailUrl("")}> ✕ </button>
+                  </div>
+                ) : (
+                  <button className="i-btn" type="button" onClick={() => !thumbUploading && thumbInputRef.current?.click()}>
+                    썸네일 선택
+                  </button>
+                )}
+
+                {thumbError && <p style={{ color: "red" }}>{thumbError}</p>}
+
+                <input
+                  ref={thumbInputRef}
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  onChange={handleThumbnailChange}
+                />
+
+              </div>
+            </div>
           </div>
 
           <div className="PF-toolbarBottom">
-          <input
-            style={{marginLeft:"10px"}}
-            type="color"
-            onChange={(e) =>
-              editor.chain().focus().setColor(e.target.value).run()
-            }
-          />
+            <input
+              style={{ marginLeft: "10px" }}
+              type="color"
+              onChange={(e) =>
+                editor.chain().focus().setColor(e.target.value).run()
+              }
+            />
 
-          <select
-            style={{marginLeft:"10px"}}
-            onChange={(e) =>
-              editor.chain().focus().setFontFamily(e.target.value).run()
-            }
-            defaultValue=""
-          >
-            <option value="" disabled>폰트 선택</option>
-            <option value="Arial">Arial</option>
-            <option value="Pretendard">Pretendard</option>
-            <option value="Noto Sans KR">Noto Sans KR</option>
-          </select>
+            <select
+              style={{ marginLeft: "10px" }}
+              onChange={(e) =>
+                editor.chain().focus().setFontFamily(e.target.value).run()
+              }
+              defaultValue=""
+            >
+              <option value="" disabled>폰트 선택</option>
+              <option value="Arial">Arial</option>
+              <option value="Pretendard">Pretendard</option>
+              <option value="Noto Sans KR">Noto Sans KR</option>
+            </select>
 
-          <select
-            style={{marginLeft:"10px"}}
-            onChange={(e) =>
-              editor.chain().focus().setFontSize(e.target.value).run()
-            }
-            defaultValue=""
-          >
-            <option value="" disabled>크기</option>
-            <option value="12px">12</option>
-            <option value="14px">14</option>
-            <option value="16px">16</option>
-            <option value="20px">20</option>
-            <option value="24px">24</option>
-          </select>
-        </div>
-        </div>
+            <select
+              style={{ marginLeft: "10px" }}
+              onChange={(e) =>
+                editor.chain().focus().setFontSize(e.target.value).run()
+              }
+              defaultValue=""
+            >
+              <option value="" disabled>크기</option>
+              <option value="12px">12</option>
+              <option value="14px">14</option>
+              <option value="16px">16</option>
+              <option value="20px">20</option>
+              <option value="24px">24</option>
+            </select>
 
-        <div className="PF-preview">
-          <label id="pt" className="PF-previewText">
-            미리보기
-            <textarea name="pt" value={supplies} onChange={(e) => setSupplies(e.target.value)} />
-          </label>
-
-          {/* 썸네일 */}
-          <div className="PF-previewThumb">
-            <div className="PF-previewImg" style={{ display: "flex", gap: 12, alignItems: "center" }}>
-              {thumbnailUrl ? (
-                <div className="PF-thumbnail" style={{ position: "relative" }}>
-                  <img src={thumbnailUrl} alt="thumbnail" />
-                  <button type="button" onClick={() => setThumbnailUrl("")}> ✕ </button>
-                </div>
-              ):(
-              <button  className="i-btn" type="button" onClick={() => !thumbUploading && thumbInputRef.current?.click()}>
-                썸네일 선택
-              </button>
-              )}
-
-              {thumbError && <p style={{ color: "red" }}>{thumbError}</p>}
-
-              <input
-                ref={thumbInputRef}
-                type="file"
-                accept="image/*"
-                hidden
-                onChange={handleThumbnailChange}
-              />
-
-            </div>
+            <PostTag tagSelected={tagSelected} setTagSelected={setTagSelected} />
           </div>
         </div>
-
-
 
         {/* 에디터 본문 */}
         <div className="ed-content">
@@ -346,9 +342,9 @@ function PostForm({
         {/* 제출 버튼 */}
         <button
           type="submit"
-          className={`${ title && thumbnailUrl && !isSubmitting ? "i-btn" : ""}`}
+          className={`${title && thumbnailUrl && !isSubmitting ? "i-btn" : ""}`}
           disabled={!title || !thumbnailUrl || isSubmitting}
-          style={{cursor: isSubmitting ? "default" : "pointer"}}>
+          style={{ cursor: isSubmitting ? "default" : "pointer" }}>
           {isSubmitting ? "저장 중..." : mode === "edit" ? "수정 완료" : "게시글 등록"}
         </button>
       </form>

@@ -1,35 +1,39 @@
 /* 제목 */
 h1.PF-title {
-    font-size: 3.2em;
+    font-size: clamp(18px, 3vw, 2.5rem);
     line-height: 1.1;
     text-align: center;
-    margin-top: 70px;
+    margin: 2rem 0 4rem 0;
+    padding: 1rem;
+    background-color:#f7f9f3;
 }
 
+
 /* 폼 */
-.PostForm .PF-form {
+.PF-form {
     display: flex;
     flex-direction: column;
 }
 
-.PostForm .PF-titleDiv input[type="text"]{
-    width:100%;
-    padding: 10px 0px;
+.PostForm .PF-titleDiv input[type="text"] {
+    width: 100%;
+    padding: 5px;
     box-sizing: border-box;
 }
 
 .PF-toolbarBottom {
-    margin-top: 10px;
+    margin-bottom: 1rem;
 }
 
 /* 미리보기 */
 
-textarea {
-    width:100%;
-    height: 180px;       
-    resize: none;         
-    overflow-y: auto;      
+.PostForm textarea {
+    width: 100%;
+    height: 180px;
+    resize: none;
+    overflow-y: auto;
     box-sizing: border-box;
+    outline-style: none;
 }
 
 .PF-preview {
@@ -54,14 +58,14 @@ textarea {
     justify-content: center;
 }
 
-.PF-thumbnail img{
+.PF-thumbnail img {
     width: 120px;
     height: 120px;
     object-fit: cover;
     border-radius: 8px;
 }
 
-.PF-thumbnail > button{
+.PF-thumbnail>button {
     position: absolute;
     top: -6px;
     right: -6px;
@@ -72,7 +76,7 @@ textarea {
     cursor: pointer;
     font-size: 14px;
     font-weight: bold;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0, 0, 0, 0.7);
     color: #fff;
     display: flex;
     justify-content: center;
@@ -80,6 +84,21 @@ textarea {
 }
 
 /* 툴바 */
+.Toolbar button {
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    color: black;
+    border-radius: 6;
+    cursor: pointer;
+    overflow: hidden;
+    object-fit: cover;
+    min-width: 40px;
+    height: 40px;
+}
+
+.Toolbar.button {
+    display: flex;
+}
 
 .PF-toolbarTop {
     display: flex;
@@ -87,6 +106,20 @@ textarea {
     margin-top: 24px;
 }
 
+.PF-toolbarTop button {
+    margin-right: 0.5rem;
+}
+
+.PF-toolbarBottom {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.PF-toolbarBottom select {
+    padding: 0.3rem;
+}
 
 /* 본문 */
 .ed-content {
@@ -96,10 +129,7 @@ textarea {
 /* 태그 */
 
 .PostTag {
-    width: 10%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin-left: 10px;
 }
 
 .PT-addTag {
@@ -119,6 +149,36 @@ textarea {
 }
 
 /* 전송 버튼 */
-.PostForm button[type="submit"]{
+.PostForm button[type="submit"] {
     margin: 20px 0;
+}
+
+/* 툴바 이미지 */
+.Toolbar img {
+    width: 100%;
+    height: 100%;
+}
+
+@media(max-width:700.99px) {
+
+
+    .PF-preview {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .PF-previewThumb {
+        display: flex;
+        align-items: unset;
+        justify-content: center;
+        margin: 2rem 0;
+    }
+
+    .PF-previewText {
+        order: 2;
+    }
+
+    .PT-bto.i-btn {
+        min-width: 70px;
+    }
 }

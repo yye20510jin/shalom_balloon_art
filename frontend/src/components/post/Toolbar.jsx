@@ -1,4 +1,12 @@
 import { useEditorState } from "@tiptap/react";
+import textCenter from"../../assets/textCenter.png";
+import textRight from"../../assets/textRight.png";
+import textLeft from"../../assets/textLeft.png";
+import img from"../../assets/img.png";
+import youtube from"../../assets/youtube.png";
+import orderedList from "../../assets/orderedList.png";
+import bulletList from "../../assets/bulletList.png";
+
 
 export default function Toolbar({ editor, onPickImage, onInsertYoutube }) {
   if (!editor) return null;
@@ -18,12 +26,7 @@ export default function Toolbar({ editor, onPickImage, onInsertYoutube }) {
       type="button"
       onClick={onClick}
       style={{
-        padding: "6px 10px",
-        border: "1px solid #ddd",
         background: active ? "#d9ed92" : "#fff",
-        color: "black",
-        borderRadius: 6,
-        cursor: "pointer",
       }}
     >
       {children}
@@ -31,7 +34,8 @@ export default function Toolbar({ editor, onPickImage, onInsertYoutube }) {
   );
 
    return (
-    <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 10 }}>
+    <div className="Toolbar" style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 10 }}>
+      <div className="Toolbar button">
       <Btn
         active={editorState.isBold}
         onClick={() => editor.chain().focus().toggleBold().run()}
@@ -48,13 +52,13 @@ export default function Toolbar({ editor, onPickImage, onInsertYoutube }) {
         active={editorState.isBulletList}
         onClick={() => editor.chain().focus().toggleList("bulletList","listItem").run()}
       >
-        • 목록
+        <img src={bulletList} alt="• 목록"/>
       </Btn>
       <Btn
         active={editorState.isOrderedList}
         onClick={() => editor.chain().focus().toggleList("orderedList","listItem").run()}
       >
-        1. 목록
+        <img src={orderedList} alt="1. 목록"/>
       </Btn>
 
       <Btn onClick={() => {
@@ -62,7 +66,7 @@ export default function Toolbar({ editor, onPickImage, onInsertYoutube }) {
         editor.chain().focus().setBulletListAlign("left").run();
         editor.chain().focus().setOrderedListAlign("left").run();
       }}>
-        왼쪽
+        <img src={textLeft} alt="왼쪽"/>
       </Btn>
 
       <Btn onClick={() => {
@@ -70,7 +74,7 @@ export default function Toolbar({ editor, onPickImage, onInsertYoutube }) {
         editor.chain().focus().setBulletListAlign("center").run();
         editor.chain().focus().setOrderedListAlign("center").run();
       }}>
-        가운데
+        <img src={textCenter} alt="가운데"/>
       </Btn>
 
       <Btn onClick={() =>{
@@ -78,13 +82,16 @@ export default function Toolbar({ editor, onPickImage, onInsertYoutube }) {
         editor.chain().focus().setBulletListAlign("right").run();
         editor.chain().focus().setOrderedListAlign("right").run();
       }}>
-        오른쪽
+        <img src={textRight} alt="오른쪽"/>
       </Btn>
+      </div>
 
-      <div style={{ width: 1, background: "#eee", margin: "0 6px" }} />
+      <div style={{ width: 1, background: "#eee"}} />
 
-      <Btn onClick={onPickImage}>이미지</Btn>
-      <Btn onClick={onInsertYoutube}>유튜브</Btn>
+      <div className="Toolbar content">
+      <Btn onClick={onPickImage}><img src={img} alt="이미지"/></Btn>
+      <Btn onClick={onInsertYoutube}><img src={youtube} alt="유튜브"/></Btn>
+      </div>
     </div>
   );
 }
