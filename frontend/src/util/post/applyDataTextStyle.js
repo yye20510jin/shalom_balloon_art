@@ -14,7 +14,7 @@ function isSafePx(v, min = 10, max = 72) {
 
 export function applyDataTextStyle(rootEl) {
   rootEl
-    .querySelectorAll("span[data-color], span[data-font-family], span[data-font-size]")
+    .querySelectorAll("span[data-color], span[data-font-family], span[data-font-size], img[data-width]")
     .forEach((el) => {
       // 1) color
       const color = el.getAttribute("data-color");
@@ -32,6 +32,13 @@ export function applyDataTextStyle(rootEl) {
       const fs = el.getAttribute("data-font-size");
       if (fs && isSafePx(fs, 10, 96)) {
         el.style.fontSize = fs;
+      }
+
+      // 4) img-size
+      const is = el.getAttribute("data-width");
+      console.log("is : ",is);
+      if(is){
+        el.style.width = `${is}px`;
       }
     });
 }

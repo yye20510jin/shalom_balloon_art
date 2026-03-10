@@ -140,7 +140,7 @@ function PostForm({
     if (!editor) return;
 
     const contentHtml = editor.getHTML();
-
+  
     const { finalContentHtml, finalThumbnailUrl } = await prepareSubmitPayload({
       contentHtml,
       thumbnailUrl,

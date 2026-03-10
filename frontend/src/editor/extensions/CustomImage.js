@@ -16,11 +16,11 @@ export const CustomImage = Image.extend({
       width: {
         default: null,
         parseHTML: element =>
-          element.style.width?.replace("px", "") || null,
+          element.getAttribute("data-width") || null,
         renderHTML: attrs => {
           if (!attrs.width) return {};
           return {
-            style: `width:${attrs.width}px`,
+            "data-width":attrs.width,
           };
         },
       },

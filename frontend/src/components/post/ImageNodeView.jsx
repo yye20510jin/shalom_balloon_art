@@ -7,9 +7,9 @@ export default function ImageNodeView(props) {
   const startX = useRef(0);
   const startWidth = useRef(0);
   const dragging = useRef(false);
-  const imgRef = useRef(false);
+  const imgRef = useRef(null);
 
-  const onMouseDown = (e) => {
+  const onPointerdownn = (e) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -20,11 +20,11 @@ export default function ImageNodeView(props) {
     const domWidth = imgRef.current?.getBoundingClientRect().width; 
     startWidth.current = Number.isFinite(w) && w > 0 ? w : Number.isFinite(domWidth) && domWidth > 0 ? domWidth : 300;
 
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseup",onMouseUp);
+    document.addEventListener("pointermove", onPointermove);
+    document.addEventListener("pointerup",onPointerup);
   };
 
-  const onMouseMove = (e) => {
+  const onPointermove = (e) => {
     if(!dragging.current) return;
     
     const diff = e.clientX - startX.current;
@@ -34,10 +34,10 @@ export default function ImageNodeView(props) {
     });
   };
 
-  const onMouseUp = () => {
+  const onPointerup = () => {
     dragging.current = false;
-    document.removeEventListener("mousemove", onMouseMove);
-    document.removeEventListener("mouseup",onMouseUp);
+    document.removeEventListener("pointermove", onPointermove);
+    document.removeEventListener("pointerup",onPointerup);
   };
 
   const removeThisImage = async (e) => {
@@ -67,7 +67,7 @@ export default function ImageNodeView(props) {
         display: "inline-block",
         position: "relative",
         lineHeight: 0,
-        outline: selected ? "2px solid #4f46e5" : "none", // 선택 강조(원하면 제거)
+        outline: selected ? "2px solid #4f46e5" : "none",
         borderRadius: 8,
       }}
       data-drag-handle
@@ -88,7 +88,7 @@ export default function ImageNodeView(props) {
       />
 
       <div
-        onMouseDown={(e) => onMouseDown(e)}
+        onPointerDown={(e) => onPointerdownn(e)} 
         style={{
           position: "absolute",
           right: 0,
@@ -103,7 +103,7 @@ export default function ImageNodeView(props) {
       {/* ✅ 오버레이 X 버튼 */}
       {selected && <button
         type="button"
-        onMouseDown={(e) => e.preventDefault()} // 클릭 시 커서 튐/드래그 방지
+        onPointerDown={(e) => e.preventDefault()} // 클릭 시 커서 튐/드래그 방지
         onClick={removeThisImage}
         style={{
           position: "absolute",

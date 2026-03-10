@@ -25,7 +25,6 @@ function PostLike({id, like, setLikeCount}) {
                 return;
             }
 
-            //let !postLike로 변경하는 경우는 useEffect에 안 잡히는 지 gpt한테 물어보기
             setPostLike(prev => !prev);
             setLikeCount(prev => prev+1);
 

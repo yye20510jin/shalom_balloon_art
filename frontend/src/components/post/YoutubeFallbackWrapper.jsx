@@ -13,7 +13,7 @@ const sanitize = (dirtyHtml) =>
       "href","src","alt","title",
       "data-youtube-fallback",
       "class",
-      "data-color","data-font-family", "data-font-size",
+      "data-color","data-font-family", "data-font-size","data-width"
     ],
   });
 

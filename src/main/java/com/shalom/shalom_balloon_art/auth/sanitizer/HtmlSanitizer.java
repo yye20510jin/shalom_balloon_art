@@ -15,9 +15,9 @@ public class HtmlSanitizer {
             .requireRelNofollowOnLinks()
             .allowUrlProtocols("http","https")
             .allowElements("img")
-            .allowAttributes("src","alt","title").onElements("img")
+            .allowAttributes("src","alt","title","data-width").onElements("img")
             .allowUrlProtocols("https")
-            .allowAttributes("data-youtube-fallback","data-font-size","data-font-family","data-color").onElements("span")
+            .allowAttributes("data-youtube-fallback","data-font-size","data-font-family","data-color","data-width").onElements("span")
             .allowAttributes("data-align").onElements("ul","ol","li")
             .allowAttributes("data-align").onElements("p","h1","h2","h3")
             .toFactory();

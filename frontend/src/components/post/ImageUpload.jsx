@@ -50,8 +50,7 @@ function ImageUpload({ imageUrls, setImageUrls }) {
 
         const snapshot = await uploadBytes(fileRef, file);
         const url = await getDownloadURL(snapshot.ref);
-        console.log("✅ 다운로드 URL:", url);
-        return url; // 이게 모여서 urls 배열이 됨
+        return url;
       })
     );
 
