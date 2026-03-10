@@ -47,7 +47,7 @@ function PostDetails() {
           setError(data?.message || "게시글을 불러오지 못했습니다.");
           return;
         }
-
+        
         setPost(data);
         setLike(data.postLike);
         setTags(data.postTags);

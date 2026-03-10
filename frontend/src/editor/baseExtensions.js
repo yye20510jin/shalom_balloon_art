@@ -1,6 +1,6 @@
 import StarterKit from "@tiptap/starter-kit";
 import Youtube from "@tiptap/extension-youtube";
-import { TextStyle } from "@tiptap/extension-text-style";
+import { CustomTextStyle } from "./extensions/CustomTextStyle";
 import { DataColor } from "./extensions/DataColor";
 import { DataFontFamily } from "./extensions/DataFontFamily";
 import { FontSize } from "./extensions/FontSize";
@@ -20,7 +20,7 @@ export const baseExtensions = [
   CustomListItem,
   CustomBulletList,
   CustomOrderedList,
-  TextStyle,
+  CustomTextStyle,
   DataColor,
   ColorDecorations,
   DataFontFamily,
@@ -36,7 +36,7 @@ export const baseExtensions = [
 
 export const viewerExtensions = [
   StarterKit,
-  TextStyle,
+  CustomTextStyle,
   DataColor,
   ColorDecorations,
   DataFontFamily,
