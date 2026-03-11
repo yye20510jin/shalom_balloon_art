@@ -1,8 +1,8 @@
-import {useRef} from "react";
+import { useRef } from "react";
 import { NodeViewWrapper } from "@tiptap/react";
 
 export default function ImageNodeView(props) {
-  const { node, selected, editor, getPos, extension,updateAttributes } = props;
+  const { node, selected, editor, getPos, extension, updateAttributes } = props;
   const src = node.attrs.src;
   const startX = useRef(0);
   const startWidth = useRef(0);
@@ -17,18 +17,18 @@ export default function ImageNodeView(props) {
     startX.current = e.clientX;
 
     const w = Number(node.attrs.width);
-    const domWidth = imgRef.current?.getBoundingClientRect().width; 
+    const domWidth = imgRef.current?.getBoundingClientRect().width;
     startWidth.current = Number.isFinite(w) && w > 0 ? w : Number.isFinite(domWidth) && domWidth > 0 ? domWidth : 300;
 
     document.addEventListener("pointermove", onPointermove);
-    document.addEventListener("pointerup",onPointerup);
+    document.addEventListener("pointerup", onPointerup);
   };
 
   const onPointermove = (e) => {
-    if(!dragging.current) return;
-    
+    if (!dragging.current) return;
+
     const diff = e.clientX - startX.current;
-    const next = Math.max(60,startWidth.current + diff);
+    const next = Math.max(60, startWidth.current + diff);
     updateAttributes({
       width: next,
     });
@@ -37,7 +37,7 @@ export default function ImageNodeView(props) {
   const onPointerup = () => {
     dragging.current = false;
     document.removeEventListener("pointermove", onPointermove);
-    document.removeEventListener("pointerup",onPointerup);
+    document.removeEventListener("pointerup", onPointerup);
   };
 
   const removeThisImage = async (e) => {
@@ -52,9 +52,9 @@ export default function ImageNodeView(props) {
       .deleteRange({ from: pos, to: pos + node.nodeSize })
       .run();
 
-      if(typeof extension.options.onRemove === "function"){
-          extension.options.onRemove(src);
-      }
+    if (typeof extension.options.onRemove === "function") {
+      extension.options.onRemove(src);
+    }
   };
 
   const widthPx = Number.isFinite(Number(node.attrs.width)) && Number(node.attrs.width) > 0 ? `${node.attrs.width}px` : "100%";
@@ -81,14 +81,14 @@ export default function ImageNodeView(props) {
           display: "block",
           maxWidth: "100%",
           height: "auto",
-          width : widthPx,
+          width: widthPx,
           borderRadius: 8,
         }}
         draggable={false}
       />
 
       <div
-        onPointerDown={(e) => onPointerdownn(e)} 
+        onPointerDown={(e) => onPointerdownn(e)}
         style={{
           position: "absolute",
           right: 0,
@@ -109,23 +109,26 @@ export default function ImageNodeView(props) {
           position: "absolute",
           top: 6,
           right: 6,
-          width: 26,
-          height: 26,
+          width: "clamp(25px, 10%, 40px)",
+          aspectRatio: "1/1",
           borderRadius: 999,
           border: "none",
           cursor: "pointer",
           background: "rgba(0,0,0,0.65)",
           color: "white",
           fontSize: 16,
-          display: "grid",
+          display: "flex",
           placeItems: "center",
+          justifyContent: "center",
+          placeItems: "center",
+          padding:"unset"
         }}
         aria-label="이미지 삭제"
         title="삭제"
       >
         ×
       </button>
-}
+      }
     </NodeViewWrapper>
   );
 }

@@ -85,12 +85,6 @@ function PostForm({
 
     // 서버에 저장한 contentHtml을 다시 에디터에 주입하는 형태 추천
     if (editor && initialValues.contentHtml) {
-
-        console.log("before setContent:", initialValues.contentHtml);
-        editor.commands.setContent(initialValues.contentHtml);
-        console.log("after setContent html:", editor.getHTML());
-        console.log("after setContent json:", editor.getJSON());
-
       queueMicrotask(() => {
         editor.commands.setContent(initialValues.contentHtml, false);
       });

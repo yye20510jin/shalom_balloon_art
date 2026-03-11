@@ -20,7 +20,7 @@ public enum ErrorCode {
     //===User===
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_NOT_FOUND", "해당 사용자를 찾을 수 없습니다."),
     USER_ALREADY_EXISTS(HttpStatus.CONFLICT, "USER_NOT_APPROVED", "사용 중인 아이디입니다."),
-    USER_NOT_APPROVED(HttpStatus.FORBIDDEN, "USER_NOT_APPROVED", "승인 대기 중 입니다"),
+    USER_NOT_APPROVED(HttpStatus.FORBIDDEN, "USER_NOT_APPROVED", "승인 대기 중 입니다"), //승인 대기 중인 계정같은 경우는 따로 안내메세지 받게 해야 할 것 같다.
     CREDENTIALS_INVALID(HttpStatus.UNAUTHORIZED, "CREDENTIALS_INVALID","아이디 또는 비밀번호가 올바르지 않습니다."),
     FIND_ID_NO_MATCH(HttpStatus.NOT_FOUND,"FIND_ID_NO_MATCH","입력하신 정보와 일치하는 계정이 없습니다."),
 

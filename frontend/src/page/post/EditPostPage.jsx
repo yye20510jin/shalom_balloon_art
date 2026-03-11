@@ -23,7 +23,6 @@ function EditPostPage() {
         }
 
         const data = await res.json();
-        console.log("before editor setContent:", data.contentHtml);
         
         setInitialValues({
           id: id ? Number(id) : null,
