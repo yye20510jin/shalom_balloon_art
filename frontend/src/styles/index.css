@@ -14,15 +14,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #000;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #015500;
-}
-
 body {
   margin: 0;
   display: flex;
@@ -32,11 +23,34 @@ body {
   font-family: "Noto Sans KR", system-ui, -apple-system, sans-serif;
 }
 
+.container{
+  width: min(100%, 80rem);
+  margin-inline:auto;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
 
+
+/* a 공통 스타일 */
+a {
+  font-weight: 500;
+  color: #000;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #015500;
+}
+
+/* button 공통 스타일 */
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -44,17 +58,18 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button.subBtn:hover {
+
+button.subBtn:active {
   background-color: #b5e48c;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+
+.i-btn:active, .i-btn:hover{
+  background-color:#d9ed92;
 }
+
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -64,24 +79,15 @@ button:focus-visible {
   a:hover {
     color: #015500;
   }
-  button {
-    background-color: #f9f9f9;
-  }
   
 }
 
-.container{
-  width: min(100%, 80rem);
-  margin-inline:auto;
-}
+
 
 .inner{
   padding-inline: 1.5rem;
 }
 
-.i-btn:hover{
-  background-color:#d9ed92;
-}
 
 .i-errMessage{
   list-style:none;
@@ -89,10 +95,9 @@ button:focus-visible {
   margin-bottom: 5px;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+/* -- input 공통 설정 -- */
+input{
+    font-size: clamp(10px, 1.3vw, 0.95rem);
 }
 
 input::placeholder{
