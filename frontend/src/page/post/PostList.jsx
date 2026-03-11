@@ -69,7 +69,7 @@ function PostList({mode=""}) {
             </div>
           </div>
           {error ? <div className="i-errorMessage PL-noData">{error}</div> : 
-          <div className="PL-noData" style={{ padding: 20 }}>{finalMode === "like" ? "게시글이 존재하지 않습니다." : "등록된 게시글이 없습니다."}</div>}
+          <div className="PL-noData" style={{ padding: 20 }}><span>{finalMode === "like" ? "게시글이 존재하지 않습니다." : "등록된 게시글이 없습니다."}</span></div>}
         </div>
       </div>
       </div>

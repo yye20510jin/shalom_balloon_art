@@ -23,6 +23,12 @@
     justify-content: center;
 }
 
+.PL-noData span {
+    background: #f7f9f3;
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+
 
 /* --- 상단 --- */
 
