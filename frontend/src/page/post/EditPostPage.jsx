@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getJson } from "../../api/getJson";
 import { useNavigate, useParams } from "react-router-dom";
 import PostForm from "../post/PostForm";
 import { authFetch } from "../../api/authFetch";
@@ -17,12 +18,11 @@ function EditPostPage() {
           method: "GET",
         });
 
-        if (!res||!res.ok) {
-          const err = await res.json();
-          setError(err.message || "게시글을 불러오지 못했습니다.");
-        }
+        const data = await getJson(res);
 
-        const data = await res.json();
+        if (!res.ok) {
+          setError(data.message || "게시글을 불러오지 못했습니다.");
+        }
         
         setInitialValues({
           id: id ? Number(id) : null,
@@ -34,7 +34,6 @@ function EditPostPage() {
         });
       } catch (err) {
         console.error(err);
-        setError(err.message || "게시글 조회 중 오류가 발생했습니다.");
       } finally {
         setIsLoading(false);
       }

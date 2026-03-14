@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { authFetch } from "../../api/authFetch";
+import { showError } from "../../util/toastUtil";
 import { useFormatPhoneNumber } from "../../hooks/user/UseformatPhoneNumber";
 import { getJson } from "../../api/getJson";
 import shalomLogo from "../../assets/shalomBalloonArt.png";
@@ -17,23 +17,24 @@ function ResetPassword() {
         e.preventDefault();
         try {
             const formatPn = userPhoneNumber.replace(/\D/g, "");
-            const res = await authFetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/resetPw`, {
+            const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/resetPw`, {
                 method: "POST",
-                body: JSON.stringify({ userId, userPhoneNumber: formatPn })
+                headers:{"Content-Type": "application/json"},
+                body: JSON.stringify({ userId, userPhoneNumber: formatPn }),
+                credentials: "include",
             });
 
             const data = await getJson(res);
 
             if (!res.ok) {
-                console.log("data : ", data.message);
                 setError(data.message || "입력하신 정보와 일치하는 계정이 없습니다.");
-                setTimeout();
                 return;
             }
 
             const token = data.resetToken;
             navigate("/user/ResetPw", { state: { token } });
         } catch (err) {
+            showError("네트워크 오류가 발생했습니다.");
             console.error(err);
         }
     }

@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { useState, useContext, useEffect } from "react"
-import { authFetch } from "../../api/authFetch";
+import { showError } from "../../util/toastUtil";
+import { getJson } from "../../api/getJson";
 import AuthContext from "../../auth/AuthContext";
 import shalomLogo from "../../assets/shalomBalloonArt.png";
 
@@ -18,31 +19,39 @@ function AdminLogin() {
         e.preventDefault();
 
         try {
-            const response = await authFetch(
+            const res = await fetch(
                 `${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/adminLogin`,
                 {
                     method: "POST",
+                    headers:{"Content-Type": "application/json"},
                     body: JSON.stringify({ userId, password }),
+                    credentials: "include",
                 }
             );
 
-            if (!response.ok) {
-                const err = await response.json();
-                setError(err.message || "");
+            const data = await getJson(res);
+
+            if (!res.ok) {
+                setError(data.message || "");
                 return;
             }
 
-            const data = await response.json();
-
-            //서버가 보낸 토큰 저장
             login(data.accessToken, data.userId, data.roles);
 
 
         } catch (err) {
+            showError("네트워크 오류가 발생했습니다.");
             console.error(err);
-            setError("알 수 없는 에러 발생..");
         }
     }
+
+    useEffect(()=>{
+        if (error){
+            setTimeout(()=>{
+                setError("");
+            },2000);
+        }
+    },[error]);
 
     useEffect(() => {
         if (accessToken) navigate("/admin", { replace: true });
@@ -54,13 +63,11 @@ function AdminLogin() {
             <div className="Login-box">
                 <section className="Login-main">
                     <div className="Login-title">LOGIN</div>
-                    {error ? <div className="Login-err" style={{ color: "red" }}>{error}</div> : <div className="userLogin-err" ></div>}
-                    <form onSubmit={handleSubmit}>
-                        <div className="Login-form">
+                    {error ? <div className="Login-err" style={{ color: "red" }}>{error}</div> : <div className="Login-err" ></div>}
+                    <form className="Login-form" onSubmit={handleSubmit}>
                             <input className="Login-input" type="text" value={userId} onChange={(e) => setUserId(e.target.value)} placeholder="아이디" />
                             <input className="Login-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호" />
                             <button className="i-btn" type="submit">로그인</button>
-                        </div>
                     </form>
                 </section>
             </div>

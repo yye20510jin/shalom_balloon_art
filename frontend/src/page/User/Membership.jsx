@@ -4,6 +4,8 @@ import { authFetch } from "../../api/authFetch";
 import shalomLogo from "../../assets/shalomBalloonArt.png";
 import AuthContext from "../../auth/AuthContext";
 import { useFormatPhoneNumber } from "../../hooks/user/UseformatPhoneNumber";
+import { getJson } from "../../api/getJson";
+import { showSuccess } from "../../util/toastUtil";
 import "../../styles/user/Membership.css";
 
 function Membership() {
@@ -56,26 +58,25 @@ function Membership() {
         }
       );
 
-      if (!res || !res.ok) {
-        const errMsg = res ? await res.json() : "서버 응답 없음";
+      const data = await getJson(res);
+
+      if (!res.ok) {
         setError(
-          errMsg.error || "회원가입에 실패했습니다. 새로고침 후 다시 이용해 주세요."
+          data?.message || "회원가입에 실패했습니다. 새로고침 후 다시 이용해 주세요."
         );
         return;
       }
 
       if (admin) {
-        alert("관리자 추가 완료");
+        showSuccess("관리자 추가 완료.");
         navigate("/admin");
       } else {
-        alert("회원가입 완료");
+        showSuccess("회원가입에 성공했습니다. 관리자 인증 후 로그인 가능합니다.");
         navigate("/");
       }
 
     } catch (err) {
-
-      console.log(err);
-      setError("알 수 없는 오류 발생. 관리자에게 문의해 주세요");
+      console.error(err);
     }
   };
 
@@ -88,17 +89,17 @@ function Membership() {
           headers: {
             "Content-Type": "application/json",
           },
+          credentials:"include",
           body: JSON.stringify({ userId }),
         }
       );
 
-      const message = await res.text();
+      const data = await res.text();
 
-      message.includes("사용 가능") ? setIdCheck(true) : setIdCheck(false);
+      data.includes("사용 가능") ? setIdCheck(true) : setIdCheck(false);
       setCheck(true);
     } catch (err) {
-      console.log(err);
-      setError("알 수 없는 오류 발생. 관리자에게 문의해 주세요");
+      console.error(err);
     }
   };
 

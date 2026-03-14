@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { authFetch } from "../../api/authFetch";
+import { getJson} from "../../api/getJson";
+import { showError } from "../../util/toastUtil";
 import AuthContext from "../../auth/AuthContext";
 import shalomLogo from "../../assets/shalomBalloonArt.png";
 import "../../styles/user/UserLogin.css";
@@ -17,27 +18,29 @@ function UserLogin() {
         e.preventDefault();
 
         try {
-            const response = await authFetch(
+            const res = await fetch(
                 `${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/userLogin`,
                 {
                     method: "POST",
+                    headers:{"Content-Type": "application/json"},
                     body: JSON.stringify({ userId, password }),
+                    credentials: "include",
                 }
             );
 
-            if (!response.ok) {
-                const err = await response.json();
-                setError(err.message);
+            const data = await getJson(res);
+
+            if (!res.ok) {
+                setError(data.message);
                 return;
             }
-
-            const data = await response.json();
 
             login(data.accessToken, data.userId, JSON.stringify(data.roles));
             navigate("/", { replace: true });
 
         } catch (err) {
-            navigate("/error/ServerErrorPage");
+            showError("네트워크 오류가 발생했습니다.");
+            console.error(err);
         }
     };
 
@@ -68,7 +71,6 @@ function UserLogin() {
                     <a href="/user/ResetPassword">비밀번호 찾기</a>
                 </div>
             </div>
-
         </div>
     );
 } export default UserLogin;

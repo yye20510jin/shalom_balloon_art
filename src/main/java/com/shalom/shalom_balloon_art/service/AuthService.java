@@ -132,9 +132,7 @@ public class AuthService {
     //유저 등록 (ADMIN service로 이전)
     public void rejectUser(Long userIndex){
         SignupRequest req = signupRequestRepository.findById(userIndex).orElseThrow(() -> new BusinessException(RESOURCE_NOT_FOUND,""));
-
-            req.setAuthStatus(2);   // 변경
-
+            req.setAuthStatus(2);
         }
 
     //아이디 찾기

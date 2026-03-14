@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { authFetch } from "../../api/authFetch";
+import { getJson } from "../../api/getJson";
 export function usePostSearch() {
 
     const [searchText, setSearchText] = useState("");
@@ -20,20 +21,19 @@ export function usePostSearch() {
                 }
             );
 
+            const data = await getJson(res);
+
             if (!res.ok) {
-                const msg = res ? await res.text() : "서버 응답 없음";
-                setError(msg);
+                setError(data?.message || "게시글을 가져오지 못했습니다.");
                 setLoading(false);
                 return;
             }
 
-            const data = await res.json();
             setPosts(data.content);
             setStartPage(data.number);
             setEndPage(Math.ceil(data.totalElements / data.size));
         } catch (error) {
             console.error(error);
-            setError("서버 오류가 발생했습니다.");
         } finally {
             setLoading(false);
         }
@@ -47,13 +47,14 @@ export function usePostSearch() {
                 method:"GET"
             });
 
+            const data = await getJson(res);
+
             if(!res.ok){
                 setPosts([]);
                 setLoading(false);
                 return;
             }
 
-            const data = await res.json();
             setPosts(data.content);
             setStartPage(data.number);
             setEndPage(Math.ceil(data.totalElements / data.size));

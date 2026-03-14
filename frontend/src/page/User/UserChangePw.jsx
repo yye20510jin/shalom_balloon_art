@@ -2,6 +2,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { authFetch } from "../../api/authFetch";
 import Navbar from "../../components/common/Navbar"
+import { showSuccess } from "../../util/toastUtil";
+import { getJson } from "../../api/getJson";
 import "../../styles/user/UserChangePw.css";
 
 
@@ -43,14 +45,14 @@ function UserChangePw() {
                 body: JSON.stringify({ newPassword }),
             });
 
+            const data = await getJson(res);
+
             if (!res.ok) {
-                const data = await res.json().catch(() => null);
-                console.log(data?.message ?? "");
-                setError("비밀번호 변경 오류. 다시 시도해 주세요");
+                setError(data?.message || "비밀번호 변경 오류. 다시 시도해 주세요");
                 return;
             }
 
-            alert("비밀번호가 변경되었습니다.");
+            showSuccess("수정되었습니다.");
             navigate("/user/userDashboard", { replace: true });
         } catch (err) {
             console.error(err);

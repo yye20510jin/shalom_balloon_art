@@ -1,7 +1,7 @@
 import { authFetch } from "../../api/authFetch";
 import { useNavigate } from "react-router-dom";
 import { firebaseDownloadUrlToObjectPath } from "../firebase/firebaseDownloadUrlToObjectPath";
-
+import { getJson } from "../../api/getJson";
 export function usePostDelete(){
   const navigate = useNavigate();
 
@@ -21,9 +21,9 @@ export function usePostDelete(){
               }
             );
       
-            if (!res || !res.ok) {
-              const err = await res.json();
-              setError(err.message || "게시글을 삭제하지 못했습니다.");
+            if (!res.ok) {
+              const data = await getJson(res);
+              setError(data.message || "게시글을 삭제하지 못했습니다.");
               return;           
             }
 
@@ -31,8 +31,8 @@ export function usePostDelete(){
               navigate("/user/posts/postList",{replace: true});
             },800);
 
-            } catch (e) {
-            console.error(e);
+            } catch (err) {
+            console.error(err);
               return;
             }
   }

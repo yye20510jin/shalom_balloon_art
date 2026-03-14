@@ -21,6 +21,8 @@ import UserDashboard from "../page/User/UserDashboard";
 import UserChangePw from "../page/User/UserChangePw";
 import UserChangePhone from "../page/User/UserChangePhone";
 import ServerErrorPage from "../page/error/ServerErrorPage";
+import ForbiddenPage from "../page/error/ForbiddenPage";
+import NotFoundPage from "../page/error/NotFoundPage";
 import { AdminContext_f } from "../components/admin/adminContext";
 
 export const routes = [
@@ -65,10 +67,12 @@ export const routes = [
     ],
   },
   {
-    path:"error",
+    path:"/error",
     children:[
-      {path:"ServerErrorPage", element: <ServerErrorPage/>},
+      {path:"500", element: <ServerErrorPage/>},
+      {path:"403", element: <ForbiddenPage/>},
     ],
   },
+  {path:"*", element: <NotFoundPage />},
 
 ];

@@ -26,7 +26,6 @@ function Admin() {
 
             } catch (e) {
                 console.error(e);
-                setError("서버 에러 발생");
             }
         };
         fetchAdminData();

@@ -23,9 +23,9 @@ body {
   font-family: "Noto Sans KR", system-ui, -apple-system, sans-serif;
 }
 
-.container{
+.container {
   width: min(100%, 80rem);
-  margin-inline:auto;
+  margin-inline: auto;
 }
 
 *,
@@ -46,6 +46,7 @@ a {
   color: #000;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #015500;
 }
@@ -66,8 +67,9 @@ button.subBtn:active {
   background-color: #b5e48c;
 }
 
-.i-btn:active, .i-btn:hover{
-  background-color:#d9ed92;
+.i-btn:active,
+.i-btn:hover {
+  background-color: #d9ed92;
 }
 
 
@@ -76,35 +78,36 @@ button.subBtn:active {
     color: #213547;
     background-color: #ffffff;
   }
+
   a:hover {
     color: #015500;
   }
-  
+
 }
 
 
 
-.inner{
+.inner {
   padding-inline: 1.5rem;
 }
 
 
-.i-errMessage{
-  list-style:none;
-  color:red;
+.i-errMessage {
+  list-style: none;
+  color: red;
   margin-bottom: 5px;
 }
 
 /* -- input 공통 설정 -- */
-input{
-    font-size: clamp(10px, 1.3vw, 0.95rem);
+input {
+  outline: none;
+  font-size: clamp(10px, 1.3vw, 0.95rem);
 }
 
-input::placeholder{
+input::placeholder {
   font-size: clamp(10px, 1.3vw, 0.95rem);
 }
 
 input:focus {
-    outline: none;
-    border-color: #d9ed92;
+  outline: none;
 }

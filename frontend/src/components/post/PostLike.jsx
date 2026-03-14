@@ -3,7 +3,7 @@ import { authFetch } from "../../api/authFetch";
 import grayHeart from "../../assets/grayHeart.png";
 import redHeart from "../../assets/redHeart.png";
 
-function PostLike({id, like, setLikeCount}) {
+function PostLike({id, like, setLikeCount=null}) {
 
     const[postLike, setPostLike] = useState(false);
 
@@ -26,7 +26,7 @@ function PostLike({id, like, setLikeCount}) {
             }
 
             setPostLike(prev => !prev);
-            setLikeCount(prev => prev+1);
+            setLikeCount?.(prev => prev+1);
 
         } catch (err) {
             console.error(err);

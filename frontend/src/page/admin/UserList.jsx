@@ -1,5 +1,6 @@
 import { authFetch } from "../../api/authFetch";
-import {waitAuthReady} from "../../auth/authGate";
+import { showError } from "../../util/toastUtil";
+import { getJson } from "../../api/getJson";
 import { useEffect, useState, useContext } from "react";
 import "../../styles/admin/userList.css";
 import UserIcon from "../../assets/UserIcon.png";
@@ -25,20 +26,19 @@ function UserList() {
                 }
                 );
 
+                const data = await getJson(res);
+
                 if (!res.ok) {
-                    const message = res ? await res.text() : "서버 응답 없음";
-                    setError(message);
+                    setError(data.message || "유저 리스트를 가져오지 못했습니다.");
                     return;
                 }
 
-                const usersData = await res.json();
-                setData(usersData.content);
-                setStartPage(usersData.number);
-                setEndPage(Math.ceil(usersData.totalElements / 5));
+                setData(data.content);
+                setStartPage(data.number);
+                setEndPage(Math.ceil(data.totalElements / 5));
 
             } catch (err) {
                 console.error(err);
-                setError("서버 응답 없음");
             } finally {
                 setLoading(false);
             }

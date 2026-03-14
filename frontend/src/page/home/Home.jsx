@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/common/Navbar"
-import { authFetch } from "../../api/authFetch";
+import { getJson } from "../../api/getJson";
 import "../../styles/home/Home.css";
 import home from "../../assets/home.svg";
 import Reveal from "../../components/animations/Reveal";
@@ -20,8 +20,9 @@ function Home() {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const res = await authFetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/home`, {
+                const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/home`, {
                     method: "GET",
+                    credentials: "include",
                 });
 
                 if (!res.ok) {
@@ -29,7 +30,7 @@ function Home() {
                     return;
                 }
 
-                const data = await res.json();
+                const data = await getJson(res);
 
                 for (let i = 0; i < 2; i++) {
                     setImgUrl(prev => {

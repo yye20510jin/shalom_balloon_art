@@ -50,13 +50,13 @@ public class UserService {
         return postRepository.findByIds(p,pageable).map(r -> PostListResponseDTO.from(r,true));
     }
 
-    //비밀번호 찾기
+    //비밀번호 확인
     public void chkPw(Long userIndex, String chkPw){
         String userId = userRepository.findUserIdByUserIndex(userIndex);
 
         if(userId.isBlank()) throw new BusinessException(USER_NOT_FOUND,"");
 
-        boolean chk = userEncryptService.pwDecrypt(userId, chkPw);
+        boolean chk = userEncryptService.pwChkDecrypt(userId, chkPw);
     }
 
     //비밀번호 변경

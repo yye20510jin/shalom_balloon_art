@@ -31,13 +31,4 @@ public class GlobalExceptionHandler {
         }
         return ResponseEntity.status(errorCode.getStatus()).body(ErrorResponse.from(errorCode,req, e.getDetail()));
     }
-
-    //sql save
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ErrorResponse> handleDb(DataIntegrityViolationException e, HttpServletRequest req){
-        return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(new ErrorResponse("DB_CONSTRAINT", "데이터 제약 조건 위반",HttpStatus.CONFLICT, OffsetDateTime.now(ZoneId.of("Asia/Seoul")).toString(), req.getRequestURI(),
-                        (String)req.getAttribute(RequestIdFilter.ATTR),""));
-    }
-
 }

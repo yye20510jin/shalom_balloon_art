@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { authFetch } from "../../api/authFetch";
+import { showError,showSuccess } from "../../util/toastUtil";
 import shalomLogo from "../../assets/shalomBalloonArt.png";
 import "../../styles/user/UserMembershipFind.css";
 
@@ -28,11 +28,13 @@ function ResetPw() {
 
         (async () => {
             try {
-                const res = await authFetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/validateTokenPw`, {
+                const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/validateTokenPw`, {
                     method: "POST",
+                    headers:{"Content-Type": "application/json"},
                     body: JSON.stringify({
                         token
-                    })
+                    }),
+                    credentials:"include",
                 });
 
                 if (!res.ok) {
@@ -52,9 +54,11 @@ function ResetPw() {
         e.preventDefault();
         if (!chk) return;
         try {
-            const res = await authFetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/confirmPw`, {
+            const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/confirmPw`, {
                 method: "POST",
-                body: JSON.stringify({ newPassword, token })
+                headers:{"Content-Type": "application/json"},
+                body: JSON.stringify({ newPassword, token }),
+                credentials: "include",
             });
 
             if (!res.ok) {
@@ -62,12 +66,20 @@ function ResetPw() {
                 return;
             }
 
-            alert("비밀번호가 변경되었습니다.");
             navigate("/", { replace: true });
         } catch (err) {
+            showError("네트워크 오류가 발생했습니다.");
             console.error(err);
         }
     }
+
+    useEffect(()=>{
+        if(error){
+            setTimeout(()=>{
+                setError("");
+            },2000);
+        }
+    },[error]);
 
     return (
         <div className="Login">

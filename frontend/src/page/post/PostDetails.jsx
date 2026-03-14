@@ -53,7 +53,6 @@ function PostDetails() {
 
       } catch (e) {
         console.error(e);
-        setError("서버 오류가 발생했습니다.");
       } finally {
         setLoading(false);
       }

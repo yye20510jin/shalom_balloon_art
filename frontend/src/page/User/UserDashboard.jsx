@@ -4,6 +4,7 @@ import PostList from "../post/PostList";
 import { authFetch } from "../../api/authFetch";
 import { useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { getJson } from "../../api/getJson";
 import UserIcon from "../../assets/UserIcon.png";
 import lock from "../../assets/lock.png";
 import unlock from "../../assets/unlock.png";
@@ -25,16 +26,16 @@ function UserDashboard() {
         try {
             const res = await authFetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user/chkPw`, {
                 method: "POST",
-                body: JSON.stringify({ checkPassword: password })
+                body: JSON.stringify({ checkPassword: password }),
             });
 
+            const data = await getJson(res);
+
             if (!res.ok) {
-                const data = await res.json().catch(() => null);
-                console.log(data.message);
-                setError("비밀번호가 일치하지 않습니다.");
+                setError(data?.message || "비밀번호가 일치하지 않습니다.");
                 setTimeout(() => {
                     setError("");
-                }, 1000);
+                }, 2000);
                 return;
             }
             setOkPw(true);
@@ -60,9 +61,10 @@ function UserDashboard() {
                 method: "DELETE",
             });
 
+            const data = await getJson(res);
+
             if (!res.ok) {
-                const err = await res.json();
-                setError(err.message || "회원 탈퇴에 실패했습니다.");
+                setError(data?.message || "회원 탈퇴에 실패했습니다.");
                 return;
             }
 

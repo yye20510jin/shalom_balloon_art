@@ -1,15 +1,18 @@
+import { ToastContainer } from "react-toastify";
 import{BrowserRouter, Routes, Route} from"react-router-dom"
 import{routes} from"../app/routes";
 import{AuthProvider} from "../auth/AuthContext";
 import AuthContext from "../auth/AuthContext";
 import { useContext } from "react";
 import ScrollToTop from "../components/common/ScrollToTop";
+import "react-toastify/dist/ReactToastify.css";
 
 function App(){
   return(
     <BrowserRouter>
       <AuthProvider>
         <AppContent />
+        <ToastContainer position="top-center" />
         </AuthProvider>
     </BrowserRouter>
   );

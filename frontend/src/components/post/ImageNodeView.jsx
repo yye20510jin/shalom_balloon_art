@@ -120,7 +120,6 @@ export default function ImageNodeView(props) {
           display: "flex",
           placeItems: "center",
           justifyContent: "center",
-          placeItems: "center",
           padding:"unset"
         }}
         aria-label="이미지 삭제"

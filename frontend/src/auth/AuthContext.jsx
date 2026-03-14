@@ -1,6 +1,7 @@
 import { createContext, useMemo, useState, useCallback, useEffect, useRef } from "react";
 import { setOnUnauthorized, fncSetAccessToken, tryRefreshToken } from "../api/authFetch"
 import { startBootstrapping, setBootstrappingDone, setBootstrappingFailed } from "../auth/authGate";
+import { useNavigate } from "react-router-dom";
 
 //통로 생성 : 후에 다른 컴포넌트에서 값 가져갈 때 사용
 const AuthContext = createContext();
@@ -13,7 +14,8 @@ export function AuthProvider({ children }) {
   const [roles, setRoles] = useState([]);
   const [bootstrapping, setBootstrapping] = useState(true);
   const bootOnceRef = useRef(false);
-
+  const navigate = useNavigate();
+  const serverError = () => navigate("/error/500");
   useEffect(() => {
     //StrictMode 2회 실행 방지
     if (bootOnceRef.current) return;
@@ -85,8 +87,8 @@ export function AuthProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    setOnUnauthorized(logout, navHome, onAccessTokenChanged);
-  }, [logout, navHome, onAccessTokenChanged]);
+    setOnUnauthorized(logout, navHome, onAccessTokenChanged,serverError);
+  }, [logout, navHome, onAccessTokenChanged, serverError]);
 
 
   const value = useMemo(() => ({ bootstrapping, login, logout, isLoggedIn, roles, accessToken, userId }), [bootstrapping, login, logout, isLoggedIn, roles, accessToken, userId]);

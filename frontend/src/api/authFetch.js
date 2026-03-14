@@ -1,10 +1,13 @@
 import { waitAuthReady } from "../auth/authGate";
+import { showError } from "../util/toastUtil";
 
 let onUnauthorized = null;
 let onForbidden = null;
 let onAccessTokenChanged = null;
 let accessToken = "";
 let refreshPromise = null;
+let onServerError = null;
+
 
 export async function tryRefreshToken() {
     if (!refreshPromise) {
@@ -35,11 +38,12 @@ export function fncSetAccessToken(t) {
     accessToken = t || "";
 }
 
-export function setOnUnauthorized(handler, navHome, tokenChanged) {
+export function setOnUnauthorized(handler, navHome, tokenChanged, serverError, ) {
     //logout
     onUnauthorized = handler;
     onForbidden = navHome;
     onAccessTokenChanged = tokenChanged;
+    onServerError = serverError;
 }
 
 export async function authFetch(url, options = {}) {
@@ -59,10 +63,7 @@ export async function authFetch(url, options = {}) {
     try {
         response = await fetch(url, { ...options, headers, credentials: "include" });
     } catch (e) {
-        //네트워크 에러
-        // *정책 1) 서버 에러가 발생하면 로그아웃 처리한다.
-        // 수정) 
-        if (typeof onUnauthorized === "function") onUnauthorized();
+        showError("네트워크 오류가 발생했습니다.");
         throw e;
     }
 
@@ -72,7 +73,22 @@ export async function authFetch(url, options = {}) {
         return response;
     }
 
+    if (response.status >= 500 && response.status < 600) {
+        onServerError();
+        return response;
+    }
+
+    if (response.status === 401){
+        const data = await response.json();
+        if(data.code === "USER_CREDENTIALS_INVALID"){
+            return response;
+        }
+    }
+
     if (response.status !== 401) return response;
+    
+
+    // 401 //
 
     if (isRefreshCall) {
         if (typeof onUnauthorized === "function") onUnauthorized();
@@ -91,13 +107,25 @@ export async function authFetch(url, options = {}) {
     try {
         retryResponse = await fetch(url, { ...options, headers: retryHeaders, credentials: "include" });
     } catch (e) {
-        if (typeof onUnauthorized === "function") onUnauthorized();
+        showError("네트워크 오류가 발생했습니다.");
         throw e;
     }
 
     // *정책 2) 재요청도 401이면 더 시도하지 말고 로그아웃
     if (retryResponse.status === 401) {
         if (typeof onUnauthorized === "function") onUnauthorized();
+        return retryResponse;
     }
+
+    if (retryResponse.status === 403) {
+        if (typeof onForbidden === "function") onForbidden();
+        return retryResponse;
+    }
+
+    if (retryResponse.status >= 500 && retryResponse.status < 600) {
+        onServerError();
+        return retryResponse;
+    }
+
     return retryResponse;
 }

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authFetch } from "../../api/authFetch";
 import { useContentTransform } from "../../hooks/post/useContentTransform";
+import { getJson } from "../../api/getJson";
 
 export function usePostSubmit() {
   const [id, setId] = useState("");
@@ -43,9 +44,10 @@ export function usePostSubmit() {
         body : JSON.stringify(payload),
       });
 
+      const data = await getJson(res);
+
       if (!res.ok) {
-        const text = res ? await res.text() : "요청 실패";
-        throw new Error(text || "게시글 저장에 실패했습니다.");
+        throw new Error(data.message || "게시글 저장에 실패했습니다.");
       }
 
       if(mode === "create"){
@@ -62,7 +64,6 @@ export function usePostSubmit() {
 
     } catch (err) {
       console.error(err);
-      setError(err.message || "서버 오류가 발생했습니다.");
     } finally {
       setIsSubmitting(false);
     }

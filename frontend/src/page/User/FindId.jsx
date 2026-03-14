@@ -28,7 +28,6 @@ function FindId() {
             const data = await getJson(res);
 
             if (!res.ok) {
-                console.log("data : ", data.message);
                 setError(data.message || "입력하신 정보와 일치하는 계정이 없습니다.");
                 return;
             }
@@ -39,7 +38,6 @@ function FindId() {
         } catch (err) {
             console.error(err);
         }
-
 
     }
 
