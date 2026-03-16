@@ -33,7 +33,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
         //tagIds optional
         List<Long> tagIndex = cond.searchTagIndex();
         if(tagIndex != null && !tagIndex.isEmpty()){
-            where.and(post.postTag.any().tagIndex.in(tagIndex));
+            where.and(post.postTags.any().tag.tagIndex.in(tagIndex));
         }
 
         var contentQuery =
@@ -62,7 +62,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom{
         BooleanBuilder where = new BooleanBuilder();
 
         if(!tagIndex.isEmpty()){
-            where.and(post.postTag.any().tagIndex.in(tagIndex));
+            where.and(post.postTags.any().tag.tagIndex.in(tagIndex));
         }
 
         var contentQuery =

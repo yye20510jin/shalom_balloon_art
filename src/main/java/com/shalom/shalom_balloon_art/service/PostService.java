@@ -4,17 +4,11 @@ import com.shalom.shalom_balloon_art.auth.jwt.CustomUserDetails;
 import com.shalom.shalom_balloon_art.auth.sanitizer.HtmlSanitizer;
 import com.shalom.shalom_balloon_art.config.ViewLimitProperties;
 import com.shalom.shalom_balloon_art.dto.post.*;
-import com.shalom.shalom_balloon_art.entity.post.Post;
-import com.shalom.shalom_balloon_art.entity.post.PostUserLike;
-import com.shalom.shalom_balloon_art.entity.post.PostViewUser;
+import com.shalom.shalom_balloon_art.entity.post.*;
 import com.shalom.shalom_balloon_art.entity.User;
-import com.shalom.shalom_balloon_art.entity.post.Tags;
 import com.shalom.shalom_balloon_art.global.error.BusinessException;
 import com.shalom.shalom_balloon_art.repository.*;
-import com.shalom.shalom_balloon_art.repository.post.PostDailyViewRepository;
-import com.shalom.shalom_balloon_art.repository.post.PostRepository;
-import com.shalom.shalom_balloon_art.repository.post.PostUserLikeRepository;
-import com.shalom.shalom_balloon_art.repository.post.PostViewUserRepository;
+import com.shalom.shalom_balloon_art.repository.post.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import static com.shalom.shalom_balloon_art.global.error.ErrorCode.*;
 
@@ -41,6 +36,7 @@ public class PostService {
     private final UserRepository userRepository;
     private final TagRepository tagRepository;
     private final PostUserLikeRepository postUserLikeRepository;
+    private final PostTagRepository postTagRepository;
 
     // 글 저장
     public void createPost(PostCreateRequestDTO req){
@@ -50,11 +46,11 @@ public class PostService {
                 .thumbnailUrl(req.getThumbnailUrl()).supplies(req.getSupplies()).build();
 
         for(String tagName : req.getPostTag()){
-            Tags t = tagRepository.findByTagName(tagName).orElseThrow(() -> new BusinessException(INTERNAL_ERROR,""));
-            p.getPostTag().add(t);
+            Tags t = tagRepository.findByTagName(tagName).orElseThrow(() -> new BusinessException(TAG_NOT_FOUND,""));
+            PostTag.of(p,t);
         }
 
-        Post saved = postRepository.save(p);
+        postRepository.save(p);
     }
 
     // 글 자세히 보기
@@ -63,9 +59,12 @@ public class PostService {
         Post post = postRepository.findById(postIndex)
                 .orElseThrow(() -> new BusinessException(POST_NOT_FOUND,""));
 
+        List<Tags> t = postTagRepository.findTagsByPostIndex(postIndex);
+        List<PostTagDTO> pt = t.stream().map(PostTagDTO::from).toList();
+
         boolean likedPost = postUserLikeRepository.existsByIdPostIndexAndIdUserIndex(post.getIndex(),userIndex);
 
-        return PostResponseDTO.from(post,likedPost);
+        return PostResponseDTO.from(post, pt, likedPost);
     }
 
     // 글 좋아요
@@ -91,6 +90,7 @@ public class PostService {
         Long userIndex = cud.getUserIndex();
         Pageable pageable = PageRequest.of(page,6);
         return postRepository.search(cond,pageable).map(p-> PostListResponseDTO.from(p,
+                postTagRepository.findTagsByPostIndex(p.getIndex()).stream().map(PostTagDTO::from).toList(),
                 postUserLikeRepository.existsByIdPostIndexAndIdUserIndex(p.getIndex(),userIndex)));
 
     }
@@ -100,12 +100,12 @@ public class PostService {
     public Page<PostListResponseDTO> getSimilarPosts(int page, Long postIndex){
         Pageable pageable = PageRequest.of(page,6);
         // 해당 인덱스에 있는 태그 목록 가져오기
-        List<Tags> tags = postRepository.findPostTagById(postIndex);
+        List<Tags> tags = postTagRepository.findTagsByPostIndex(postIndex);
 
         // 해당 인덱스에 있는 태그와 같은 목록 가져오기
         List<Long> tagIndex = tags.stream().map(Tags::getTagIndex).toList();
 
-        return postRepository.similarSearch(tagIndex, pageable).map(p->PostListResponseDTO.from(p,false));
+        return postRepository.similarSearch(tagIndex, pageable).map(p->PostListResponseDTO.from(p,List.of(),false));
     }
 
     //글 수정
@@ -124,17 +124,24 @@ public class PostService {
                 fire.delete(post.getThumbnailUrl());}
             post.setThumbnailUrl(dto.getThumbnailUrl());
         }
-        post.getPostTag().clear();
+        post.clearPostTags();
         List<Tags> newTags = dto.getPostTag().stream().map(name -> tagRepository.findByTagName(name).orElseGet(() -> tagRepository.save(new Tags(name)))).toList();
-        post.getPostTag().addAll(newTags);
+        for(Tags tag : newTags){
+            PostTag.of(post,tag);
+        }
 
         String safeHtml = htmlSanitizer.sanitizePostHtml(dto.getContentHtml());
 
         post.update(dto.getTitle(), safeHtml, dto.getSupplies());
 
+        List<PostTagDTO> pt = post.getPostTags().stream()
+                .map(PostTag::getTag)
+                .map(PostTagDTO::from)
+                .toList();
+
         boolean likedPost = postUserLikeRepository.existsByIdPostIndexAndIdUserIndex(post.getIndex(),userIndex);
 
-        return PostResponseDTO.from(post,likedPost);
+        return PostResponseDTO.from(post,pt,likedPost);
     }
 
     //글 삭제

@@ -6,8 +6,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Builder
-@Entity
+@Entity(name = "tags")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,18 +24,9 @@ public class Tags {
     @Column(nullable = false, unique=true)
     private String tagName;
 
-    @Override
-    public boolean equals(Object o){
-        if(this == o) return true;
-        if(!(o instanceof Tags)) return false;
-        Tags t = (Tags) o;
-        return tagName != null && tagName.equals(t.tagName);
-    }
-
-    @Override
-    public int hashCode(){
-        return tagName != null ? tagName.hashCode() : 0;
-    }
+    @OneToMany(mappedBy="tag")
+    @Builder.Default
+    private Set<PostTag> postTags = new HashSet<>();
 
     public Tags(String tagName){
         this.tagName = tagName;

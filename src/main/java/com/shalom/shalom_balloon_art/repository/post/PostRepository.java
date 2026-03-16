@@ -44,10 +44,4 @@ public interface PostRepository extends JpaRepository<Post, Long>, PostRepositor
     """)
     int incrementViews(@Param("postIndex") Long postIndex);
 
-    @Query("""
-            SELECT p.postTag
-            FROM Post p
-            WHERE p.index IN :postIndex
-            """)
-    List<Tags> findPostTagById(Long postIndex);
 }

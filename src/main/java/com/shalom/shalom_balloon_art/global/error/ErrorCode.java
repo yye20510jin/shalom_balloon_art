@@ -29,6 +29,7 @@ public enum ErrorCode {
 
     //===Tag===
     TAG_INVALID(HttpStatus.BAD_REQUEST,"TAG_INVALID", "태그 형식이 올바르지 않습니다."),
+    TAG_NOT_FOUND(HttpStatus.NOT_FOUND,"TAG_NOT_FOUND", "태그가 존재하지 않습니다."),
 
     //===RESET TOKEN===
     INVALID_RESET_TOKEN(HttpStatus.FORBIDDEN, "INVALID_RESET_TOKEN","올바르지 않은 토큰입니다. "),

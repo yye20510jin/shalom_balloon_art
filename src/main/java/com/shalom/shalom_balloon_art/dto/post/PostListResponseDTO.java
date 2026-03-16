@@ -1,6 +1,7 @@
 package com.shalom.shalom_balloon_art.dto.post;
 
 import com.shalom.shalom_balloon_art.entity.post.Post;
+import com.shalom.shalom_balloon_art.entity.post.PostTag;
 import lombok.*;
 import org.jsoup.Jsoup;
 
@@ -23,7 +24,7 @@ public class PostListResponseDTO {
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
 
-        public static PostListResponseDTO from (Post post, boolean postLike){
+        public static PostListResponseDTO from (Post post, List<PostTagDTO> pt , boolean postLike){
 
             String html = post.getContentHtml();
             int maxLen = 160;
@@ -40,7 +41,7 @@ public class PostListResponseDTO {
                     .thumbnailUrl(post.getThumbnailUrl())
                     .preview(makePreview)
                     .postLike(postLike)
-                    .postTag(post.getPostTag().stream().map(PostTagDTO::from).toList())
+                    .postTag(pt)
                     .supplies(post.getSupplies())
                     .createdAt(post.getCreatedAt())
                     .updatedAt(post.getUpdatedAt())

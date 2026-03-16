@@ -1,9 +1,11 @@
 package com.shalom.shalom_balloon_art.service;
 
 import com.shalom.shalom_balloon_art.dto.post.PostListResponseDTO;
+import com.shalom.shalom_balloon_art.dto.post.PostTagDTO;
 import com.shalom.shalom_balloon_art.entity.User;
 import com.shalom.shalom_balloon_art.global.error.BusinessException;
 import com.shalom.shalom_balloon_art.repository.post.PostRepository;
+import com.shalom.shalom_balloon_art.repository.post.PostTagRepository;
 import com.shalom.shalom_balloon_art.repository.post.PostUserLikeRepository;
 import com.shalom.shalom_balloon_art.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ public class UserService {
     private final PostUserLikeRepository postUserLikeRepository;
     private final PostRepository postRepository;
     private final UserEncryptService userEncryptService;
+    private final PostTagRepository postTagRepository;
     private final PostService postService;
 
     //회원탈퇴
@@ -47,7 +50,9 @@ public class UserService {
             throw new BusinessException(POST_NOT_FOUND,"");
         }
 
-        return postRepository.findByIds(p,pageable).map(r -> PostListResponseDTO.from(r,true));
+        return postRepository.findByIds(p,pageable).map(r -> PostListResponseDTO.from(r,
+                postTagRepository.findTagsByPostIndex(r.getIndex()).stream().map(PostTagDTO::from).toList()
+                ,true));
     }
 
     //비밀번호 확인

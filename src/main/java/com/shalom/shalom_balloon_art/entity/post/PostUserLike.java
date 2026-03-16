@@ -14,10 +14,10 @@ import java.util.Objects;
 @Getter
 public class PostUserLike {
 
-    @EmbeddedId
+    @EmbeddedId // 복합키
     private PostUserLikeId id;
 
-    @MapsId("postIndex")
+    @MapsId("postIndex") // FK
     @ManyToOne(fetch = FetchType.LAZY)
     private Post post;
 
@@ -26,10 +26,14 @@ public class PostUserLike {
     private User user;
 
     public static PostUserLike of(Post post, User user){
+        //PostUserLike를 담은 post 객체를 PostUserLike에 추가한다.
         PostUserLike pul = new PostUserLike();
         pul.post = post;
         pul.user = user;
         pul.id = new PostUserLikeId(post.getIndex(),user.getUserIndex());
+
+        post.getPostUserLikes().add(pul);
+        user.getPostUserLikes().add(pul);
         return pul;
      }
 

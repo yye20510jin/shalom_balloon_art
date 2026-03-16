@@ -18,7 +18,6 @@ export function SearchPostTag({finalMode,fnc_postList,searchTags,setSearchTags})
 
                 if (!res.ok) {
                     const data = await res.json();
-                    console.log(data.message);
                     setServerOk(false);
                     return;
                 }
@@ -42,7 +41,7 @@ export function SearchPostTag({finalMode,fnc_postList,searchTags,setSearchTags})
     };
 
     useEffect(()=>{
-        finalMode === "list" && fnc_postList();
+        finalMode !== "list" && fnc_postList();
     },[searchTags]);
 
     return (

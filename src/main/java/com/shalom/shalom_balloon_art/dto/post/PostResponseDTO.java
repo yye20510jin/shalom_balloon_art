@@ -25,7 +25,7 @@ public class PostResponseDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public static PostResponseDTO from(Post post, boolean postLike){
+    public static PostResponseDTO from(Post post,List<PostTagDTO> pt,boolean postLike){
         return PostResponseDTO.builder()
                 .index(post.getIndex())
                 .title(post.getTitle())
@@ -33,7 +33,7 @@ public class PostResponseDTO {
                 .thumbnailUrl(post.getThumbnailUrl())
                 .supplies(post.getSupplies())
                 .postLike(postLike)
-                .postTags(post.getPostTag().stream().map(PostTagDTO::from).toList())
+                .postTags(pt)
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
                 .build();

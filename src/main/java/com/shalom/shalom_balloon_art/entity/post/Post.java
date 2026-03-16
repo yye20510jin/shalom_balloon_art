@@ -43,16 +43,13 @@ public class Post {
     @Builder.Default
     private Long views = 0L;
 
-    @ManyToMany
-    @JoinTable(
-            name = "post_tag",
-            joinColumns = @JoinColumn(name = "post_index"),
-            inverseJoinColumns = @JoinColumn(name = "tag_index")
-    )
+    @OneToMany(mappedBy="post", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    private Set<Tags> postTag = new HashSet<>();
+    private Set<PostTag> postTags = new HashSet<>();
 
     // orphanRemoval : 연관관계 제거 = 자식 제거
+    // cascade , orphanRemoval은 One 쪽에서 설정
+    // FK는 PostUserLike 쪽에서 관리.
     @OneToMany(mappedBy="post")
     private Set<PostUserLike> postUserLikes = new HashSet<>();
 
@@ -74,6 +71,12 @@ public class Post {
         this.contentHtml = contentHtml;
         this.supplies = supplies;
         onUpdate();
+    }
+
+    public void clearPostTags(){
+        for(PostTag postTag : new HashSet<>(postTags)){
+            postTag.unlink();
+        }
     }
 
     public static Post from(PostCreateRequestDTO p){
