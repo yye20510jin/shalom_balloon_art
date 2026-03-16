@@ -28,15 +28,13 @@ public class AuthService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final CoustomUserDetailsService coustomUserDetailsService;
-    private final RoleRepository roleRepository;
     private final SignupRequestRepository signupRequestRepository;
 
-    public AuthService(JwtTokenProvider jwtTokenProvider,UserEncryptService userEncryptService,RoleRepository roleRepository,
+    public AuthService(JwtTokenProvider jwtTokenProvider,UserEncryptService userEncryptService,
                        CoustomUserDetailsService coustomUserDetailsService,UserRepository userRepository, SignupRequestRepository signupRequestRepository){
         this.jwtTokenProvider = jwtTokenProvider;
         this.coustomUserDetailsService = coustomUserDetailsService;
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
         this.userEncryptService = userEncryptService;
         this.signupRequestRepository = signupRequestRepository;
     }
@@ -48,23 +46,7 @@ public class AuthService {
         return signupRequestRepository.save(s);
     }
 
-    //권한 설정
-    public boolean membership(User u, String s){
-        Role r;
 
-            if(s.equals("admin")) {
-                r = roleRepository.findByRoleName("ADMIN").orElseThrow(() -> new BusinessException(ROLE_NOT_CONFIGURED,""));
-                // 수정) 500 로그 추가
-            }else{
-                r = roleRepository.findByRoleName("USER").orElseThrow(() -> new BusinessException(ROLE_NOT_CONFIGURED,""));
-                // 수정) 500 로그 추가
-            }
-            u.addRole(r);
-
-            userRepository.save(u);
-
-        return true;
-    }
 
     //admin 로그인
     public AccessTokenWithRoles adminLogin(LoginRequestDTO l){
@@ -109,31 +91,6 @@ public class AuthService {
         if(existsInUser || existsInSignupRequest){
             throw new BusinessException(USER_ALREADY_EXISTS,"");}
     }
-
-    //유저 등록 (ADMIN service로 이전)
-    public void approveUser(Long userIndex) {
-
-        SignupRequest req = signupRequestRepository.findById(userIndex)
-                .orElseThrow(() -> new BusinessException(RESOURCE_NOT_FOUND,""));
-
-        User user = User.builder()
-                .userId(req.getUserId())
-                .username(req.getUsername())
-                .userPhoneNumber(req.getUserPhoneNumber())
-                .userPassword(req.getUserPassword())
-                .build();
-
-        membership(user,"USER");
-
-        if(signupRequestRepository.deleteByUserIndex(userIndex) == 0){
-            throw new BusinessException(RESOURCE_NOT_FOUND,"");
-        }
-    }
-    //유저 등록 (ADMIN service로 이전)
-    public void rejectUser(Long userIndex){
-        SignupRequest req = signupRequestRepository.findById(userIndex).orElseThrow(() -> new BusinessException(RESOURCE_NOT_FOUND,""));
-            req.setAuthStatus(2);
-        }
 
     //아이디 찾기
     public String findId(FindIdDTO f){

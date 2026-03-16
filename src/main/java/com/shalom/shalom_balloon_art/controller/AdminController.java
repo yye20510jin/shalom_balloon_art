@@ -48,21 +48,22 @@ public class AdminController {
 
         String pw = userEncryptService.signup(m.getUserPassword());
         User u = User.builder().userId(m.getUserId()).userPassword(pw).userPhoneNumber(m.getUserPhoneNumber()).username(m.getUserName()).build();
-        authService.membership(u,"admin");
+        adminService.membership(u,"admin");
         return ResponseEntity.ok("success");
     }
 
-    //유저 인증
+    //유저 인증 리스트
     @GetMapping("/userApprove")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<MembershipResponseDTO>> userApprove(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "0") int auth){
         return ResponseEntity.ok(signupRequestService.userApprove(page,auth));
     }
 
+    //유저 바인증
     @PatchMapping("/rejectUser/{userIndex}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> rejectUser(@PathVariable Long userIndex ){
-        authService.rejectUser(userIndex);
+        adminService.rejectUser(userIndex);
         return ResponseEntity.ok("사용자 인증 거부 성공");
     }
 
@@ -70,7 +71,7 @@ public class AdminController {
     @PostMapping("/approveUser/{userIndex}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> approveUser(@PathVariable Long userIndex){
-        authService.approveUser(userIndex);
+        adminService.approveUser(userIndex);
         return ResponseEntity.ok("사용자 인증 요청 성공");
     }
 

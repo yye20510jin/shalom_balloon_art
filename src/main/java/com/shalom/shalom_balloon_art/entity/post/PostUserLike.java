@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
-@Entity(name="post_user_like")
+@Entity
+@Table(name="post_user_like")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

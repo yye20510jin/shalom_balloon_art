@@ -25,7 +25,7 @@ public class CoustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByUserId(userId).orElseThrow(()->new UsernameNotFoundException("AUTH_USER_NOT_FOUND"));
         //GrantedAuthority : 이 사용자가 가진 권한을 나타내는 객체
         //SimpleGrantedAuthority : Spring Security에서 권한(ROLE_USER, ROLE_ADMIN 등)을 표현하는 객체
-        List<GrantedAuthority> authorities = user.getUserRoles().stream().map(role -> (GrantedAuthority) new SimpleGrantedAuthority("ROLE_"+role.getRoleName())).toList();
+        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().getRoleName()));
         //public User(java.lang.String username, java.lang.String password, java.util.Collection<? extends org.springframework.security.core.GrantedAuthority> authorities) { /* compiled code */ }
         return new CustomUserDetails(user.getUserIndex(),user.getUserId(), user.getUserPassword(), authorities);
     }

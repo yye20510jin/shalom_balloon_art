@@ -5,12 +5,14 @@ import com.shalom.shalom_balloon_art.dto.HomeCardResponseDTO;
 import com.shalom.shalom_balloon_art.dto.login.MembershipResponseDTO;
 import com.shalom.shalom_balloon_art.dto.post.PostTagDTO;
 import com.shalom.shalom_balloon_art.entity.HomeCard;
+import com.shalom.shalom_balloon_art.entity.User.Role;
+import com.shalom.shalom_balloon_art.entity.User.SignupRequest;
+import com.shalom.shalom_balloon_art.entity.User.User;
 import com.shalom.shalom_balloon_art.entity.post.Tags;
 import com.shalom.shalom_balloon_art.global.error.BusinessException;
-import com.shalom.shalom_balloon_art.repository.HomeCardRepository;
+import com.shalom.shalom_balloon_art.repository.*;
 import com.shalom.shalom_balloon_art.repository.post.PostRepository;
-import com.shalom.shalom_balloon_art.repository.TagRepository;
-import com.shalom.shalom_balloon_art.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,27 +26,22 @@ import static com.shalom.shalom_balloon_art.global.error.ErrorCode.*;
 
 @Transactional
 @Service
+@RequiredArgsConstructor
 public class AdminService {
     private final UserRepository userRepository;
-    private final PostRepository postRepository;
+    private final RoleRepository roleRepository;
     private final HomeCardRepository homeCardRepository;
     private final FirebaseStorageService firebaseStorageService;
     private final TagRepository tagRepository;
+    private final SignupRequestRepository signupRequestRepository;
 
-    public AdminService(UserRepository userRepository, PostRepository postRepository,HomeCardRepository homeCardRepository,
-                        FirebaseStorageService firebaseStorageService,TagRepository tagRepository ){
-        this.userRepository = userRepository;
-        this.postRepository = postRepository;
-        this.homeCardRepository = homeCardRepository;
-        this.firebaseStorageService = firebaseStorageService;
-        this.tagRepository = tagRepository;
-    }
-
+    @Transactional(readOnly = true)
     public Page<MembershipResponseDTO> userList(int page){
         Pageable pageable = PageRequest.of(page,5);
         return userRepository.findAll(pageable).map(MembershipResponseDTO::from);
     }
 
+    @Transactional(readOnly = true)
     public List<HomeCardResponseDTO> homeCard(){
         return homeCardRepository.findAll().stream().map(HomeCardResponseDTO::from).toList();
     }
@@ -87,4 +84,47 @@ public class AdminService {
             }
         });
     }
+
+    //권한 설정
+    public boolean membership(User u, String s){
+        Role r;
+
+        if(s.equals("admin")) {
+            r = roleRepository.findByRoleName("ADMIN").orElseThrow(() -> new BusinessException(ROLE_NOT_CONFIGURED,""));
+        }else{
+            r = roleRepository.findByRoleName("USER").orElseThrow(() -> new BusinessException(ROLE_NOT_CONFIGURED,""));
+        }
+        u.setRole(r);
+
+        userRepository.save(u);
+
+        return true;
+    }
+
+    //유저 인증
+    public void approveUser(Long userIndex) {
+
+        SignupRequest req = signupRequestRepository.findById(userIndex)
+                .orElseThrow(() -> new BusinessException(RESOURCE_NOT_FOUND,""));
+
+        User user = User.builder()
+                .userId(req.getUserId())
+                .username(req.getUsername())
+                .userPhoneNumber(req.getUserPhoneNumber())
+                .userPassword(req.getUserPassword())
+                .build();
+
+        membership(user,"USER");
+
+        if(signupRequestRepository.deleteByUserIndex(userIndex) == 0){
+            throw new BusinessException(RESOURCE_NOT_FOUND,"");
+        }
+    }
+
+    //유저 비인증
+    public void rejectUser(Long userIndex){
+        SignupRequest req = signupRequestRepository.findById(userIndex).orElseThrow(() -> new BusinessException(RESOURCE_NOT_FOUND,""));
+        req.setAuthStatus(2);
+    }
+
 }

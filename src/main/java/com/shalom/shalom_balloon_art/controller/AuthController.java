@@ -23,8 +23,6 @@ public class AuthController {
     private final PasswordResetService passwordResetService;
     private final RefreshService refreshService;
     private final ResetTokenCookieUtil resetTokenCookieUtil;
-
-
     private final Duration REFRESH_TTL;
 
     public AuthController(AuthService authService, PasswordResetService passwordResetService, RefreshService refreshService, ResetTokenCookieUtil resetTokenCookieUtil, @Value("${jwt.refresh-ttl}")Duration refreshTtl) {

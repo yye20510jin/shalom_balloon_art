@@ -1,10 +1,12 @@
 package com.shalom.shalom_balloon_art.entity.User;
 
+import com.shalom.shalom_balloon_art.entity.post.PostTag;
 import com.shalom.shalom_balloon_art.entity.post.PostUserLike;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -31,25 +33,32 @@ public class User{
     @Column(length = 30, nullable = false)
     private String userPhoneNumber;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_index"),
-            inverseJoinColumns = @JoinColumn(name = "role_index")
-    )
-    @Builder.Default
-    private Set<Role> userRoles = new HashSet<>();
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="role_index")
+    private Role role;
 
     @OneToMany(mappedBy="user")
     private Set<PostUserLike> postUserLikes = new HashSet<>();
 
-    public void addRole(Role role){
-        this.userRoles.add(role);
-    }
-
     public void changePw(String pw) {this.userPassword = pw;}
 
     public void changePn(String newPhone) {this.userPhoneNumber = newPhone;}
+
+    public void setRole(Role role){
+        this.role = role;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User that = (User) o;
+        return Objects.equals(userId, that.userId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId);
+    }
 
 }
