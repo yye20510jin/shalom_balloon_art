@@ -1,6 +1,6 @@
 package com.shalom.shalom_balloon_art.entity.post;
 
-import com.shalom.shalom_balloon_art.entity.User;
+import com.shalom.shalom_balloon_art.entity.User.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
-@Entity
+@Entity(name="post_user_like")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -19,10 +19,12 @@ public class PostUserLike {
 
     @MapsId("postIndex") // FK
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="post_index", nullable = false)
     private Post post;
 
     @MapsId("userIndex")
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_index", nullable = false)
     private User user;
 
     public static PostUserLike of(Post post, User user){

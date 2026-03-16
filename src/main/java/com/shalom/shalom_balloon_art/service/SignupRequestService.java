@@ -1,7 +1,7 @@
 package com.shalom.shalom_balloon_art.service;
 
 import com.shalom.shalom_balloon_art.dto.login.MembershipResponseDTO;
-import com.shalom.shalom_balloon_art.entity.SignupRequest;
+import com.shalom.shalom_balloon_art.entity.User.SignupRequest;
 import com.shalom.shalom_balloon_art.repository.SignupRequestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;

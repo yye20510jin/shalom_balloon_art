@@ -2,7 +2,7 @@ package com.shalom.shalom_balloon_art.service;
 
 import com.shalom.shalom_balloon_art.dto.post.PostListResponseDTO;
 import com.shalom.shalom_balloon_art.dto.post.PostTagDTO;
-import com.shalom.shalom_balloon_art.entity.User;
+import com.shalom.shalom_balloon_art.entity.User.User;
 import com.shalom.shalom_balloon_art.global.error.BusinessException;
 import com.shalom.shalom_balloon_art.repository.post.PostRepository;
 import com.shalom.shalom_balloon_art.repository.post.PostTagRepository;

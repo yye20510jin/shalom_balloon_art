@@ -1,6 +1,6 @@
 package com.shalom.shalom_balloon_art.repository;
 
-import com.shalom.shalom_balloon_art.entity.Role;
+import com.shalom.shalom_balloon_art.entity.User.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

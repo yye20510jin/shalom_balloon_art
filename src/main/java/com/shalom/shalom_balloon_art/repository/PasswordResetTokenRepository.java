@@ -1,6 +1,6 @@
 package com.shalom.shalom_balloon_art.repository;
 
-import com.shalom.shalom_balloon_art.entity.PasswordResetToken;
+import com.shalom.shalom_balloon_art.entity.User.PasswordResetToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

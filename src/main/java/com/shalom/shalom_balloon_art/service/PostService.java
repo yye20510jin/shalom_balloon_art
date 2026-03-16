@@ -5,7 +5,7 @@ import com.shalom.shalom_balloon_art.auth.sanitizer.HtmlSanitizer;
 import com.shalom.shalom_balloon_art.config.ViewLimitProperties;
 import com.shalom.shalom_balloon_art.dto.post.*;
 import com.shalom.shalom_balloon_art.entity.post.*;
-import com.shalom.shalom_balloon_art.entity.User;
+import com.shalom.shalom_balloon_art.entity.User.User;
 import com.shalom.shalom_balloon_art.global.error.BusinessException;
 import com.shalom.shalom_balloon_art.repository.*;
 import com.shalom.shalom_balloon_art.repository.post.*;
@@ -17,9 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import static com.shalom.shalom_balloon_art.global.error.ErrorCode.*;
 

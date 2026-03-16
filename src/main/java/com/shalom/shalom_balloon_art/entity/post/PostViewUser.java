@@ -1,6 +1,6 @@
 package com.shalom.shalom_balloon_art.entity.post;
 
-import com.shalom.shalom_balloon_art.entity.User;
+import com.shalom.shalom_balloon_art.entity.User.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

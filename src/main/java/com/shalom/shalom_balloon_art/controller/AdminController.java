@@ -4,16 +4,14 @@ import com.shalom.shalom_balloon_art.dto.HomeCardRequestDTO;
 import com.shalom.shalom_balloon_art.dto.login.MembershipRequestDTO;
 import com.shalom.shalom_balloon_art.dto.login.MembershipResponseDTO;
 import com.shalom.shalom_balloon_art.dto.post.AnalyticsResponseDTO;
-import com.shalom.shalom_balloon_art.entity.User;
+import com.shalom.shalom_balloon_art.entity.User.User;
 import com.shalom.shalom_balloon_art.service.*;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/admin")
