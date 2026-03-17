@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode //JPA가 엔티티를 식별자 기준으로 캐싱/비교하기 때문에 복합키는 반드시 동등성 비교가 정확해야 한다.
+@EqualsAndHashCode
 public class PostDailyViewId implements Serializable {
     @Column(name="post_index",nullable = false)
     private Long postIndex;

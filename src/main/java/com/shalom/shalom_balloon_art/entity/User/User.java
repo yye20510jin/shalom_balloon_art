@@ -34,7 +34,7 @@ public class User{
     private String userPhoneNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="role_index")
+    @JoinColumn(name="role_index", nullable = false)
     private Role role;
 
     @OneToMany(mappedBy="user")
