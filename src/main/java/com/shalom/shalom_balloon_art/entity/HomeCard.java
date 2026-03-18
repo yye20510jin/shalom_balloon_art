@@ -17,8 +17,6 @@ public class HomeCard {
     @Column(nullable = false)
     private String imgUrl;
 
-    @Lob
-    @Column(columnDefinition = "LONGTEXT")
     private String text;
 
     public void update(String imgUrl, String text){

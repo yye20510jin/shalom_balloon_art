@@ -17,6 +17,5 @@ public class InitData implements CommandLineRunner {
 
     @Override
     public void run(String...args){
-        System.out.println(userEncryptService.signup("admin1234"));
     }
 }

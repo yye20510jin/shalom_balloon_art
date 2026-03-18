@@ -2,7 +2,7 @@
 -- roles
 -- ================================
 CREATE TABLE roles(
-    role_index BIGINT NOT NULL AUTO_INCREMENT,
+    role_index BIGSERIAL,
     role_name VARCHAR(50) NOT NULL,
 
     PRIMARY KEY (role_index),
@@ -13,7 +13,7 @@ CREATE TABLE roles(
 -- users
 -- ================================
 CREATE TABLE users(
-    user_index BIGINT NOT NULL AUTO_INCREMENT,
+    user_index BIGSERIAL,
     user_id VARCHAR(30) NOT NULL,
     user_password VARCHAR(255) NOT NULL,
     username VARCHAR(30) NOT NULL,
@@ -30,14 +30,14 @@ CREATE TABLE users(
 -- signup_request
 -- ================================
 CREATE TABLE signup_request(
-    user_index BIGINT NOT NULL AUTO_INCREMENT,
+    user_index BIGSERIAL,
     user_id VARCHAR(30) NOT NULL,
     user_password VARCHAR(255) NOT NULL,
     username VARCHAR(30) NOT NULL,
     user_phone_number VARCHAR(30) NOT NULL,
     auth_status INT NOT NULL DEFAULT 0,
-    created_at DATETIME(6) NOT NULL,
-    updated_at DATETIME(6),
+    created_at TIMESTAMP(6) NOT NULL,
+    updated_at TIMESTAMP(6),
 
     PRIMARY KEY (user_index),
     CONSTRAINT uk_signup_request_user_id UNIQUE (user_id)
@@ -47,28 +47,31 @@ CREATE TABLE signup_request(
 -- pw_reset_token
 -- ================================
 CREATE TABLE pw_reset_token(
-    pw_reset_index BIGINT NOT NULL AUTO_INCREMENT,
+    pw_reset_index BIGSERIAL,
     user_index BIGINT,
     token_hash VARCHAR(64) NOT NULL,
-    expires_at DATETIME(6) NOT NULL,
-    used_at DATETIME(6),
-    created_at DATETIME(6) NOT NULL,
+    expires_at TIMESTAMP(6) NOT NULL,
+    used_at TIMESTAMP(6),
+    created_at TIMESTAMP(6) NOT NULL,
 
-    PRIMARY KEY (pw_reset_index),
-    INDEX idx_pw_reset_token_hash (token_hash),
-    INDEX idx_pw_reset_user (user_index)
+    PRIMARY KEY (pw_reset_index)
 );
+
+CREATE INDEX idx_pw_reset_token_hash
+    ON pw_reset_token (token_hash);
+CREATE INDEX idx_pw_reset_user_hash
+    ON pw_reset_token (user_index);
 
 -- ================================
 -- posts
 -- ================================
 CREATE TABLE posts(
-    post_index BIGINT NOT NULL AUTO_INCREMENT,
+    post_index BIGSERIAL,
     title VARCHAR(200) NOT NULL,
-    content_html LONGTEXT,
+    content_html TEXT,
     thumbnail_url VARCHAR(255) NOT NULL,
-    created_at DATETIME(6) NOT NULL,
-    updated_at DATETIME(6) NOT NULL,
+    created_at TIMESTAMP(6) NOT NULL,
+    updated_at TIMESTAMP(6) NOT NULL,
     views BIGINT NOT NULL DEFAULT 0,
     supplies VARCHAR(255),
 
@@ -79,7 +82,7 @@ CREATE TABLE posts(
 -- tags
 -- ================================
 CREATE TABLE tags(
-    tag_index BIGINT NOT NULL AUTO_INCREMENT,
+    tag_index BIGSERIAL,
     tag_name VARCHAR(255) NOT NULL,
 
     PRIMARY KEY (tag_index),
@@ -126,7 +129,7 @@ CREATE TABLE post_user_like(
 CREATE TABLE post_view_user(
     post_index BIGINT NOT NULL,
     user_index BIGINT NOT NULL,
-    last_viewed_at DATETIME(6) NOT NULL,
+    last_viewed_at TIMESTAMP(6) NOT NULL,
 
     PRIMARY KEY (post_index, user_index),
 
@@ -158,7 +161,7 @@ CREATE TABLE post_daily_view(
 -- ================================
 CREATE TABLE home_card(
     hc_index INTEGER NOT NULL,
-    img_url VARCHAR(2048) NOT NULL,
-    text LONGTEXT NULL,
+    img_url VARCHAR(255) NOT NULL,
+    text TEXT NULL,
     PRIMARY KEY (hc_index)
 );

@@ -26,8 +26,6 @@ public class Post {
     @Column(nullable = false, length = 200)
     private String title; // 글 제목
 
-    @Lob
-    @Column(columnDefinition = "LONGTEXT")
     private String contentHtml; // 글 내용
 
     @Column(nullable = false)

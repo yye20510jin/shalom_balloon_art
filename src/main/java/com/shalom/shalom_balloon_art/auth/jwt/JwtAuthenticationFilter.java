@@ -2,7 +2,7 @@ package com.shalom.shalom_balloon_art.auth.jwt;
 
 import com.shalom.shalom_balloon_art.auth.logger.LoggingAuthenticationEntryPoint;
 import com.shalom.shalom_balloon_art.auth.resetToken.ResetTokenCookieUtil;
-import com.shalom.shalom_balloon_art.service.CoustomUserDetailsService;
+import com.shalom.shalom_balloon_art.service.CustomUserDetailsService;
 import com.shalom.shalom_balloon_art.service.auth.RefreshService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -26,7 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final RefreshService refreshService;
-    private final CoustomUserDetailsService customUserDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
     private final LoggingAuthenticationEntryPoint entryPoint;
     private final ResetTokenCookieUtil resetTokenCookieUtil;
 

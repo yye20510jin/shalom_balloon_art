@@ -4,7 +4,7 @@ import com.shalom.shalom_balloon_art.auth.jwt.JwtAuthenticationFilter;
 import com.shalom.shalom_balloon_art.auth.jwt.JwtTokenProvider;
 import com.shalom.shalom_balloon_art.auth.logger.LoggingAccessDeniedHandler;
 import com.shalom.shalom_balloon_art.auth.logger.LoggingAuthenticationEntryPoint;
-import com.shalom.shalom_balloon_art.service.CoustomUserDetailsService;
+import com.shalom.shalom_balloon_art.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private final CorsConfig corsConfig;
     private final JwtTokenProvider jwtTokenProvider;
-    private final CoustomUserDetailsService customUserDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
     private final LoggingAccessDeniedHandler deniedHandler;
     private final LoggingAuthenticationEntryPoint entryPoint;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;

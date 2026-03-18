@@ -5,11 +5,9 @@ import com.shalom.shalom_balloon_art.dto.login.AccessTokenWithRoles;
 import com.shalom.shalom_balloon_art.dto.login.LoginRequestDTO;
 import com.shalom.shalom_balloon_art.dto.login.MembershipRequestDTO;
 import com.shalom.shalom_balloon_art.dto.login.FindIdDTO;
-import com.shalom.shalom_balloon_art.entity.User.Role;
 import com.shalom.shalom_balloon_art.entity.User.SignupRequest;
 import com.shalom.shalom_balloon_art.entity.User.User;
 import com.shalom.shalom_balloon_art.global.error.BusinessException;
-import com.shalom.shalom_balloon_art.repository.RoleRepository;
 import com.shalom.shalom_balloon_art.repository.SignupRequestRepository;
 import com.shalom.shalom_balloon_art.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,13 +25,13 @@ public class AuthService {
     private final UserEncryptService userEncryptService;
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
-    private final CoustomUserDetailsService coustomUserDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
     private final SignupRequestRepository signupRequestRepository;
 
-    public AuthService(JwtTokenProvider jwtTokenProvider,UserEncryptService userEncryptService,
-                       CoustomUserDetailsService coustomUserDetailsService,UserRepository userRepository, SignupRequestRepository signupRequestRepository){
+    public AuthService(JwtTokenProvider jwtTokenProvider, UserEncryptService userEncryptService,
+                       CustomUserDetailsService customUserDetailsService, UserRepository userRepository, SignupRequestRepository signupRequestRepository){
         this.jwtTokenProvider = jwtTokenProvider;
-        this.coustomUserDetailsService = coustomUserDetailsService;
+        this.customUserDetailsService = customUserDetailsService;
         this.userRepository = userRepository;
         this.userEncryptService = userEncryptService;
         this.signupRequestRepository = signupRequestRepository;
@@ -56,7 +54,7 @@ public class AuthService {
 
             userEncryptService.pwDecrypt(u.getUserId(),l.getPassword());
 
-            UserDetails userdetails= coustomUserDetailsService.loadUserByUsername(l.getUserId());
+            UserDetails userdetails= customUserDetailsService.loadUserByUsername(l.getUserId());
 
             List<String> listRoles = userdetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
             for(String role : listRoles){
@@ -72,7 +70,7 @@ public class AuthService {
         User u;
         u = userRepository.findByUserId(l.getUserId()).orElseThrow(()->new BusinessException(CREDENTIALS_INVALID,""));
         userEncryptService.pwDecrypt(u.getUserId(),l.getPassword());
-        UserDetails userdetails = coustomUserDetailsService.loadUserByUsername(l.getUserId());
+        UserDetails userdetails = customUserDetailsService.loadUserByUsername(l.getUserId());
 
         List<String> listRoles = userdetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
 

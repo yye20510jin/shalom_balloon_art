@@ -31,17 +31,17 @@ function Home() {
                 }
 
                 const data = await getJson(res);
-
+                
                 for (let i = 0; i < 2; i++) {
                     setImgUrl(prev => {
                         const next = [...prev];
-                        next[i] = data[i].imgUrl;
+                        next[i] = data[i]?.imgUrl;
                         return next;
                     });
 
                     setText(prev => {
                         const next = [...prev];
-                        next[i] = data[i].text;
+                        next[i] = data[i]?.text;
                         return next;
                     });
                 }

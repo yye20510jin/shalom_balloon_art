@@ -1,10 +1,8 @@
 package com.shalom.shalom_balloon_art.service.auth;
 
-import com.shalom.shalom_balloon_art.auth.jwt.CustomUserDetails;
 import com.shalom.shalom_balloon_art.auth.jwt.JwtTokenProvider;
 import com.shalom.shalom_balloon_art.dto.login.AccessTokenWithRoles;
-import com.shalom.shalom_balloon_art.service.CoustomUserDetailsService;
-import lombok.RequiredArgsConstructor;
+import com.shalom.shalom_balloon_art.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -19,10 +17,10 @@ public class RefreshService {
     private final RedisRefreshTokenStore store;
     //자동 Bean 등록 안 됨.
     private final SecureRandom secureRandom = new SecureRandom();
-    private final CoustomUserDetailsService customUserDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
     private final Duration REFRESH_TTL;
 
-    public RefreshService(JwtTokenProvider jwt, RedisRefreshTokenStore store, CoustomUserDetailsService customUserDetailsService, @Value("${jwt.refresh-ttl}")Duration refreshTtl) {
+    public RefreshService(JwtTokenProvider jwt, RedisRefreshTokenStore store, CustomUserDetailsService customUserDetailsService, @Value("${jwt.refresh-ttl}")Duration refreshTtl) {
         this.jwt = jwt;
         this.store = store;
         this.customUserDetailsService = customUserDetailsService;
