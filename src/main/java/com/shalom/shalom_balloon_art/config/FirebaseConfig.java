@@ -3,6 +3,7 @@ package com.shalom.shalom_balloon_art.config;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.shalom.shalom_balloon_art.auth.logger.SecurityEventLogger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,15 +17,18 @@ import java.nio.charset.StandardCharsets;
 @Configuration
 public class FirebaseConfig {
 
-    @Value("${firebase.config}")
-    private String firebaseConfig;
+//    @Value("${firebase.config}")
+//    private String firebaseConfig;
 
     @Bean
     public FirebaseApp initializeFirebase() throws IOException {
-
+        SecurityEventLogger logger = new SecurityEventLogger();
         if(!FirebaseApp.getApps().isEmpty()){
             return FirebaseApp.getInstance();
         }
+        String firebaseConfig = System.getenv("FIREBASE_CONFIG");
+
+        logger.info("FIREBASE_CONFIG present: {}",null,null, String.valueOf(firebaseConfig != null && !firebaseConfig.isBlank()));
 
         InputStream serviceAccount;
 
