@@ -51,3 +51,4 @@ src/main/resources/firebase/*.json
 
 
 *.log
+logs/
