@@ -3,6 +3,7 @@ package com.shalom.shalom_balloon_art.auth.resetToken;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +11,13 @@ import java.util.List;
 
 @Component
 public class ResetTokenCookieUtil {
+
+    @Value("${cookie.secure}")
+    private boolean cookieSecure;
+
+    @Value("${cookie.same-site}")
+    private String cookieSameSite;
+
     public String readCookie(HttpServletRequest req) {
         Cookie[] cookies = req.getCookies();
 
@@ -21,9 +29,9 @@ public class ResetTokenCookieUtil {
     public void setRefreshCookie(HttpServletResponse res, String token, java.time.Duration ttl) {
         ResponseCookie cookie = ResponseCookie.from("refreshToken", token)
                 .httpOnly(true)
-                .secure(false)              // ✅ 실배포 HTTPS // 수정) secure(true)변경
-                .sameSite("Lax") // 실배포 수정) sameSite(none) 변경
-                .path("/api/auth/refresh") // ✅ refresh에만 전송
+                .secure(cookieSecure)
+                .sameSite(cookieSameSite)
+                .path("/api/auth/refresh")
                 .maxAge(ttl)
                 .build();
         res.addHeader("Set-Cookie", cookie.toString());
@@ -32,8 +40,8 @@ public class ResetTokenCookieUtil {
     public void deleteRefreshCookie(HttpServletResponse res) {
         ResponseCookie cookie = ResponseCookie.from("refreshToken", "")
                 .httpOnly(true)
-                .secure(false)
-                .sameSite("Lax")
+                .secure(cookieSecure)
+                .sameSite(cookieSameSite)
                 .path("/api/auth/refresh")
                 .maxAge(0)
                 .build();
