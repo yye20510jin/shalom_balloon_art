@@ -6,7 +6,10 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Entity
@@ -72,9 +75,28 @@ public class Post {
         onUpdate();
     }
 
-    public void clearPostTags(){
-        for(PostTag postTag : new HashSet<>(postTags)){
-            postTag.unlink();
+    public void syncTags(List<Tags> newTags){
+        Set<Long> newTagIds = newTags.stream().map(Tags::getTagIndex).collect(Collectors.toSet());
+        Iterator<PostTag> iterator = this.postTags.iterator();
+
+        //newTags에 없는 태그 제거 (반복문에서 제거가 이뤄지기 때문에 iterator 사용)
+        while(iterator.hasNext()){
+            PostTag postTag = iterator.next();
+            Long currentTagId = postTag.getTag().getTagIndex();
+
+            if(!newTagIds.contains(currentTagId)){
+                iterator.remove();
+                postTag.getTag().getPostTags().remove(postTag);
+            }
+        }
+
+        Set<Long> currentTagIds = this.postTags.stream().map(pt -> pt.getTag().getTagIndex()).collect(Collectors.toSet());
+
+        //새로운 태그 저장
+        for(Tags tag : newTags){
+            if(!currentTagIds.contains(tag.getTagIndex())){
+                PostTag.of(this,tag);
+            }
         }
     }
 

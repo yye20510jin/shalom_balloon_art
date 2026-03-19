@@ -27,17 +27,6 @@ public class PostTag {
     @JoinColumn(name="tag_index", nullable = false)
     private Tags tag;
 
-    public void unlink(){
-        if(post != null){
-            post.getPostTags().remove(this);
-        }
-        if(tag != null){
-            tag.getPostTags().remove(this);
-        }
-        this.post = null;
-        this.tag = null;
-    }
-
     public static PostTag of(Post post, Tags tag){
         PostTag postTag = new PostTag();
         postTag.post = post;

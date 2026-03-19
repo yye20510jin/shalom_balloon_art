@@ -122,11 +122,9 @@ public class PostService {
                 fire.delete(post.getThumbnailUrl());}
             post.setThumbnailUrl(dto.getThumbnailUrl());
         }
-        post.clearPostTags();
+
         List<Tags> newTags = dto.getPostTag().stream().map(name -> tagRepository.findByTagName(name).orElseGet(() -> tagRepository.save(new Tags(name)))).toList();
-        for(Tags tag : newTags){
-            PostTag.of(post,tag);
-        }
+        post.syncTags(newTags);
 
         String safeHtml = htmlSanitizer.sanitizePostHtml(dto.getContentHtml());
 
