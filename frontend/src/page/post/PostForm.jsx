@@ -28,27 +28,21 @@ function PostForm({
     handleSubmit
   } = usePostSubmit();
 
-  //이미지 candidates 임시 저장
   const { addFile, candidates, removeCandidateUrl } = useLocalImageCandidates();
 
-  //태그
   const [tagSelected, setTagSelected] = useState([]);
 
-  //썸네일 이미지
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [thumbUploading, setThumbUploading] = useState(false);
   const [thumbError, setThumbError] = useState("");
   const thumbInputRef = useRef(null);
 
-  //준비물
   const [supplies, setSupplies] = useState("");
 
-  // 파일 input을 버튼으로 열기 위해
   const fileInputRef = useRef(null);
 
   const { uploadOne, isUploading, error: uploadError, setError: setUploadError } = useFirebaseSingleImageUpload({ folder: "posts" });
 
-  // ✅ 에디터 생성
   const editor = useEditor({
     extensions: [
       ...baseExtensions,
@@ -62,7 +56,6 @@ function PostForm({
     ],
   });
 
-  // ✅ edit 모드 초기값 세팅
   const didSetContentRef = useRef(false);
 
   useEffect(() => {
@@ -83,7 +76,6 @@ function PostForm({
     });
     setSupplies(initialValues.supplies || "");
 
-    // 서버에 저장한 contentHtml을 다시 에디터에 주입하는 형태 추천
     if (editor && initialValues.contentHtml) {
       queueMicrotask(() => {
         editor.commands.setContent(initialValues.contentHtml, false);
@@ -93,7 +85,7 @@ function PostForm({
     didSetContentRef.current = true;
   }, [initialValues, editor]);
 
-  //썸네일 이미지 업로드
+
   const handleThumbnailChange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -103,7 +95,6 @@ function PostForm({
     e.target.value = "";
   };
 
-  // 이미지 업로드 및 삽입
   const handleImageFileChange = async (e) => {
     const files = Array.from(e.target.files);
     if (!files.length) return;
@@ -117,7 +108,6 @@ function PostForm({
     e.target.value = "";
   };
 
-  // 유튜브 삽입
   const handleInsertYoutube = () => {
     if (!editor) return;
 
@@ -133,7 +123,7 @@ function PostForm({
 
     editor.chain().focus().setYoutubeVideo({ src: embedUrl }).run();
   };
-  //서버 전송
+ 
   const onSubmit = async (e) => {
     e.preventDefault();
     if (!editor) return;
@@ -150,12 +140,8 @@ function PostForm({
     await handleSubmit(mode, finalContentHtml, finalThumbnailUrl, tagSelected, supplies);
   };
 
-
-
-  // ------------- 이미지 firebase로 전환 -----------------
-
   async function buildUrlMapFromCandidates(candidates, uploadOne) {
-    //중복 업로드 방지
+
     const unique = new Map();
     for (const c of candidates) {
       if (!c?.previewUrl || !c?.file) continue;
@@ -163,7 +149,7 @@ function PostForm({
     }
 
     const entries = Array.from(unique.entries());
-    //await Promise.all : 여러 개의 비동기 작업을 동시에 실행하고, 전부 끝날 때까지 가디린다.
+  
     const results = await Promise.all(
       entries.map(async ([candidateUrl, { file }]) => {
         const firebaseUrl = await uploadOne(file);
@@ -203,18 +189,14 @@ function PostForm({
     candidates,
     uploadOne,
   }) {
-    //업로드 후 맵 생성
+
     const urlMap = await buildUrlMapFromCandidates(candidates, uploadOne);
 
-    //html, thumbnail 치환
     const finalContentHtml = replaceImgSrcInHtml(contentHtml, urlMap);
     const finalThumbnailUrl = replaceUrlIfCandidate(thumbnailUrl, urlMap);
 
     return { finalContentHtml, finalThumbnailUrl };
   };
-
-
-  // --------------------------------------
 
   return (
     <div className="container PostForm">
@@ -224,7 +206,6 @@ function PostForm({
       {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
 
       <form className="PF-form" onSubmit={onSubmit}>
-        {/* 제목 */}
         <div className="PF-titleDiv">
           <label>
             제목
@@ -239,7 +220,6 @@ function PostForm({
 
         <div className="PF-toolbar">
           <div className="PF-toolbarTop">
-            {/* 툴바 */}
             <Toolbar
               editor={editor}
               onPickImage={() => !isUploading && fileInputRef.current?.click()}
@@ -253,7 +233,6 @@ function PostForm({
               <textarea name="pt" value={supplies} onChange={(e) => setSupplies(e.target.value)} />
             </label>
 
-            {/* 썸네일 */}
             <div className="PF-previewThumb">
               <div className="PF-previewImg" style={{ display: "flex", gap: 12, alignItems: "center" }}>
                 {thumbnailUrl ? (
@@ -322,13 +301,12 @@ function PostForm({
           </div>
         </div>
 
-        {/* 에디터 본문 */}
         <div className="ed-content">
           <EditorContent editor={editor} />
         </div>
 
         {uploadError && <p style={{ color: "red" }}>{uploadError}</p>}
-        {/* hidden file input */}
+
         <input
           ref={fileInputRef}
           type="file"
@@ -338,7 +316,6 @@ function PostForm({
           onChange={handleImageFileChange}
         />
 
-        {/* 제출 버튼 */}
         <button
           type="submit"
           className={`${title && thumbnailUrl && !isSubmitting ? "i-btn" : ""}`}

@@ -55,7 +55,7 @@ function AdminHomeCard() {
     }, [mount]);
 
     const handleHomeImage = async (e, i) => {
-        const file = e.target.files?.[0]; //단일 파일이어도 files로 온다.
+        const file = e.target.files?.[0]; 
         if (!file) return;
         const url = addFile(file);
         if (i === 0) {

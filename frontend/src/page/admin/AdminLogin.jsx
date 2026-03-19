@@ -14,7 +14,6 @@ function AdminLogin() {
 
     const navigate = useNavigate();
 
-    //form 기본 submit 막기
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -23,7 +22,7 @@ function AdminLogin() {
                 `${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/adminLogin`,
                 {
                     method: "POST",
-                    headers:{"Content-Type": "application/json"},
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ userId, password }),
                     credentials: "include",
                 }
@@ -32,6 +31,11 @@ function AdminLogin() {
             const data = await getJson(res);
 
             if (!res.ok) {
+                if (res.status >= 500) {
+                    navigate("/error/500");
+                    return;
+                }
+
                 setError(data.message || "");
                 return;
             }
@@ -45,13 +49,13 @@ function AdminLogin() {
         }
     }
 
-    useEffect(()=>{
-        if (error){
-            setTimeout(()=>{
+    useEffect(() => {
+        if (error) {
+            setTimeout(() => {
                 setError("");
-            },2000);
+            }, 2000);
         }
-    },[error]);
+    }, [error]);
 
     useEffect(() => {
         if (accessToken) navigate("/admin", { replace: true });
@@ -65,9 +69,9 @@ function AdminLogin() {
                     <div className="Login-title">LOGIN</div>
                     {error ? <div className="Login-err" style={{ color: "red" }}>{error}</div> : <div className="Login-err" ></div>}
                     <form className="Login-form" onSubmit={handleSubmit}>
-                            <input className="Login-input" type="text" value={userId} onChange={(e) => setUserId(e.target.value)} placeholder="아이디" />
-                            <input className="Login-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호" />
-                            <button className="i-btn" type="submit">로그인</button>
+                        <input className="Login-input" type="text" value={userId} onChange={(e) => setUserId(e.target.value)} placeholder="아이디" />
+                        <input className="Login-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호" />
+                        <button className="i-btn" type="submit">로그인</button>
                     </form>
                 </section>
             </div>

@@ -19,7 +19,7 @@ function ResetPassword() {
             const formatPn = userPhoneNumber.replace(/\D/g, "");
             const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/resetPw`, {
                 method: "POST",
-                headers:{"Content-Type": "application/json"},
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ userId, userPhoneNumber: formatPn }),
                 credentials: "include",
             });
@@ -27,6 +27,10 @@ function ResetPassword() {
             const data = await getJson(res);
 
             if (!res.ok) {
+                if (res.status >= 500) {
+                    navigate("/error/500");
+                    return;
+                }
                 setError(data.message || "입력하신 정보와 일치하는 계정이 없습니다.");
                 return;
             }

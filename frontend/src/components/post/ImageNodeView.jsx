@@ -44,7 +44,6 @@ export default function ImageNodeView(props) {
     e.preventDefault();
     e.stopPropagation();
 
-    // 1) 에디터에서 이 이미지 노드 삭제
     const pos = getPos();
     editor
       .chain()
@@ -100,10 +99,9 @@ export default function ImageNodeView(props) {
         }}
       />
 
-      {/* ✅ 오버레이 X 버튼 */}
       {selected && <button
         type="button"
-        onPointerDown={(e) => e.preventDefault()} // 클릭 시 커서 튐/드래그 방지
+        onPointerDown={(e) => e.preventDefault()}
         onClick={removeThisImage}
         style={{
           position: "absolute",

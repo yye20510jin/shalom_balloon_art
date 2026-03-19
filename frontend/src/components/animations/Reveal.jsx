@@ -8,8 +8,8 @@ export default function Reveal({
   repeat = false,
   useThreshold = 0.15,
   rootMargin = "0px 0px -10% 0px",
-  extras = "",            // anim--fast, anim--delay-200 등
-  className = "",         // 기존 클래스 합치기
+  extras = "",            
+  className = "",         
   style,
   children,
   ...rest

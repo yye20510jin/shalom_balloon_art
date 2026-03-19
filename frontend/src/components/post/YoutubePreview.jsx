@@ -12,12 +12,10 @@ function YoutubePreview({ youtubeUrl, setYoutubeUrl }) {
     try {
       let id = null;
 
-      // youtu.be/xxxx 형식
       if (youtubeUrl.includes("youtu.be/")) {
         const parts = youtubeUrl.split("youtu.be/");
         id = parts[1]?.split(/[?&]/)[0] || null;
       } else {
-        // www.youtube.com/watch?v=xxxx 형식
         const urlObj = new URL(youtubeUrl);
         id = urlObj.searchParams.get("v");
       }

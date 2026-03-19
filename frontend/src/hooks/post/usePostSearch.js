@@ -11,7 +11,6 @@ export function usePostSearch() {
     const [endPage, setEndPage] = useState(0);
     const [loading, setLoading] = useState(true);
 
-    //post list
     const fnc_postList = async (e) => {
         e?.preventDefault();
         try {
@@ -39,7 +38,6 @@ export function usePostSearch() {
         }
     }
 
-    //user Like
     const fnc_userLikePost = async(e)=>{
         e?.preventDefault();
         try{

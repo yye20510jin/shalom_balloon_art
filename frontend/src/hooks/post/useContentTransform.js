@@ -4,13 +4,11 @@ export function extractYouTubeId(input) {
   try {
     const u = new URL(input.trim());
 
-    // https://youtu.be/dQw4w9WgXcQ
     if (u.hostname === "youtu.be") {
       const id = u.pathname.slice(1);
       return id || null;
     }
 
-    //https://www.youtube.com/watch?v=dQw4w9WgXcQ
     const host = u.hostname.replace("www.", "");
     if (host === "youtube.com" || host === "m.youtube.com" || host === "youtube-nocookie.com") {
       const v = u.searchParams.get("v");
@@ -38,7 +36,6 @@ export function useContentTransform(){
         wrapper.querySelectorAll("iframe").forEach((iframe)=>{
             const src = iframe.getAttribute("src") || "";
             const id = extractYouTubeId(src);
-            console.log("youtubeId : " , id);
             if(!id) return;
 
             const marker = doc.createElement("span");

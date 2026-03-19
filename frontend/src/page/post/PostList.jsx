@@ -17,8 +17,6 @@ function PostList({mode=""}) {
     fnc_postList, startPage, setStartPage, endPage, loading, searchTags, setSearchTags } = usePostSearch();
 
   const [likeCount, setLikeCount] = useState(0);
-  // 페이지네이션
-
   const [arrowPage, setArrowPage] = useState(0);
   const maxPage = 10;
 
@@ -42,7 +40,7 @@ function PostList({mode=""}) {
       year: "numeric",
       month: "2-digit",
       day: "2-digit"
-    }); // 시스템 로케일 기준으로 표시
+    }); 
   };
 
   if (loading) {
@@ -61,11 +59,11 @@ function PostList({mode=""}) {
               <input type="text" value={searchText} onChange={(e) => { setSearchText(e.target.value) }} placeholder="제목을 입력해 주세요" />
               <button className="i-btn" type="button" onClick={(e) => {
                 setStartPage(0);
-                fnc_postList(e); // 1 : 처음 검색
+                fnc_postList(e); 
               }}>검색</button>
             </div>
             <div className="PL-topTag">
-              <SearchPostTag finalMode={finalMode} fnc_postList={fnc_postList} searchTags={searchTags} setSearchTags={setSearchTags} />
+              {finalMode !== "like" && <SearchPostTag finalMode={finalMode} fnc_postList={fnc_postList} searchTags={searchTags} setSearchTags={setSearchTags} />}
             </div>
           </div>
           {error ? <div className="i-errorMessage PL-noData">{error}</div> : 
@@ -87,11 +85,11 @@ function PostList({mode=""}) {
             <input type="text" value={searchText} onChange={(e) => { setSearchText(e.target.value) }} placeholder="제목을 입력해 주세요" />
             <button className="i-btn" type="button" onClick={(e) => {
               setStartPage(0);
-              fnc_postList(e); // 1 : 처음 검색
+              fnc_postList(e); 
             }}>검색</button>
           </div>
           <div className="PL-topTag">
-            <SearchPostTag finalMode={finalMode} fnc_postList={fnc_postList} searchTags={searchTags} setSearchTags={setSearchTags} />
+            {finalMode !== "like" && <SearchPostTag finalMode={finalMode} fnc_postList={fnc_postList} searchTags={searchTags} setSearchTags={setSearchTags} />}
           </div>
         </div>
       </div>

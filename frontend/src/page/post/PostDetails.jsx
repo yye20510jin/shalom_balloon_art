@@ -11,7 +11,7 @@ import "../../styles/post/PostDetails.css";
 
 
 function PostDetails() {
-  const [post, setPost] = useState([]);      // PostResponseDTO[]
+  const [post, setPost] = useState([]);      
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [like, setLike] = useState(false);
@@ -64,7 +64,7 @@ function PostDetails() {
   const formatDateTime = (dateTimeString) => {
     if (!dateTimeString) return "";
     const date = new Date(dateTimeString);
-    return date.toLocaleString(); // 시스템 로케일 기준으로 표시
+    return date.toLocaleString(); 
   };
 
   if (loading) {

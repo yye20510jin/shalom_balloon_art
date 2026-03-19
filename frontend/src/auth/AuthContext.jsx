@@ -3,10 +3,8 @@ import { setOnUnauthorized, fncSetAccessToken, tryRefreshToken } from "../api/au
 import { startBootstrapping, setBootstrappingDone, setBootstrappingFailed } from "../auth/authGate";
 import { useNavigate } from "react-router-dom";
 
-//통로 생성 : 후에 다른 컴포넌트에서 값 가져갈 때 사용
 const AuthContext = createContext();
 
-// App.jsx에서 가져다 쓸 함수
 export function AuthProvider({ children }) {
   const [accessToken, setAccessToken] = useState("");
   const [userId, setUserId] = useState("");
@@ -17,10 +15,8 @@ export function AuthProvider({ children }) {
   const navigate = useNavigate();
   const serverError = () => navigate("/error/500");
   useEffect(() => {
-    //StrictMode 2회 실행 방지
     if (bootOnceRef.current) return;
     bootOnceRef.current = true;
-    //언마운트
     let alive = true;
 
     (async () => {
@@ -72,8 +68,7 @@ export function AuthProvider({ children }) {
     setAccessToken("");
     setRoles([]);
     setUserId("");
-    //href => 리로드, 히스토리 남음
-    //replace => 리로드, 히스트로 안남음
+
     window.location.replace("/");
 
   }, []);

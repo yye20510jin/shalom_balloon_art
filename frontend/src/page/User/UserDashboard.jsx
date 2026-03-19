@@ -20,7 +20,6 @@ function UserDashboard() {
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
-    //비밀번호 확인
     const fncChkPw = async (e) => {
         e.preventDefault();
         try {
@@ -49,9 +48,6 @@ function UserDashboard() {
 
     };
 
-
-
-    //회원 탈퇴
     const unregister = async () => {
         const ok = confirm("회원 탈퇴 하시겠습니까?");
         if (!ok) return;
@@ -75,7 +71,6 @@ function UserDashboard() {
         }
     };
 
-    //비밀번호 변경
     const changePw = () => {
         navigate("/user/changePw", { state: { fromUserPage: true } });
     };

@@ -3,7 +3,7 @@ import ListItem from "@tiptap/extension-list-item";
 export const CustomListItem = ListItem.extend({
     addAttributes(){
         return{
-            ...this.parent?.(), //parent는 함수
+            ...this.parent?.(), 
             align:{
                 default: null,
                 parseHTML: (el) => el.getAttribute("data-align") || null,
@@ -15,7 +15,7 @@ export const CustomListItem = ListItem.extend({
         };
     },
 
-    addCommands(){ //에디터에 새 명령을 추가. Btn에서 사용.
+    addCommands(){
         return{
             setListItemAlign:
                 (align) => ({chain}) =>

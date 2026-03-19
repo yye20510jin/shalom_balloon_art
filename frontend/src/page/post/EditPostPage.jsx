@@ -10,7 +10,6 @@ function EditPostPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // 기존 글 + 이미지 정보 조회
   useEffect(() => {
     const fetchPost = async () => {
       try {

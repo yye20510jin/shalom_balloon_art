@@ -13,7 +13,6 @@ function PostLike({id, like, setLikeCount=null}) {
 
     const handlePostLike = async (e,chk) => {
         e.stopPropagation();
-        //chk => 0 : 좋아요 취소, 1 : 좋아요
         try {
             const res = await authFetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/posts/${id}/${chk}`, {
                 method: "POST",
@@ -21,7 +20,7 @@ function PostLike({id, like, setLikeCount=null}) {
 
             if (!res.ok) {
                 const data = await res.json();
-                console.log(data.message);
+                console.error(data.message);
                 return;
             }
 

@@ -10,8 +10,8 @@ import bulletList from "../../assets/bulletList.png";
 
 export default function Toolbar({ editor, onPickImage, onInsertYoutube }) {
   if (!editor) return null;
-  const editorState = useEditorState({ //editor의 state,selection,transaction 변경을 감지
-    editor, //감시 대상
+  const editorState = useEditorState({ 
+    editor, 
     selector:({editor})=>({
       isBold: editor.isActive("bold"),
       isItalic: editor.isActive("italic"),

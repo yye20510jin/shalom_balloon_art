@@ -15,9 +15,8 @@ function UserApprove() {
   const [reloadKey, setReloadKey] = useState(0);
   const [startPage, setstartPage] = useState(0);
   const [endPage, setEndPage] = useState(0);
-  const [auth, setAuth] = useState(0); // 미확인 : 0, 비인증 : 2
+  const [auth, setAuth] = useState(0);
   const { setAuthChange } = useContext(AdminContext);
-  // 날짜 포맷 함수 추가
   function formatDate(dateString) {
     if (!dateString) return "";
     const date = new Date(dateString);

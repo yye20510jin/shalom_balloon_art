@@ -5,13 +5,11 @@ export default function Modal({ open, title, onClose, children, error }) {
     useEffect(() => {
         if (!open) return;
 
-        //ESC닫기
         const onKeyDown = (e) => {
             if (e.key === "Escape") onClose();
         };
         window.addEventListener("keydown", onKeyDown);
 
-        //배경 스크롤 잠금
         const prev = document.body.style.overflow;
         document.body.style.overflow = "hidden";
 
@@ -25,16 +23,13 @@ export default function Modal({ open, title, onClose, children, error }) {
 
     if (!open) return null;
 
-    /*
-    aria-modal : 뒤쪽 페이지와 상호작용 못 하게 막힌 상태
-    */ 
     return (
         <div
             className="modalOverlay"
             role="dialog"
             aria-modal="true"
             aria-label={title}
-            onMouseDown={onClose} // 바깥 클릭 닫기
+            onMouseDown={onClose}
         >
             <div className="modalPanel" onMouseDown={(e) => e.stopPropagation()}>
                 <div className="modalHeader">

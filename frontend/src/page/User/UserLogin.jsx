@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getJson} from "../../api/getJson";
+import { getJson } from "../../api/getJson";
 import { showError } from "../../util/toastUtil";
 import AuthContext from "../../auth/AuthContext";
 import shalomLogo from "../../assets/shalomBalloonArt.png";
@@ -22,7 +22,7 @@ function UserLogin() {
                 `${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/userLogin`,
                 {
                     method: "POST",
-                    headers:{"Content-Type": "application/json"},
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ userId, password }),
                     credentials: "include",
                 }
@@ -31,6 +31,11 @@ function UserLogin() {
             const data = await getJson(res);
 
             if (!res.ok) {
+                if (res.status >= 500) {
+                    navigate("/error/500");
+                    return;
+                }
+
                 setError(data.message);
                 return;
             }
@@ -54,16 +59,16 @@ function UserLogin() {
 
     return (
         <div className="Login">
-            <img className="Login-logo" alt="shalom" onClick={()=>navigate("/")} src={shalomLogo}/>
+            <img className="Login-logo" alt="shalom" onClick={() => navigate("/")} src={shalomLogo} />
             <div className="Login-box">
                 <section className="Login-main">
-                <div className="Login-title">LOGIN</div>
-                {error ? <div className="Login-err" style={{ color: "red" }}>{error}</div> : <div className="Login-err" ></div>}
-                <form className="Login-form" onSubmit={handleSubmit}>
+                    <div className="Login-title">LOGIN</div>
+                    {error ? <div className="Login-err" style={{ color: "red" }}>{error}</div> : <div className="Login-err" ></div>}
+                    <form className="Login-form" onSubmit={handleSubmit}>
                         <input className="Login-input" type="text" value={userId} onChange={(e) => setUserId(e.target.value)} placeholder="아이디" />
                         <input className="Login-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호" />
                         <button className="i-btn" type="submit">로그인</button>
-                </form>
+                    </form>
                 </section>
                 <div className="Login-find ">
                     <a href="/user/FindId">아이디 찾기</a>

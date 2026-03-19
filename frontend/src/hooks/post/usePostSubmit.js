@@ -1,4 +1,3 @@
-// src/components/PostEditor/usePostSubmit.js
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authFetch } from "../../api/authFetch";
@@ -15,8 +14,6 @@ export function usePostSubmit() {
 
   const navigate = useNavigate();
 
-
-// -------------- 서버 전송 ----------------
 
   const handleSubmit = async (mode,contentHtml,thumbnailUrl, tagSelected, supplies) => {
     setError("");

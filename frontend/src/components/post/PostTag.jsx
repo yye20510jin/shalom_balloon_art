@@ -31,11 +31,11 @@ function PostTag({ tagSelected, setTagSelected }) {
                 }
 
                 const d = await res.json();
-                //Tap 정보
+
                 setData(d);
 
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
 
         };
@@ -78,7 +78,7 @@ function PostTag({ tagSelected, setTagSelected }) {
             });
 
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
 
     }

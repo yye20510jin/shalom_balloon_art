@@ -1,4 +1,3 @@
-// src/components/PostEditor/ImageUpload.jsx
 import { useState } from "react";
 import { storage } from "../../config/firebaseConfig";
 import { ref, uploadBytes, getDownloadURL, deleteObject, getStorage } from "firebase/storage";
@@ -26,7 +25,6 @@ function ImageUpload({ imageUrls, setImageUrls }) {
     try {
     const imageRef = ref(storage,targetUrl); 
     await deleteObject(imageRef);
-    console.log("이미지 삭제 성공:", targetUrl);
   } catch (err) {
     console.error("이미지 삭제 실패:", err);
   }

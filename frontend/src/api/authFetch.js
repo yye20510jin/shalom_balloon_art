@@ -39,7 +39,6 @@ export function fncSetAccessToken(t) {
 }
 
 export function setOnUnauthorized(handler, navHome, tokenChanged, serverError, ) {
-    //logout
     onUnauthorized = handler;
     onForbidden = navHome;
     onAccessTokenChanged = tokenChanged;
@@ -67,7 +66,6 @@ export async function authFetch(url, options = {}) {
         throw e;
     }
 
-    // ---- 에러 처리 ----
     if (response.status === 403) {
         if (typeof onForbidden === "function") onForbidden();
         return response;
@@ -86,15 +84,12 @@ export async function authFetch(url, options = {}) {
     }
 
     if (response.status !== 401) return response;
-    
-
-    // 401 //
 
     if (isRefreshCall) {
         if (typeof onUnauthorized === "function") onUnauthorized();
         return response;
     }
-    //refresh 성공 -> 새 토큰으로 1회 재요청
+
     const newToken = (await tryRefreshToken())?.accessToken || null;
     if (!newToken) {
         if (typeof onUnauthorized === "function") onUnauthorized();
@@ -111,7 +106,6 @@ export async function authFetch(url, options = {}) {
         throw e;
     }
 
-    // *정책 2) 재요청도 401이면 더 시도하지 말고 로그아웃
     if (retryResponse.status === 401) {
         if (typeof onUnauthorized === "function") onUnauthorized();
         return retryResponse;

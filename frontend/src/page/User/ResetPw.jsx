@@ -38,6 +38,10 @@ function ResetPw() {
                 });
 
                 if (!res.ok) {
+                    if (res.status >= 500) {
+                        navigate("/error/500");
+                        return;
+                    }
                     navigate("/user/ResetPassword", { replace: true });
                     return;
                 }
@@ -62,6 +66,10 @@ function ResetPw() {
             });
 
             if (!res.ok) {
+                if (res.status >= 500) {
+                    navigate("/error/500");
+                    return;
+                }
                 setError("비밀번호 변경에 실패했습니다.");
                 return;
             }

@@ -3,7 +3,6 @@ import { authFetch } from "../../api/authFetch";
 import "../../styles/public/Arrow.css";
 export function SearchPostTag({finalMode,fnc_postList,searchTags,setSearchTags}) {
 
-    //태그 검색 여부 변수
     const [useTag, setUseTag] = useState(false);
     const [serverOk, setServerOk] = useState(false);
 
