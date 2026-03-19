@@ -44,7 +44,8 @@ public interface PostDailyViewRepository extends JpaRepository<PostDailyView, Po
     @Query(value = """
         INSERT INTO post_daily_view(post_index, view_date, view_count)
         VALUES(:postIndex, :viewDate, 1)
-        ON DUPLICATE KEY UPDATE view_count = view_count + 1
+        ON CONFLICT (post_index, view_date)
+        DO UPDATE SET view_count = post_daily_view.view_count + 1
     """,nativeQuery=true)
     int upsertIncrease(@Param("postIndex") Long postIndex, @Param("viewDate") LocalDate viewDate);
 }
