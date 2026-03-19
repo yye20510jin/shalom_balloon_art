@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authFetch } from "../../api/authFetch";
-import { useContentTransform } from "../../hooks/post/useContentTransform";
 import { getJson } from "../../api/getJson";
 
 export function usePostSubmit() {
@@ -10,7 +9,6 @@ export function usePostSubmit() {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { replaceYouTubeIframesWithMarkers } = useContentTransform();
 
   const navigate = useNavigate();
 
@@ -23,12 +21,10 @@ export function usePostSubmit() {
       setError("제목을 입력해 주세요.");
       return;
     }
-
-    const finallycontentHtml = replaceYouTubeIframesWithMarkers(contentHtml);
     
     const payload = {
       title: title.trim(),
-      contentHtml: finallycontentHtml,
+      contentHtml,
       thumbnailUrl,
       postTag: tagSelected,
       supplies

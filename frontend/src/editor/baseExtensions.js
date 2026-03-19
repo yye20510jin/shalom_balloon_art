@@ -1,5 +1,6 @@
 import StarterKit from "@tiptap/starter-kit";
 import Youtube from "@tiptap/extension-youtube";
+import { CustomYoutube } from "./extensions/CustomYoutube";
 import { CustomTextStyle } from "./extensions/CustomTextStyle";
 import { DataColor } from "./extensions/DataColor";
 import { DataFontFamily } from "./extensions/DataFontFamily";
@@ -28,10 +29,7 @@ export const baseExtensions = [
   CustomTextAlign.configure({
     types:["heading","paragraph"],
   }), 
-  Youtube.configure({
-    controls: true,
-    nocookie: true,
-  }),
+CustomYoutube,
 ];
 
 export const viewerExtensions = [

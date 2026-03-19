@@ -11,8 +11,7 @@
 /*--- 헤더 ---*/
 
 .PD-header {
-    margin: 100px 10px 0px 10px;
-    border-bottom: 1px solid gray;
+    margin-top: 100px;
 }
 
 .PostDetails .PD-title {
@@ -35,7 +34,8 @@
 }
 
 .PD-tags {
-    flex: 0 0 600px;
+    flex: 0 0 100%;
+    padding: 1rem;
 }
 
 span.PD-tag {
@@ -62,14 +62,25 @@ span.PD-tag {
   height: auto;
 }
 
-.PostDetails footer{
-    display:flex;
-    justify-content: center;
-}
-
+/*Youtube*/
 .PostDetails .yt-wrap {
     width: 100%;
     max-width: 100%;
     aspect-ratio: 16 / 9;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.PostDetails iframe {
+    width: 90%;
+    height: 90%;
+    border: 0;
+    display: block;
+}
+
+.PostDetails .yt-wrap > a {
+    display:block;
+    width:90%;
 }

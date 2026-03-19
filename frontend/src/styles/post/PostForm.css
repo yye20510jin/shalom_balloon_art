@@ -160,18 +160,28 @@ h1.PF-title {
 }
 
 /*Youtube*/
-div[data-youtube-video] {
+.PostForm .yt-wrap {
     width: 100%;
     max-width: 100%;
     aspect-ratio: 16 / 9;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-iframe {
-    width: 100%;
-    height: 100%;
+
+.PostForm iframe {
+    width: 90%;
+    height: 90%;
     border: 0;
     display: block;
 }
+
+.PostForm .yt-wrap > a {
+    display:block;
+    width:90%;
+}
+
 
 
 @media(max-width:700.99px) {

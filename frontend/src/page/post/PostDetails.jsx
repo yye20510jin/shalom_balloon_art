@@ -47,6 +47,7 @@ function PostDetails() {
           setError(data?.message || "게시글을 불러오지 못했습니다.");
           return;
         }
+
         setPost(data);
         setLike(data.postLike);
         setTags(data.postTags);
@@ -103,9 +104,12 @@ function PostDetails() {
           </div>
           
           <div className="PD-date">
-            작성일: {formatDateTime(post.createdAt)}
+            
             {post.updatedAt && (
-              <><br /> 수정일: {formatDateTime(post.updatedAt)}</>
+              <>수정일: {formatDateTime(post.updatedAt)}</>
+            )}
+            {!post.updatedAt && (
+              <>작성일: {formatDateTime(post.createdAt)}</>
             )}
           
           <PostLike id={id} like={like}/>

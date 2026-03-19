@@ -6,7 +6,7 @@ import { useFirebaseSingleImageUpload } from "../../hooks/firebase/useFirebaseSi
 import { CustomImage } from "../../editor/extensions/CustomImage";
 import { useLocalImageCandidates } from "../../hooks/post/useLocalImageCandidates";
 import { baseExtensions } from "../../editor/baseExtensions";
-import { toYouTubeEmbedUrl } from "../../util/post/ToYouTubeEmbedUrl";
+import { toExtractYouTubeId } from "../../util/post/toExtractYouTubeId";
 import PostTag from "../../components/post/PostTag";
 import "../../styles/post/PostFormContent.css";
 import "../../styles/post/PostForm.css";
@@ -114,14 +114,14 @@ function PostForm({
     const input = prompt("YouTube URL을 입력하세요");
     if (!input) return;
 
-    const embedUrl = toYouTubeEmbedUrl(input);
+    const embedUrl = toExtractYouTubeId(input);
 
     if (!embedUrl) {
       alert("유효한 YouTube 링크가 아니거나, embed 변환이 불가능한 URL입니다.");
       return;
     }
 
-    editor.chain().focus().setYoutubeVideo({ src: embedUrl }).run();
+    editor.chain().focus().setCustomYoutube({ videoId: embedUrl }).run();
   };
  
   const onSubmit = async (e) => {

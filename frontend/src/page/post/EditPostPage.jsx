@@ -62,7 +62,7 @@ function EditPostPage() {
   }
 
   return (
-    <div style={{ padding: 20 }}>
+    <div>
       <PostForm
         mode="edit"
         initialValues={initialValues}

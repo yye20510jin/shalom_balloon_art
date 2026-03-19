@@ -9,6 +9,7 @@
     min-height:100dvh;
     padding: 16px;
     outline:none;
+    border-top: 1px solid gray;
 }
 
 /* em */
