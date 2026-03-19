@@ -32,6 +32,7 @@ export default function YoutubeFallbackWrapper({ id, contentHtml }) {
     temp.innerHTML = safeHtml;
 
     applyDataTextStyle(temp);
+    
 
     temp.querySelectorAll("[data-youtube-fallback]").forEach((el) => {
       const raw = el.getAttribute("data-youtube-fallback") || el.textContent || "";
@@ -60,8 +61,16 @@ export default function YoutubeFallbackWrapper({ id, contentHtml }) {
 
       wrap.appendChild(iframe);
       wrap.appendChild(a);
+
+      
       el.replaceWith(wrap);
     });
+    
+  temp.querySelectorAll("p").forEach((p) => {
+    if (!p.innerHTML.trim()) {
+      p.innerHTML = "<br>";
+    }
+  });
 
     root.appendChild(temp);
 
