@@ -4,7 +4,7 @@ import { getJson } from "../../api/getJson";
 import { showError } from "../../util/toastUtil";
 import AuthContext from "../../auth/AuthContext";
 import shalomLogo from "../../assets/ShalomBalloonArt.png";
-import "../../styles/user/TempUserLogin.css";
+import "../../styles/user/UserLogin.css";
 
 function UserLogin() {
 
