@@ -5,7 +5,7 @@ import { showSuccess } from "../../util/toastUtil";
 import { getJson } from "../../api/getJson";
 import { useFormatPhoneNumber } from "../../hooks/user/useFormatPhoneNumber"
 import Navbar from "../../components/common/Navbar"
-import "../../styles/user/userChangePhone.css";
+import "../../styles/user/UserChangePhone.css";
 function UserChangePhone() {
 
     const navigate = useNavigate();
