@@ -49,6 +49,11 @@ public class ResetTokenCookieUtil {
                 .maxAge(ttl)
                 .build();
         res.addHeader("Set-Cookie", cookie.toString());
+
+        log.warn(
+                "setRefreshCookie called: name=refreshToken, secure={}, sameSite={}, path=/, maxAge={}",
+                cookieSecure, cookieSameSite, ttl
+        );
     }
 
     public void deleteRefreshCookie(HttpServletResponse res) {
