@@ -1,7 +1,7 @@
 import { authFetch } from "../../api/authFetch";
 import { getJson } from "../../api/getJson";
 import { useEffect, useState, useContext } from "react";
-import "../../styles/admin/userList.css";
+import "../../styles/admin/UserList.css";
 import UserIcon from "../../assets/UserIcon.png";
 import AdminContext from "../../components/admin/adminContext";
 import leftArrow from "../../assets/leftArrow.png";
