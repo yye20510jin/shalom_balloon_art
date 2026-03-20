@@ -1,5 +1,4 @@
 import { authFetch } from "../../api/authFetch";
-import { showError } from "../../util/toastUtil";
 import { getJson } from "../../api/getJson";
 import { useEffect, useState, useContext } from "react";
 import "../../styles/admin/userList.css";
@@ -7,7 +6,6 @@ import UserIcon from "../../assets/UserIcon.png";
 import AdminContext from "../../components/admin/adminContext";
 import leftArrow from "../../assets/leftArrow.png";
 import rightArrow from "../../assets/rightArrow.png";
-import AuthContext from "../../auth/AuthContext";
 
 function UserList() {
     const [error, setError] = useState("");

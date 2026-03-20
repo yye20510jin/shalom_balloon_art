@@ -1,4 +1,3 @@
-import React from "react";
 import { useInViewAnimate } from "../../hooks/animations/useInViewAnimate";
 
 export default function Reveal({

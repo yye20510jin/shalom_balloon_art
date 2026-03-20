@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import UserList from "./UserList";
 import UserApprove from "./UserApprove";
 import "../../styles/admin/AdminDashboard.css";
-import PostViewLineChart from "../../components/admin/postViewLineChart";
+import PostViewLineChart from "../../components/admin/PostViewLineChart";
 
 function Admin() {
 

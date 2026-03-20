@@ -1,5 +1,5 @@
 import { useEditor, EditorContent } from "@tiptap/react";
-import { viewerExtensions } from "./extensions/baseExtensions";
+import {viewerExtensions} from "./baseExtensions";
 
 export default function ReadOnlyEditor({ contentHtml }) {
     const editor = useEditor({
