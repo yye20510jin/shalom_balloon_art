@@ -13,7 +13,7 @@ import RequireAdmin from "../auth/RequireAdmin";
 import RequireUser from "../auth/RequireUser";
 import UserLayout from "../page/User/UserLayout";
 import UserList from "../page/admin/UserList";
-import AdminHomeCard from "../page/admin/AdminHomecard";
+import AdminHomeCard from "../page/admin/AdminHomeCard";
 import FindId from "../page/User/FindId";
 import ResetPassword from "../page/User/ResetPassword";
 import ResetPw from "../page/User/ResetPw";
