@@ -4,8 +4,8 @@ import { usePostSearch } from "../../hooks/post/usePostSearch";
 import "../../styles/public/Arrow.css";
 import Navbar from "../../components/common/Navbar";
 import { SearchPostTag } from "../../components/post/SearchPostTag";
-import "../../styles/post/postList.css";
-import "../../styles/post/postListMedia.css";
+import "../../styles/post/PostList.css";
+import "../../styles/post/PostListMedia.css";
 import PostLike from "../../components/post/PostLike";
 
 function PostList({mode=""}) {
