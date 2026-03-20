@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import "../../styles/TempHomeGallery.css";
+import "../../styles/HomeGallery.css";
 
 export default function HomeGallery({ images = [] }) {
     const pattern = useMemo(
