@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { showError } from "../../util/toastUtil";
-import { useFormatPhoneNumber } from "../../hooks/user/UseformatPhoneNumber";
+import { useFormatPhoneNumber } from "../../hooks/user/useFormatPhoneNumber";
 import { getJson } from "../../api/getJson";
 import shalomLogo from "../../assets/ShalomBalloonArt.png";
 import "../../styles/user/UserMembershipFind.css";

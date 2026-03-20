@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { authFetch } from "../../api/authFetch";
 import shalomLogo from "../../assets/ShalomBalloonArt.png";
 import AuthContext from "../../auth/AuthContext";
-import { useFormatPhoneNumber } from "../../hooks/user/UseformatPhoneNumber";
+import { useFormatPhoneNumber } from "../../hooks/user/useFormatPhoneNumber";
 import { getJson } from "../../api/getJson";
 import { showSuccess } from "../../util/toastUtil";
 import "../../styles/user/Membership.css";
