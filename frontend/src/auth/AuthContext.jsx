@@ -23,6 +23,7 @@ export function AuthProvider({ children }) {
       try {
         
         startBootstrapping();
+        alert(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/refresh`);
         alert("try refresh");
         const data = await tryRefreshToken();
         if (!alive) return;

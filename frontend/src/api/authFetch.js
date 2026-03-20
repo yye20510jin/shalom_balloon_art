@@ -27,6 +27,8 @@ export async function tryRefreshToken() {
                 return data;
             }
             return null;
+        }).catch((e)=>{
+            alert(`refresh fetch error : ${e.message}`);
         }).finally(() => {
             refreshPromise = null;
         });
