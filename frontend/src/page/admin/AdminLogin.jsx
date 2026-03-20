@@ -3,7 +3,7 @@ import { useState, useContext, useEffect } from "react"
 import { showError } from "../../util/toastUtil";
 import { getJson } from "../../api/getJson";
 import AuthContext from "../../auth/AuthContext";
-import shalomLogo from "../../assets/shalomBalloonArt.png";
+import shalomLogo from "../../assets/ShalomBalloonArt.png";
 
 function AdminLogin() {
 

@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { showError,showSuccess } from "../../util/toastUtil";
-import shalomLogo from "../../assets/shalomBalloonArt.png";
+import shalomLogo from "../../assets/ShalomBalloonArt.png";
 import "../../styles/user/UserMembershipFind.css";
 
 function ResetPw() {

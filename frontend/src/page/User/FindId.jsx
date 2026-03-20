@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormatPhoneNumber } from "../../hooks/user/UseformatPhoneNumber";
 import { getJson } from "../../api/getJson";
-import shalomLogo from "../../assets/shalomBalloonArt.png";
+import shalomLogo from "../../assets/ShalomBalloonArt.png";
 import "../../styles/user/UserMembershipFind.css";
 
 function FindId() {

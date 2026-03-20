@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getJson } from "../../api/getJson";
 import { showError } from "../../util/toastUtil";
 import AuthContext from "../../auth/AuthContext";
-import shalomLogo from "../../assets/shalomBalloonArt.png";
+import shalomLogo from "../../assets/ShalomBalloonArt.png";
 import "../../styles/user/UserLogin.css";
 
 function UserLogin() {

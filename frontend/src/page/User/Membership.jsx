@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { authFetch } from "../../api/authFetch";
-import shalomLogo from "../../assets/shalomBalloonArt.png";
+import shalomLogo from "../../assets/ShalomBalloonArt.png";
 import AuthContext from "../../auth/AuthContext";
 import { useFormatPhoneNumber } from "../../hooks/user/UseformatPhoneNumber";
 import { getJson } from "../../api/getJson";
