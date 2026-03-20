@@ -23,8 +23,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final CorsConfig corsConfig;
-    private final JwtTokenProvider jwtTokenProvider;
-    private final CustomUserDetailsService customUserDetailsService;
     private final LoggingAccessDeniedHandler deniedHandler;
     private final LoggingAuthenticationEntryPoint entryPoint;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;

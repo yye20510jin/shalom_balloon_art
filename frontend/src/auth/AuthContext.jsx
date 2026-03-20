@@ -23,6 +23,7 @@ export function AuthProvider({ children }) {
       try {
         
         startBootstrapping();
+        alert("try refresh");
         const data = await tryRefreshToken();
         if (!alive) return;
 
