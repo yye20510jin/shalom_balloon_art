@@ -35,6 +35,7 @@ h1.PF-title {
     overflow-y: auto;
     box-sizing: border-box;
     outline-style: none;
+    padding:0.5rem;
 }
 
 .PF-preview {
@@ -207,4 +208,8 @@ h1.PF-title {
     .PT-bto.i-btn {
         min-width: 70px;
     }
+
+    .Toolbar.content>button {
+        width:50px;
+}
 }

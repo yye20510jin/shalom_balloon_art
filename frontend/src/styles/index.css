@@ -105,9 +105,6 @@ input {
   font-size: clamp(16px, 1.3vw, 0.95rem);
 }
 
-input::placeholder {
-  font-size: clamp(16px, 1.3vw, 0.95rem);
-}
 
 input:focus {
   outline: none;
