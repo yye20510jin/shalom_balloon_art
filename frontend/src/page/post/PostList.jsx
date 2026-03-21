@@ -44,7 +44,29 @@ function PostList({mode=""}) {
   };
 
   if (loading) {
-    return <div style={{ padding: 20 }}>불러오는 중...</div>;
+    return (
+      <div className="PostList">
+      {finalMode !== "like" && <Navbar />}
+      <div className="container">
+        <div className="PL-top">
+          <h2 style={{ textAlign: "center", margin: "0" }}>{finalMode === "like" ? "좋아요한 게시글" : "게시글 목록"}</h2>
+          <div style={{display: finalMode === "like" ? "none" : ""}} className="PL-top-flex">
+            <div className="PL-topInput">
+              <input type="text" value={searchText} onChange={(e) => { setSearchText(e.target.value) }} placeholder="제목을 입력해 주세요" />
+              <button className="i-btn" type="button" onClick={(e) => {
+                setStartPage(0);
+                fnc_postList(e); 
+              }}>검색</button>
+            </div>
+            <div className="PL-topTag">
+              {finalMode !== "like" && <SearchPostTag finalMode={finalMode} fnc_postList={fnc_postList} searchTags={searchTags} setSearchTags={setSearchTags} />}
+            </div>
+          </div>
+          <div className="PL-noData" style={{ padding: 20 }}><span>게시글을 불러오고 있습니다..</span></div>
+        </div>
+      </div>
+      </div>
+    );
   }
 
   if (!posts || posts.length === 0) {
