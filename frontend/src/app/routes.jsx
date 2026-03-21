@@ -27,7 +27,7 @@ import { AdminContext_f } from "../components/admin/adminContext";
 
 export const routes = [
   { path: "/", element: <Home /> },
-  { path: "/admin/adminLogin", element: <AdminLogin /> },
+  { path: "/shalom/0322", element: <AdminLogin /> },
   { path: "/membership", element: <Membership /> },
   { path: "/userLogin", element: <UserLogin /> },
   { path: "/user/FindId", element: <FindId/>},

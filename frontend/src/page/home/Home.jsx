@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/common/Navbar"
 import { getJson } from "../../api/getJson";
@@ -11,11 +11,7 @@ function Home() {
     const [imgUrl, setImgUrl] = useState([null, null]);
     const [text, setText] = useState(["", ""]);
     const {isLoggedIn} = useContext(AuthContext);
-    const navigate = useNavigate();
-
-    const goAdmin = async () => {
-        navigate("/admin/adminLogin");
-    };
+    const adminClickCount = useRef(0);
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -62,7 +58,6 @@ function Home() {
             <main className="home">
                 <div className="homeImg">
                 <img  src={home}/>
-                    {!isLoggedIn && <button className="adminButton" onClick={goAdmin}>관리자 로그인</button>}
                 </div>
                 <section className="HM-cardSection">
                     <Reveal useThreshold="0.48" extras="anim--slow" className="HM-card one">
