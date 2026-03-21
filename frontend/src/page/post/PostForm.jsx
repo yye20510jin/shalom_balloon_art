@@ -121,7 +121,7 @@ function PostForm({
       return;
     }
 
-    editor.chain().focus().setCustomYoutube({ videoId: embedUrl }).run();
+    editor.chain().focus().setCustomYoutube(embedUrl).run();
   };
  
   const onSubmit = async (e) => {
