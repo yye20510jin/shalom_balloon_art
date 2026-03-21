@@ -24,6 +24,7 @@
 .Login-err {
     height: 20px;
     margin-top: 30px;
+    font-size: clamp(13px, 1.3vw, 0.95rem);
 }
 
 /* --- 초록 박스 --- */
