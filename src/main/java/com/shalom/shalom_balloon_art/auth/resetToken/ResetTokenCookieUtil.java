@@ -45,7 +45,7 @@ public class ResetTokenCookieUtil {
                 .httpOnly(true)
                 .secure(cookieSecure)
                 .sameSite(cookieSameSite)
-                .path("/")
+                .path("/api/auth/refresh")
                 .maxAge(ttl)
                 .build();
         res.addHeader("Set-Cookie", cookie.toString());
@@ -61,7 +61,7 @@ public class ResetTokenCookieUtil {
                 .httpOnly(true)
                 .secure(cookieSecure)
                 .sameSite(cookieSameSite)
-                .path("/")
+                .path("/api/auth/refresh")
                 .maxAge(0)
                 .build();
         res.addHeader("Set-Cookie", cookie.toString());
