@@ -69,13 +69,19 @@ function PostDetails() {
   };
 
   if (loading) {
-    return <div style={{ padding: 20 }}>불러오는 중...</div>;
+    return(
+      <div className="container PostDetails">
+      <Navbar />
+      <div className="PL-noData"><span>게시글을 불러오고 있습니다.</span></div>
+      </div>
+    );
   }
 
   if (error) {
-    return (
-      <div style={{ padding: 20, color: "red" }}>
-        에러: {error}
+    return(
+      <div className="container PostDetails">
+      <Navbar />
+      <div className="PL-noData"><span>{error}</span></div>
       </div>
     );
   }
