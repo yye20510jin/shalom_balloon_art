@@ -3,6 +3,7 @@ import { useLocalImageCandidates } from "../../hooks/post/useLocalImageCandidate
 import { authFetch } from "../../api/authFetch";
 import { useFirebaseSingleImageUpload } from "../../hooks/firebase/useFirebaseSingleImageUpload";
 import { getJson } from "../../api/getJson";
+import { showSuccess } from "../../util/toastUtil";
 import "../../styles/admin/AdminHomeCard.css";
 function AdminHomeCard() {
     const [imgUrl, setImgUrl] = useState(["", ""]);
@@ -103,6 +104,8 @@ function AdminHomeCard() {
             }
             firstImgUrl.current = [...finalImgUrl];
             setMount(prev => prev + 1);
+            showSuccess("변경됐습니다.");
+
         } catch (err) {
             console.error(err);
         }
