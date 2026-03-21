@@ -209,7 +209,7 @@ h1.PF-title {
         min-width: 70px;
     }
 
-    .Toolbar.content>button {
-        width:50px;
+    .Toolbar>button {
+        max-width:50px;
 }
 }
