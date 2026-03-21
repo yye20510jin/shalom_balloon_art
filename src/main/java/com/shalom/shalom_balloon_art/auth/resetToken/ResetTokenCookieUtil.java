@@ -3,8 +3,6 @@ package com.shalom.shalom_balloon_art.auth.resetToken;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
@@ -22,18 +20,8 @@ public class ResetTokenCookieUtil {
     @Value("${cookie.same-site}")
     private String cookieSameSite;
 
-    private static final Logger log = LoggerFactory.getLogger(ResetTokenCookieUtil.class);
-
     public String readCookie(HttpServletRequest req) {
         Cookie[] cookies = req.getCookies();
-
-        if (cookies == null) {
-            log.warn("refresh request: no cookies");
-        } else {
-            for (Cookie c : cookies) {
-                log.info("cookie name={}, valueExists={}", c.getName(), c.getValue() != null && !c.getValue().isBlank());
-            }
-        }
 
         if (cookies == null) return null;
         for (Cookie c : cookies) if ("refreshToken".equals(c.getName())) return c.getValue();
@@ -49,11 +37,6 @@ public class ResetTokenCookieUtil {
                 .maxAge(ttl)
                 .build();
         res.addHeader("Set-Cookie", cookie.toString());
-
-        log.warn(
-                "setRefreshCookie called: name=refreshToken, secure={}, sameSite={}, path=/, maxAge={}",
-                cookieSecure, cookieSameSite, ttl
-        );
     }
 
     public void deleteRefreshCookie(HttpServletResponse res) {

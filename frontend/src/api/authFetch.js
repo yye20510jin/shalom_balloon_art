@@ -15,7 +15,6 @@ export async function tryRefreshToken() {
             method: "POST",
             credentials: "include"
         }).then(async (res) => {
-            alert(`refresh status : ${res.status}`);
             if (!res.ok) return null;
             const data = await res.json().catch(() => null);
             const token = data?.accessToken;
@@ -27,8 +26,6 @@ export async function tryRefreshToken() {
                 return data;
             }
             return null;
-        }).catch((e)=>{
-            alert(`refresh fetch error : ${e.message}`);
         }).finally(() => {
             refreshPromise = null;
         });
