@@ -3,7 +3,7 @@ h1.PF-title {
     font-size: clamp(18px, 3vw, 2.5rem);
     line-height: 1.1;
     text-align: center;
-    margin: 2rem 0 4rem 0;
+    margin: 2rem 0.5rem 4rem 0.5rem;
     padding: 1rem;
     background-color:#f7f9f3;
 }
@@ -13,6 +13,7 @@ h1.PF-title {
 .PF-form {
     display: flex;
     flex-direction: column;
+    padding:0 0.5rem;
 }
 
 .PostForm .PF-titleDiv input[type="text"] {

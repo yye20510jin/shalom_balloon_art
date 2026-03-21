@@ -61,6 +61,7 @@ button {
   font-family: inherit;
   cursor: pointer;
   transition: border-color 0.25s;
+  font-size: clamp(14px, 1.3vw, 0.95rem);
 }
 
 button.subBtn:active {
@@ -101,6 +102,7 @@ button.subBtn:active {
 /* -- input 공통 설정 -- */
 input {
   outline: none;
+  font-size: clamp(16px, 1.3vw, 0.95rem);
 }
 
 input::placeholder {

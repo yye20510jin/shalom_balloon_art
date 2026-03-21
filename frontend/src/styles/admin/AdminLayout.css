@@ -15,6 +15,7 @@
 .AdminLayout-aside nav {
     margin-top: 3rem;
     margin-left: 1rem;
+    font-size: clamp(14px, 1.3vw, 0.95rem);
 }
 
 .AdminLayout-aside a {
@@ -27,9 +28,10 @@
     .AdminLayout-aside {
         min-height: unset;
         width: 100%;
-        min-width: unset;
+        min-width: 350px;
         max-width: unset;
         display: flex;
+        flex-wrap: wrap;
         align-items: flex-end;
         justify-content: space-between;
     }
@@ -43,7 +45,6 @@
         margin-top: unset;
         margin-left: unset;
         display: flex;
-
     }
 
     .AdminLayout-aside a {
