@@ -27,6 +27,22 @@ public class SecurityConfig {
     private final LoggingAuthenticationEntryPoint entryPoint;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    String cspPolicy = """
+    default-src 'self';
+    script-src 'self';
+    style-src 'self' 'unsafe-inline';
+    img-src 'self' data: blob: https:;
+    font-src 'self' https: data:;
+    connect-src 'self' https://api.shalomballoonart.com;
+    frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com;
+    media-src 'self' blob:;
+    object-src 'none';
+    base-uri 'self';
+    form-action 'self';
+    frame-ancestors 'self';
+    upgrade-insecure-requests;
+    """.replace("\n", " ").replace("\r", " ");
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -35,6 +51,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .headers(headers -> headers
+                        .contentSecurityPolicy(csp -> csp.policyDirectives(cspPolicy)
+                        )
+                )
                 // REST API에서 기본적으로 사용
                 .csrf(csrf -> csrf.disable())
                 .cors(cors->cors.configurationSource(corsConfig.configurationSource()))
