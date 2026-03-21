@@ -1,5 +1,5 @@
 :root {
-  font-size: clamp(10px, 1.3vw, 0.95rem);
+  font-size: clamp(16px, 1.3vw, 0.95rem);
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -75,7 +75,7 @@ button.subBtn:active {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
+    color: #000000;
     background-color: #ffffff;
   }
 
@@ -101,11 +101,10 @@ button.subBtn:active {
 /* -- input 공통 설정 -- */
 input {
   outline: none;
-  font-size: clamp(10px, 1.3vw, 0.95rem);
 }
 
 input::placeholder {
-  font-size: clamp(10px, 1.3vw, 0.95rem);
+  font-size: clamp(16px, 1.3vw, 0.95rem);
 }
 
 input:focus {

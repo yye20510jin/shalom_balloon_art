@@ -1,6 +1,5 @@
 .navbar {
     width: 100%;
-    margin-top: 0.5rem;
     background: #f7f9f3;
 }
 
@@ -62,8 +61,7 @@
 
     .Nb-inventory {
         margin-right: 10px;
-        width: 50px;
-        height: 50px;
+        width: clamp(40px, 10vw, 100px);
     }
 
     .Nb-inventory:hover {
@@ -77,7 +75,7 @@
         z-index: 1;
         min-width: max-content;
         background: rgb(231 231 231 / 50%);
-        font-size: clamp(0.5rem, 3vw, 0.95rem);
+        font-size: clamp(14px, 3vw, 0.95rem);
         top: calc(100% - 0vw);
         right: 3%;
         transform: translateX(-3%);

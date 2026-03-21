@@ -10,7 +10,7 @@
 }
 
 .Login-logo{
-    width: clamp(100px, 10%, 210px);
+    width: clamp(120px, 10%, 210px);
 }
 
 .Login-box {
@@ -49,10 +49,9 @@
 .Login-input {
     margin-bottom: 17px;
     width: 100%;
-    height: 35px;
     border: 2px solid #e7e7e7;
     border-radius: 3px;
-    height: clamp(25px, 4vw, 35px);
+    height: clamp(30px, 4vw, 35px);
 }
 .Login-input:focus {
     outline: none;

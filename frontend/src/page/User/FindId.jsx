@@ -56,7 +56,7 @@ function FindId() {
                 <section className="Login-main">
                     <div className="Login-title">아이디 찾기</div>
                     <form className="Login-form UMF-form" onSubmit={findIdFetch}>
-                        <input className="Login-input" type="text" value={userName} onChange={(e) => setUserName(e.target.value)} placeholder="닉네임을 입력하세요" />
+                        <input className="Login-input" type="text" value={userName} onChange={(e) => setUserName(e.target.value)} placeholder="이름을 입력하세요" />
                         <input className="Login-input" type="text" value={userPhoneNumber} onChange={(e) =>
                             setUserPhoneNumber(prev =>
                                 prev = formatPhoneNumber(e.target.value))
