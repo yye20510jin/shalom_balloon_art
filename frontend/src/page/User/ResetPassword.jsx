@@ -58,8 +58,8 @@ function ResetPassword() {
                 <section className="Login-main">
                     <div className="Login-title">비밀번호 찾기</div>
                     <form className="Login-form UMF-form" onSubmit={findPwFetch}>
-                        <input className="Login-input" type="text" value={userId} onChange={(e) => setUserId(e.target.value)} placeholder="아이디를 입력하세요" />
-                        <input className="Login-input" type="text" value={userPhoneNumber} onChange={(e) =>
+                        <input className="Login-input" type="text" name="username" autoComplete="username" value={userId} onChange={(e) => setUserId(e.target.value)} placeholder="아이디를 입력하세요" />
+                        <input className="Login-input" type="tel" name="tel" autoComplete="tel" value={userPhoneNumber} onChange={(e) =>
                             setUserPhoneNumber(prev =>
                                 prev = formatPhoneNumber(e.target.value))} placeholder="전화번호를 입력하세요" />
                         <button className="i-btn" type="submit" disabled={!chk}>찾기</button>

@@ -69,8 +69,8 @@ function AdminLogin() {
                     <div className="Login-title">LOGIN</div>
                     {error ? <div className="Login-err" style={{ color: "red" }}>{error}</div> : <div className="Login-err" ></div>}
                     <form className="Login-form" onSubmit={handleSubmit}>
-                        <input className="Login-input" type="text" value={userId} onChange={(e) => setUserId(e.target.value)} placeholder="아이디" />
-                        <input className="Login-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호" />
+                        <input className="Login-input" type="text" name="username" autoComplete="username" value={userId} onChange={(e) => setUserId(e.target.value)} placeholder="아이디" />
+                        <input className="Login-input" type="password" name="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호" />
                         <button className="i-btn" type="submit">로그인</button>
                     </form>
                 </section>

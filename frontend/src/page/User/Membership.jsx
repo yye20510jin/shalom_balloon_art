@@ -122,6 +122,8 @@ function Membership() {
                   className={`membership-input ${check ? idCheck ? "success" : "error" : ""}`}
                   style={{ marginTop: "20px" }}
                   type="text"
+                  name="username"
+                  autoComplete="username"
                   value={userId}
                   onChange={(e) => {
                     setUserId(e.target.value);
@@ -134,6 +136,8 @@ function Membership() {
                 <input
                   className={`membership-input ${userPassword && !isPasswordValid && "error"}`}
                   type="password"
+                  name="password"
+                  autoComplete="new-password"
                   value={userPassword}
                   onChange={(e) => setUserPassword(e.target.value)}
                   placeholder="비밀번호"
@@ -142,6 +146,8 @@ function Membership() {
                 <input
                   className={`membership-input ${passwordConfirm && !isPasswordMatch && "error"}`}
                   type="password"
+                  name="password"
+                  autoComplete="new-password"
                   value={passwordConfirm}
                   onChange={(e) => setPasswordConfirm(e.target.value)}
                   placeholder="비밀번호 확인"
@@ -155,12 +161,16 @@ function Membership() {
 
               <input
                 type="text"
+                name="name"
+                autoComplete="name"
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
                 placeholder="이름"
               />
               <input
-                type="text"
+                type="tel"
+                name="tel"
+                autoComplete="tel"
                 value={userPhoneNumber}
                 onChange={(e) =>
                   setUserPhoneNumber(prev =>

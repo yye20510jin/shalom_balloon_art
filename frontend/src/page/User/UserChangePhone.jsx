@@ -61,7 +61,7 @@ function UserChangePhone() {
             <div className="UCP-main">
                 <div className="UCP-Phonediv">
                     <form className="UCP-form" onSubmit={fncPhoneNumber}>
-                        <input type="text" placeholder="전화번호를 입력하세요" value={phoneNumber} onChange={(e) => setPhoneNumber(formatPhoneNumber(e.target.value))} />
+                        <input type="tel" name="tel" autoComplete="tel" placeholder="전화번호를 입력하세요" value={phoneNumber} onChange={(e) => setPhoneNumber(formatPhoneNumber(e.target.value))} />
                         <button className={phoneNumber? "i-btn":""} disabled={!phoneNumber} tyep="submit">확인</button>
                     </form>
                     {error && <div className="i-errMessage">{error}</div>}

@@ -96,8 +96,8 @@ function ResetPw() {
                 <section className="Login-main">
                     <div className="Login-title">비밀번호 변경</div>
                     <form className="Login-form UMF-form" onSubmit={resetPwFetch}>
-                        <input className="Login-input" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="비밀번호" />
-                        <input className="Login-input" type="password" value={newPasswordConfirm} onChange={(e) => setNewPasswordConfirm(e.target.value)} placeholder="비밀번호 확인" />
+                        <input className="Login-input" type="password" name="password" autoComplete="new-password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="비밀번호" />
+                        <input className="Login-input" type="password" name="password" autoComplete="new-password" value={newPasswordConfirm} onChange={(e) => setNewPasswordConfirm(e.target.value)} placeholder="비밀번호 확인" />
                         <button className="i-btn" type="submit" disabled={!chk}>확인</button>
                     </form>
                 </section>

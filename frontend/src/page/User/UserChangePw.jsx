@@ -65,8 +65,8 @@ function UserChangePw() {
             <div className="UC-main">
                 <div className="UC-Pwdiv">
                     <form className="UC-form" onSubmit={changePw}>
-                        <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="password" />
-                        <input type="password" value={newPasswordConfirm} onChange={(e) => setNewPasswordConfirm(e.target.value)} placeholder="password confirm" />
+                        <input type="password" name="password" autoComplete="new-password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="password" />
+                        <input type="password" name="password" autoComplete="new-password" value={newPasswordConfirm} onChange={(e) => setNewPasswordConfirm(e.target.value)} placeholder="password confirm" />
                         <button type="submit" className={chk?"i-btn":""} disabled={!chk}>확인</button>
                     </form>
                     <ul>
