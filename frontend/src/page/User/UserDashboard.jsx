@@ -89,6 +89,7 @@ function UserDashboard() {
                         {chkPw && (
                             <div className="UD-chkPw">
                                 <form onSubmit={fncChkPw}>
+                                    <input type="text" name="username" autoComplete="username" value={userId} hidden readOnly/>
                                     <input type="password" name="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호를 입력하세요" />
                                     <button type="submit" className={password && "i-btn"} disabled={!password}>확인</button>
                                 </form>
