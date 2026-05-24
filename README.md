@@ -32,36 +32,48 @@ React 기반 SPA와 Spring Boot REST API로 구성된 웹 애플리케이션입�
 
 
 ## 4️⃣ 실행 방법
- **Backend (Spring Boot)**
+### 사전 준비물   
+1. Java 17
+2. Node.js v20.19.5 (LTS)
+3. Docker Desktop
+---
+**▪️ Docker**
+1. PostgreSQL 서버 실행
+```bash
+docker run --name postgres-local -p 5432:5432 -e POSTGRES_PASSWORD=1234 -e POSTGRES_DB=shalom_local -d postgres:16
+```
+2. Redis 실행
+```bash
+docker run -d --name redis -p 6379:6379 redis:7-alpine
+```
+
+**▪️ Backend (Spring Boot)**
+
+프로젝트의 '루트 폴더'에서 해당 명령어를 실행하여 서버를 구동합니다.
 
 ```bash
-./mvnw spring-boot:run
+   # Git Bash / macOS / Linux 환경
+   ./mvnw spring-boot:run
+
+   # Windows CMD 환경
+   mvnw spring-boot:run
 ```
 기본 URL: http://localhost:8080
 
-환경 변수 예시:
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/shalom
-jwt.secret=YOUR_SECRET_KEY
-```
+**▪️ Frontend (React + Vite)**
 
-
-**Frontend (React + Vite)**
+'frontend' 폴더에서 해당 명령어를 실행하여 서버를 구동합니다.
 ```bash
+cd frontend
 npm install
 npm run dev
 ```
 기본 URL: http://localhost:5173
 
-.env 예시:
-```env
-VITE_BACKEND_BASE_URL=http://localhost:8080
-VITE_FIREBASE_STORAGE_BUCKET=...
-```
+## 5️⃣ 데모 테스트 계정
 
+⚠️ 본 서비스는 회원가입 시 관리자의 최종 승인이 필요한 구조로 되어 있어, 원활한 기능 테스트를 위해 기본 관리자(Admin) 계정을 아래와 같이 공유합니다. 모든 승인 권한 및 콘텐츠 관리 기능을 자유롭게 테스트해 보실 수 있습니다.
 
-## 5️⃣ API 예시
-- `POST /api/auth/user/login` : 사용자 로그인  
-- `GET /api/posts` : 게시글 목록 조회  
-- `GET /api/posts/{id}` : 게시글 상세 조회  
-- `POST /api/posts` : 게시글 작성  
+ID : admin
+
+Password: qW1@qW1@
