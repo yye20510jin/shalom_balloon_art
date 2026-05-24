@@ -1,2 +1,0 @@
-ALTER TABLE posts
-ALTER COLUMN thumbnail_url TYPE TEXT;

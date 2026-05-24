@@ -69,11 +69,11 @@ CREATE TABLE posts(
     post_index BIGSERIAL,
     title VARCHAR(200) NOT NULL,
     content_html TEXT,
-    thumbnail_url VARCHAR(255) NOT NULL,
+    thumbnail_url TEXT NOT NULL,
     created_at TIMESTAMP(6) NOT NULL,
     updated_at TIMESTAMP(6) NOT NULL,
     views BIGINT NOT NULL DEFAULT 0,
-    supplies VARCHAR(255),
+    supplies TEXT,
 
     PRIMARY KEY (post_index)
 );

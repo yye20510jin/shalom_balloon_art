@@ -4,9 +4,9 @@ INSERT INTO users(
     username,
     user_phone_number,
     role_index) VALUES(
-    'shalom',
-    '$2a$10$Hx78qStBrUV8HoHAqw.qX.Q9HZwIR/ULjzeRckzCZxbcbJ8/za7rS',
-    '모하은',
-    '010-5692-2923',
+    'admin',
+    '$2a$10$zq5mzPmiKvv02RIQ59Yul.VYXCD4VHPv359HTkaRcwjN5w9O6Fpxi',
+    'admin',
+    '01000000000',
     1
     );
