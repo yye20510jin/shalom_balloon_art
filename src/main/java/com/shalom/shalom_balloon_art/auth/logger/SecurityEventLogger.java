@@ -37,6 +37,10 @@ public class SecurityEventLogger {
         );
     }
 
+    public void warn(String eventType, String msg){
+        log.warn("[SECURITY] {} msg=\"{}\"",eventType,msg);
+    }
+
     private String safeName(Authentication auth) {
         return trim(auth.getName(), 80);
     }
