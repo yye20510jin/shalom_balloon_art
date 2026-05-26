@@ -12,7 +12,18 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+let app;
+let storage;
 
-export const storage = getStorage(app);
+if(firebaseConfig.projectId){
+  try{
+    app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+    storage = getStorage(app);
+  }catch(error){
+    console.error("Firebase 초기화 중 오류 발생 : " , error);
+  }
+}else{
+  console.warn("Firebase 설정이 없습니다. 일부 동작이 제한될 수 있습니다.");
+}
+
+export {storage};
